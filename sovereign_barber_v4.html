@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SOVEREIGN — Elite Grooming</title>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@700;800&family=Manrope:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "surface-container-highest": "#353535",
+          "on-surface-variant": "#d0c5af",
+          "surface-container-low": "#1c1b1b",
+          "surface-container-high": "#2a2a2a",
+          "on-primary-container": "#554300",
+          "surface-dim": "#131313",
+          "surface": "#131313",
+          "error": "#ffb4ab",
+          "background": "#131313",
+          "on-background": "#e5e2e1",
+          "secondary": "#eac249",
+          "surface-container-lowest": "#0e0e0e",
+          "on-surface": "#e5e2e1",
+          "surface-variant": "#353535",
+          "primary": "#f2ca50",
+          "on-primary-fixed": "#241a00",
+          "outline": "#99907c",
+          "outline-variant": "#4d4635",
+          "on-primary": "#3c2f00",
+          "primary-container": "#d4af37",
+          "surface-container": "#20201f",
+        },
+        borderRadius: { "DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px" },
+        fontFamily: { "headline": ["Epilogue"], "body": ["Manrope"], "label": ["Plus Jakarta Sans"] }
+      }
+    }
+  }
+</script>
+<style>
+  .noise-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 9999; opacity: 0.03;
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuBf8DwFBuldG8PBbGTqiHBGYe2kCnfiCBvjpTcVk7D3kiXcpWvBKIBzST1qTFCeNK0UpVZFXsXlgNpiwq_m8wbCDU9SWa9bre-ZGvMVLP0lj9QEICCTZhualqnT1T5DN4y5s-LctaZ2p6srMJOnmflkl9kfpoQTcIg_2mgm3QJJapueil_df3_9RwuKYguj9XHt8pWLCtCHUNA9-VNiG25idSRJyEv1eGCrveODCgLvjSi_J8GvJo3oc6waPDxIonwdXYqCCmAbMezl);
+  }
+  .material-symbols-outlined { font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24; }
+  .gold-gradient { background: linear-gradient(45deg, #f2ca50 0%, #d4af37 100%); }
+  .gold-gradient-text { background: linear-gradient(45deg, #f2ca50, #d4af37); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+  .screen { display: none; min-height: 100dvh; flex-direction: column; animation: fadeIn 0.22s ease; }
+  .screen.active { display: flex; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:translateY(0)} }
+
+  #modal-overlay { display: none; position: fixed; inset: 0; z-index: 200; }
+  #modal-overlay.active { display: block; }
+  #confirm-success { display: none; position: fixed; inset: 0; z-index: 300; background: #131313; }
+  #confirm-success.active { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+
+  /* Day panel modal */
+  #day-panel { display: none; position: fixed; inset: 0; z-index: 200; }
+  #day-panel.active { display: block; }
+
+  .cal-day { cursor: pointer; transition: all 0.15s; }
+  .cal-day:hover .day-inner { background: #2a2a2a; }
+  .cal-day.past { pointer-events: none; opacity: 0.25; }
+  .cal-day.locked .day-inner { background: #93000a22; border: 1px solid #ffb4ab44; color: #ffb4ab; }
+  .cal-day.selected-booking .day-inner { background: linear-gradient(45deg,#f2ca50,#d4af37); color: #241a00; font-weight: 900; }
+
+  .time-slot-btn { transition: all 0.15s; cursor: pointer; }
+  .time-slot-btn:hover { background: #2a2a2a; }
+  .time-slot-btn.selected { background: linear-gradient(45deg,#f2ca50,#d4af37); color: #241a00; border-color: transparent; }
+  .service-btn.selected { background: linear-gradient(45deg,#f2ca50,#d4af37); color: #241a00; border-color: transparent; }
+  .nav-link { transition: all 0.15s; }
+
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .live-dot { animation: blink 1.5s infinite; }
+  @keyframes pulse-ring { 0%,100%{opacity:0.4;transform:scale(1)} 50%{opacity:0.2;transform:scale(1.4)} }
+  .pulse-ring { animation: pulse-ring 2s infinite; }
+
+  .ticket-perf { background-image: radial-gradient(circle, #131313 30%, transparent 30%); background-size: 14px 14px; background-position: -7px center; width: 10px; min-height: 100%; }
+  .nav-badge { position: absolute; top: -4px; right: -4px; width: 7px; height: 7px; background: #d4af37; border-radius: 9999px; }
+
+  body { font-family: 'Manrope', sans-serif; background: #131313; color: #e5e2e1; overflow-x: hidden; }
+  ::-webkit-scrollbar { display: none; }
+
+  /* Entry portal cards */
+  .portal-card { position: relative; overflow: hidden; cursor: pointer; transition: transform 0.18s; border: 2px solid #4d4635; }
+  .portal-card:hover { border-color: #d4af37; transform: scale(1.01); }
+  .portal-card:active { transform: scale(0.98); }
+  .portal-card .card-bg { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0.25; transition: opacity 0.3s; }
+  .portal-card:hover .card-bg { opacity: 0.4; }
+  .portal-card .card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, #0e0e0e 40%, transparent); }
+  .portal-card .card-content { position: relative; z-index: 2; padding: 32px 28px; display: flex; flex-direction: column; justify-content: flex-end; height: 100%; }
+
+  /* Barber avail calendar */
+  .av-day { cursor: pointer; transition: all 0.15s; }
+  .av-day:hover .av-inner { background: #2a2a2a; }
+  .av-day.av-locked .av-inner { background: #93000a33; color: #ffb4ab88; }
+  .av-day.av-locked .av-inner .av-lock-icon { display: flex; }
+  .av-inner .av-lock-icon { display: none; }
+  .av-day.av-past { pointer-events: none; opacity: 0.2; }
+</style>
+</head>
+<body class="bg-background text-on-background font-body">
+<div class="noise-overlay"></div>
+
+<!-- ===== PORTAL: HOME (Choose Client or Barber) ===== -->
+<div class="screen active" id="screen-portal">
+  <div class="flex flex-col min-h-screen px-6 py-10">
+    <!-- Logo -->
+    <div class="mb-12">
+      <h1 class="font-headline text-4xl font-extrabold tracking-tighter text-[#D4AF37]">SOVEREIGN</h1>
+      <p class="font-label text-[10px] tracking-[0.3em] uppercase text-outline mt-1">Elite Grooming — Select Your Role</p>
+    </div>
+
+    <!-- Two portal cards -->
+    <div class="flex flex-col gap-6 flex-1">
+
+      <!-- CLIENT CARD -->
+      <div class="portal-card flex-1" style="min-height: 240px;" onclick="navigateTo('screen-home')">
+        <div class="card-bg" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCq3dslrHWc1TBjVWerWNXYzu3YM5pVx_LY5Kzf1Mlsj6CoOiLeiLkvLbIgH4nf8ExiGUGwdRAUmd-EOjIEiQ_1bvwhp-uWYWPWh_atHzF1gBe_5P-O76_mMRY00Ml61BLqnZxsWVPkmV9lI05y-wx0FRIJgBVQYzwVk3sizJugj7f_R0zmd7ame_R3DFlYDfeR81LiXI96pi_ZqVsdqnAzIlKfjz77S7CCv7k6Q6z8MU6VYMGiaMVwM-xTTHQKa89M9tzwayJNdxZu');"></div>
+        <div class="card-overlay"></div>
+        <div class="card-content">
+          <p class="font-label text-[10px] tracking-[0.25em] uppercase text-primary mb-2">ENTER AS</p>
+          <h2 class="font-headline text-4xl font-extrabold tracking-tighter leading-none text-on-surface">CLIENT</h2>
+          <p class="font-body text-sm text-on-surface-variant mt-2">Book sessions, manage appointments</p>
+          <div class="mt-6 flex items-center gap-3">
+            <div class="flex-1 h-px bg-primary-container/40"></div>
+            <span class="material-symbols-outlined text-[#D4AF37]">arrow_forward</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- BARBER CARD -->
+      <div class="portal-card flex-1" style="min-height: 240px;" onclick="navigateTo('screen-barber')">
+        <div class="card-bg" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCles3iVvrmpw7hY6jouccPNSyZkpHSMPAiXrwsglwDhvT-G0ewJUzgig-6IbYh7QuunwA-yg2PFZZITFRU9J3nx6A6EKipU4FedgCY2P0QH35nkXw7jLWhWjhCjS7KBJJgxFTE090PxdneyqiN41Hl3rzTQ3LT0PAwjxwvoN88XiK6urB0knYrIc7I5-ySQsn5RFcWUmGzErpS75k_s4h-hYNOQEfWYFzq5Fs-JT2pC2fJx50ZubJetYlU-stSB50q8Y0RIy47YfTR');"></div>
+        <div class="card-overlay"></div>
+        <div class="card-content">
+          <p class="font-label text-[10px] tracking-[0.25em] uppercase text-primary mb-2">ENTER AS</p>
+          <h2 class="font-headline text-4xl font-extrabold tracking-tighter leading-none text-on-surface">BARBER</h2>
+          <p class="font-body text-sm text-on-surface-variant mt-2">Dashboard, schedule & availability</p>
+          <div class="mt-6 flex items-center gap-3">
+            <div class="flex-1 h-px bg-primary-container/40"></div>
+            <span class="material-symbols-outlined text-[#D4AF37]">arrow_forward</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="font-label text-[9px] tracking-[0.2em] uppercase text-outline text-center mt-8">© SOVEREIGN GROOMING · MAYFAIR</p>
+  </div>
+</div>
+
+<!-- ===== SCREEN: CLIENT HOME ===== -->
+<div class="screen" id="screen-home">
+  <header class="bg-[#131313] flex justify-between items-center w-full px-6 py-5 sticky top-0 z-40 border-b border-outline-variant/20">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 bg-surface-container-high border-2 border-primary-container overflow-hidden">
+        <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCq3dslrHWc1TBjVWerWNXYzu3YM5pVx_LY5Kzf1Mlsj6CoOiLeiLkvLbIgH4nf8ExiGUGwdRAUmd-EOjIEiQ_1bvwhp-uWYWPWh_atHzF1gBe_5P-O76_mMRY00Ml61BLqnZxsWVPkmV9lI05y-wx0FRIJgBVQYzwVk3sizJugj7f_R0zmd7ame_R3DFlYDfeR81LiXI96pi_ZqVsdqnAzIlKfjz77S7CCv7k6Q6z8MU6VYMGiaMVwM-xTTHQKa89M9tzwayJNdxZu" alt="Profile"/>
+      </div>
+      <h1 class="text-xl font-bold tracking-tighter text-[#D4AF37] font-headline">SOVEREIGN</h1>
+    </div>
+    <button onclick="navigateTo('screen-portal')" class="text-[#D4AF37] hover:text-[#f2ca50] transition-colors active:scale-95" title="Back to home">
+      <span class="material-symbols-outlined text-2xl">home</span>
+    </button>
+  </header>
+
+  <main class="flex-grow px-6 pt-6 pb-28 overflow-y-auto">
+    <div class="mb-10">
+      <p class="font-label text-[10px] tracking-[0.2em] uppercase text-outline mb-2">WELCOME BACK</p>
+      <h2 class="text-5xl font-extrabold tracking-tighter text-primary font-headline leading-tight">Hello,<br/>Sovereign</h2>
+    </div>
+
+    <!-- Active Booking — Golden Ticket -->
+    <section class="mb-10">
+      <p class="font-label text-[10px] uppercase tracking-[0.2em] text-outline mb-3">ACTIVE BOOKING</p>
+      <div class="relative flex items-stretch overflow-hidden shadow-[0_20px_50px_rgba(212,175,55,0.15)]" style="background:linear-gradient(45deg,#f2ca50,#d4af37);">
+        <div class="ticket-perf opacity-30"></div>
+        <div class="flex-grow p-6 text-[#241a00] border-l border-[#241a00]/20 relative">
+          <!-- Three-dots menu button -->
+          <div class="absolute top-3 right-3 z-10">
+            <button onclick="toggleTicketMenu(event)" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-[#241a00]/10 active:scale-95 transition-all" id="ticket-menu-btn">
+              <span class="material-symbols-outlined text-xl text-[#241a00]/60">more_vert</span>
+            </button>
+            <!-- Dropdown -->
+            <div id="ticket-menu" class="hidden absolute right-0 top-9 bg-[#1c1b1b] border border-[#4d4635] z-50 min-w-[170px] shadow-2xl">
+              <button onclick="openEditActiveHour()" class="w-full text-left px-5 py-3 font-label text-[10px] tracking-[0.15em] uppercase text-on-surface hover:bg-surface-container-highest flex items-center gap-3">
+                <span class="material-symbols-outlined text-sm text-primary">edit</span>EDIT HOUR
+              </button>
+              <div class="h-px bg-outline-variant/30"></div>
+              <button onclick="cancelActiveBooking()" class="w-full text-left px-5 py-3 font-label text-[10px] tracking-[0.15em] uppercase text-error/80 hover:bg-error/10 flex items-center gap-3">
+                <span class="material-symbols-outlined text-sm">cancel</span>CANCEL BOOKING
+              </button>
+            </div>
+          </div>
+
+          <p class="font-label text-[9px] font-extrabold tracking-[0.2em] mb-1 opacity-70">NEXT SESSION</p>
+          <p class="font-headline text-xl font-bold tracking-tight" id="active-booking-date">WEDNESDAY, APR 9</p>
+          <div class="flex gap-10 mt-3">
+            <div>
+              <p class="font-label text-[9px] font-extrabold tracking-[0.15em] opacity-70">TIME</p>
+              <p class="font-headline text-lg font-bold" id="active-booking-time">10:30 AM</p>
+            </div>
+            <div>
+              <p class="font-label text-[9px] font-extrabold tracking-[0.15em] opacity-70">SERVICE</p>
+              <p class="font-headline text-lg font-bold">ROYAL CUT</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Book CTA -->
+    <section class="mb-10">
+      <button onclick="navigateTo('screen-booking')" class="w-full bg-surface-container-lowest border-4 border-primary-container p-10 flex flex-col items-center justify-center text-center group active:scale-[0.98] transition-transform duration-150">
+        <span class="font-label text-xl font-black tracking-[0.15em] text-primary group-hover:text-secondary transition-colors">BOOK YOUR NEXT SESSION</span>
+        <div class="mt-3 w-10 h-0.5 bg-primary-container"></div>
+      </button>
+    </section>
+
+    <!-- News from Barber -->
+    <section>
+      <p class="font-label text-[10px] font-bold tracking-[0.25em] uppercase text-outline mb-4">NEWS FROM YOUR BARBER</p>
+      <!-- News card 1 -->
+      <div class="bg-surface-container-low border-l-2 border-primary-container p-5 mb-3">
+        <div class="flex items-start gap-4">
+          <div class="w-2 h-2 rounded-full bg-primary mt-1.5 flex-shrink-0 live-dot"></div>
+          <div>
+            <p class="font-label text-[9px] uppercase tracking-[0.2em] text-primary mb-1">APR 4, 2026 · ANNOUNCEMENT</p>
+            <h4 class="font-headline font-bold text-base leading-tight">New weekend hours starting April 12</h4>
+            <p class="font-body text-sm text-on-surface-variant mt-1.5">Saturday sessions now available from 09:00 AM to 3:00 PM. Book your spot before it fills up.</p>
+          </div>
+        </div>
+      </div>
+      <!-- News card 2 -->
+      <div class="bg-surface-container-low border-l-2 border-outline-variant/40 p-5 mb-3">
+        <div class="flex items-start gap-4">
+          <div class="w-2 h-2 rounded-full bg-outline-variant mt-1.5 flex-shrink-0"></div>
+          <div>
+            <p class="font-label text-[9px] uppercase tracking-[0.2em] text-outline mb-1">MAR 28, 2026 · NOTICE</p>
+            <h4 class="font-headline font-bold text-base leading-tight">Studio closed Apr 7 — Bank Holiday</h4>
+            <p class="font-body text-sm text-on-surface-variant mt-1.5">All existing bookings have been rescheduled. Check your confirmation.</p>
+          </div>
+        </div>
+      </div>
+      <!-- News card 3 -->
+      <div class="bg-surface-container-low border-l-2 border-outline-variant/40 p-5">
+        <div class="flex items-start gap-4">
+          <div class="w-2 h-2 rounded-full bg-outline-variant mt-1.5 flex-shrink-0"></div>
+          <div>
+            <p class="font-label text-[9px] uppercase tracking-[0.2em] text-outline mb-1">MAR 15, 2026 · UPDATE</p>
+            <h4 class="font-headline font-bold text-base leading-tight">New service: The Royal Package</h4>
+            <p class="font-body text-sm text-on-surface-variant mt-1.5">Full cut, hot towel shave and scalp treatment. 90 minutes of precision. Ask at your next visit.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Bottom Nav -->
+  <nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-8 pt-3 bg-[#131313]/80 backdrop-blur-xl z-50 border-t-2 border-[#D4AF37]">
+    <a class="nav-link flex flex-col items-center text-[#D4AF37] scale-110 cursor-pointer">
+      <span class="material-symbols-outlined text-[26px]" style="font-variation-settings:'FILL' 1">home_max</span>
+      <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5">HOME</span>
+    </a>
+    <a class="nav-link flex flex-col items-center text-gray-600 hover:text-[#f2ca50] cursor-pointer active:scale-95" onclick="navigateTo('screen-booking')">
+      <span class="material-symbols-outlined text-[26px]">add_circle</span>
+      <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5">BOOK</span>
+    </a>
+  </nav>
+</div>
+
+<!-- ===== SCREEN: BOOKING — CALENDAR & TIME ===== -->
+<div class="screen" id="screen-booking">
+  <header class="bg-[#131313] flex justify-between items-center w-full px-6 py-5 sticky top-0 z-40 border-b border-outline-variant/20">
+    <button onclick="navigateTo('screen-home')" class="text-[#D4AF37] hover:text-[#f2ca50] transition-colors active:scale-95">
+      <span class="material-symbols-outlined text-2xl">arrow_back</span>
+    </button>
+    <h1 class="text-lg font-bold tracking-tighter text-[#D4AF37] font-headline">SOVEREIGN</h1>
+    <button onclick="navigateTo('screen-portal')" class="text-[#D4AF37] hover:text-[#f2ca50] transition-colors active:scale-95" title="Back to home">
+      <span class="material-symbols-outlined text-2xl">home</span>
+    </button>
+  </header>
+
+  <main class="flex-1 px-6 pb-36 overflow-y-auto">
+    <div class="mt-8 mb-10">
+      <h1 class="text-3xl font-headline font-extrabold tracking-tight text-primary-container leading-none mb-2">SELECT YOUR SESSION</h1>
+      <p class="font-label text-[10px] tracking-[0.2em] uppercase text-on-surface-variant">APRIL 2026 — MAYFAIR STUDIO</p>
+    </div>
+
+    <!-- Calendar -->
+    <section class="mb-10">
+      <div class="bg-surface-container-lowest p-6 border-l-4 border-primary-container">
+        <div class="flex justify-between items-center mb-8">
+          <h2 class="font-headline font-bold text-xl tracking-tight" id="cal-month-label">APRIL 2026</h2>
+          <div class="flex gap-4">
+            <span class="material-symbols-outlined text-primary-container cursor-pointer hover:text-primary transition-colors" onclick="shiftMonth(-1)">chevron_left</span>
+            <span class="material-symbols-outlined text-primary-container cursor-pointer hover:text-primary transition-colors" onclick="shiftMonth(1)">chevron_right</span>
+          </div>
+        </div>
+        <div class="grid grid-cols-7 gap-1 text-center mb-2">
+          <div class="font-label text-[9px] text-primary-container font-bold pb-2">MON</div>
+          <div class="font-label text-[9px] text-primary-container font-bold pb-2">TUE</div>
+          <div class="font-label text-[9px] text-primary-container font-bold pb-2">WED</div>
+          <div class="font-label text-[9px] text-primary-container font-bold pb-2">THU</div>
+          <div class="font-label text-[9px] text-primary-container font-bold pb-2">FRI</div>
+          <div class="font-label text-[9px] text-primary-container font-bold pb-2">SAT</div>
+          <div class="font-label text-[9px] text-primary-container font-bold pb-2">SUN</div>
+        </div>
+        <div class="grid grid-cols-7 gap-1 text-center" id="cal-grid"></div>
+      </div>
+    </section>
+
+    <!-- Time slots -->
+    <section class="mb-10">
+      <h2 class="font-label text-[10px] tracking-[0.2em] uppercase text-primary-container mb-6 border-b border-primary-container/20 pb-2" id="time-slots-label">AVAILABLE SLOTS</h2>
+      <div class="flex flex-col gap-4" id="time-slots-container"></div>
+    </section>
+
+    <!-- Preview -->
+    <div class="bg-surface-container-highest border-l-4 border-primary-container p-6 flex flex-col gap-2 relative overflow-hidden">
+      <div class="absolute right-[-20px] top-[-20px] opacity-10">
+        <span class="material-symbols-outlined text-9xl text-primary" style="font-variation-settings:'FILL' 1">confirmation_number</span>
+      </div>
+      <p class="font-label text-[10px] tracking-[0.1em] text-primary-container uppercase">Current Selection</p>
+      <h3 class="font-headline font-bold text-xl" id="preview-date">No date selected</h3>
+      <p class="font-body text-sm text-on-surface-variant" id="preview-time">Select a date and time above</p>
+    </div>
+  </main>
+
+  <div class="fixed bottom-0 left-0 w-full bg-[#131313]/90 backdrop-blur-xl border-t-2 border-[#D4AF37] px-6 pt-3 pb-8 z-40">
+    <button onclick="openBookingModal()" id="confirm-cta" class="w-full gold-gradient py-4 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98] transition-transform opacity-40 pointer-events-none mb-3" disabled>
+      PROCEED TO BOOKING
+    </button>
+    <div class="flex justify-around items-center">
+      <a class="nav-link flex flex-col items-center text-gray-600 hover:text-[#f2ca50] cursor-pointer active:scale-95" onclick="navigateTo('screen-home')">
+        <span class="material-symbols-outlined text-[26px]">home_max</span>
+        <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5">HOME</span>
+      </a>
+      <a class="nav-link flex flex-col items-center text-[#D4AF37] scale-110 cursor-pointer">
+        <span class="material-symbols-outlined text-[26px]" style="font-variation-settings:'FILL' 1">add_circle</span>
+        <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5">BOOK</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SCREEN: EDIT ACTIVE BOOKING HOUR ===== -->
+<div class="screen" id="screen-edit-active-hour">
+  <header class="bg-[#131313] flex justify-between items-center w-full px-6 py-5 sticky top-0 z-40 border-b border-outline-variant/20">
+    <button onclick="navigateTo('screen-home')" class="text-[#D4AF37] hover:text-[#f2ca50] transition-colors active:scale-95">
+      <span class="material-symbols-outlined text-2xl">arrow_back</span>
+    </button>
+    <h1 class="text-lg font-bold tracking-tighter text-[#D4AF37] font-headline">EDIT BOOKING</h1>
+    <div class="w-8"></div>
+  </header>
+
+  <main class="flex-1 px-6 pb-36 overflow-y-auto">
+    <div class="mt-8 mb-6">
+      <p class="font-label text-[10px] tracking-[0.2em] uppercase text-outline mb-1">RESCHEDULING</p>
+      <h2 class="text-2xl font-headline font-extrabold tracking-tight text-primary-container leading-none" id="edit-active-label">WEDNESDAY, APR 9</h2>
+      <p class="font-body text-sm text-on-surface-variant mt-1">Select a new time slot for this booking.</p>
+    </div>
+
+    <!-- Available slots for the booked day -->
+    <section class="mb-10">
+      <h2 class="font-label text-[10px] tracking-[0.2em] uppercase text-primary-container mb-6 border-b border-primary-container/20 pb-2">AVAILABLE SLOTS</h2>
+      <div class="flex flex-col gap-4" id="edit-active-slots-container"></div>
+    </section>
+
+    <!-- Preview -->
+    <div class="bg-surface-container-highest border-l-4 border-primary-container p-6 flex flex-col gap-2">
+      <p class="font-label text-[10px] tracking-[0.1em] text-primary-container uppercase">New Selection</p>
+      <h3 class="font-headline font-bold text-xl" id="edit-active-preview-date">—</h3>
+      <p class="font-body text-sm text-on-surface-variant" id="edit-active-preview-time">Select a time slot above</p>
+    </div>
+  </main>
+
+  <div class="fixed bottom-0 left-0 w-full bg-[#131313]/90 backdrop-blur-xl border-t-2 border-[#D4AF37] px-6 pt-4 pb-8 z-40">
+    <button onclick="confirmActiveEdit()" id="edit-active-cta" class="w-full gold-gradient py-5 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98] transition-transform opacity-40 pointer-events-none" disabled>
+      CONFIRM NEW TIME
+    </button>
+  </div>
+</div>
+
+<!-- ===== BOOKING MODAL ===== -->
+<div id="modal-overlay" class="bg-black/60 backdrop-blur-sm" onclick="closeModalIfBg(event)">
+  <div class="fixed bottom-0 left-0 w-full z-[250] bg-surface border-t-4 border-primary shadow-[0_-20px_60px_rgba(212,175,55,0.08)] px-6 pt-10 pb-12 max-h-[90dvh] overflow-y-auto">
+    <div class="absolute top-4 left-1/2 -translate-x-1/2 w-12 h-1 bg-outline-variant rounded-full opacity-50"></div>
+    <div class="max-w-md mx-auto">
+      <header class="mb-8">
+        <h2 class="font-headline text-3xl font-extrabold tracking-tighter mb-2">COMPLETE BOOKING</h2>
+        <p class="font-body text-on-surface-variant text-sm uppercase tracking-wider font-semibold" id="modal-date-label">—</p>
+      </header>
+      <div class="space-y-6">
+        <div>
+          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2">FULL NAME</label>
+          <input id="inp-name" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-5 py-4 font-headline text-lg tracking-tight focus:border-primary focus:ring-0 text-on-surface placeholder:text-surface-container-highest uppercase transition-all outline-none" placeholder="ALEXANDER VANCE" type="text"/>
+        </div>
+        <div>
+          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2">PHONE NUMBER</label>
+          <input id="inp-phone" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-5 py-4 font-headline text-lg tracking-tight focus:border-primary focus:ring-0 text-on-surface placeholder:text-surface-container-highest transition-all outline-none" placeholder="+1 (555) 000-0000" type="tel"/>
+        </div>
+        <div>
+          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-3">SERVICE TYPE</label>
+          <div class="flex gap-3">
+            <button onclick="selectService(this,'ROYAL CUT')" class="service-btn selected flex-1 py-4 border-2 border-primary-container text-primary font-label text-xs font-black tracking-[0.08em] transition-all" data-val="ROYAL CUT">ROYAL CUT</button>
+            <button onclick="selectService(this,'BEARD')" class="service-btn flex-1 py-4 border-2 border-outline-variant text-outline font-label text-xs font-black tracking-[0.08em] hover:border-primary/50 transition-all" data-val="BEARD">BEARD</button>
+            <button onclick="selectService(this,'SPECIAL')" class="service-btn flex-1 py-4 border-2 border-outline-variant text-outline font-label text-xs font-black tracking-[0.08em] hover:border-primary/50 transition-all" data-val="SPECIAL">SPECIAL</button>
+          </div>
+        </div>
+        <div class="pt-2">
+          <button onclick="confirmBooking()" class="w-full gold-gradient py-5 font-label text-sm font-black tracking-[0.25em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98] transition-transform shadow-[0_10px_30px_rgba(242,202,80,0.2)]">
+            CONFIRM BOOKING
+          </button>
+        </div>
+      </div>
+      <div class="mt-6 text-center">
+        <p class="font-body text-[10px] text-outline uppercase tracking-widest">By confirming, you agree to our <span class="text-primary underline cursor-pointer">Sovereign Terms</span></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CONFIRMATION SUCCESS ===== -->
+<div id="confirm-success">
+  <div class="noise-overlay" style="position:absolute"></div>
+  <div class="text-center px-8 relative z-10 w-full max-w-sm mx-auto">
+    <div class="w-20 h-20 gold-gradient flex items-center justify-center mx-auto mb-6">
+      <span class="material-symbols-outlined text-4xl text-on-primary-fixed" style="font-variation-settings:'FILL' 1">check</span>
+    </div>
+    <h2 class="font-headline text-4xl font-extrabold tracking-tighter text-primary mb-3">CONFIRMED</h2>
+    <p class="font-body text-on-surface-variant text-sm mb-10" id="success-msg">Your session has been booked.</p>
+    <div class="flex items-stretch overflow-hidden shadow-[0_20px_50px_rgba(212,175,55,0.2)]" style="background:linear-gradient(45deg,#f2ca50,#d4af37)">
+      <div class="ticket-perf opacity-30"></div>
+      <div class="flex-grow p-6 text-[#241a00] border-l border-[#241a00]/20 text-left">
+        <p class="font-label text-[9px] font-extrabold tracking-[0.2em] opacity-70">YOUR SESSION</p>
+        <p class="font-headline text-2xl font-bold tracking-tight mt-1" id="ticket-date">—</p>
+        <div class="flex gap-8 mt-3">
+          <div>
+            <p class="font-label text-[9px] font-extrabold tracking-widest opacity-70">TIME</p>
+            <p class="font-headline text-xl font-bold" id="ticket-time">—</p>
+          </div>
+          <div>
+            <p class="font-label text-[9px] font-extrabold tracking-widest opacity-70">SERVICE</p>
+            <p class="font-headline text-xl font-bold" id="ticket-service">—</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button onclick="backToHome()" class="mt-10 w-full border-2 border-primary-container text-primary-container font-label text-sm font-extrabold tracking-[0.15em] py-5 hover:bg-primary-container hover:text-on-primary-container transition-all active:scale-[0.98]">
+      BACK TO HOME
+    </button>
+  </div>
+</div>
+
+<!-- ===== SCREEN: MY BOOKINGS ===== -->
+<div class="screen" id="screen-bookings">
+  <header class="bg-[#131313] flex justify-between items-center w-full px-6 py-5 sticky top-0 z-40 border-b border-outline-variant/20">
+    <button onclick="navigateTo('screen-home')" class="text-[#D4AF37] hover:text-[#f2ca50] transition-colors active:scale-95">
+      <span class="material-symbols-outlined text-2xl">arrow_back</span>
+    </button>
+    <h1 class="text-lg font-bold tracking-tighter text-[#D4AF37] font-headline">MY BOOKINGS</h1>
+    <button onclick="navigateTo('screen-portal')" class="text-[#D4AF37] hover:text-[#f2ca50] transition-colors active:scale-95" title="Back to home">
+      <span class="material-symbols-outlined text-2xl">home</span>
+    </button>
+  </header>
+
+  <main class="flex-1 px-6 py-8 pb-28 overflow-y-auto">
+    <div class="mb-8">
+      <h2 class="text-4xl font-headline font-extrabold tracking-tighter">FUTURE BOOKINGS</h2>
+    </div>
+    <div class="space-y-4">
+      <div class="bg-surface-container-highest border-l-4 border-primary-container p-6 flex flex-col gap-3">
+        <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-primary live-dot"></span><span class="font-label text-[9px] font-bold tracking-[0.15em] text-primary uppercase">CONFIRMED</span></div>
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="font-headline text-xl font-bold tracking-tight">APR 9 — 10:30 AM</h3>
+            <p class="font-body text-sm text-on-surface-variant mt-1">Royal Cut · Mayfair</p>
+          </div>
+          <div class="flex flex-col gap-2">
+            <button class="px-5 py-2 border-2 border-primary-container font-label text-[10px] font-extrabold tracking-[0.1em] text-primary-container hover:bg-primary-container hover:text-on-primary-container transition-all uppercase active:scale-95">RESCHEDULE</button>
+            <button class="px-5 py-2 border border-outline-variant/50 font-label text-[10px] font-extrabold tracking-[0.1em] text-outline hover:border-error hover:text-error transition-all uppercase active:scale-95">CANCEL</button>
+          </div>
+        </div>
+      </div>
+      <div class="bg-surface-container-low p-6 flex items-center justify-between border border-transparent hover:border-outline-variant/40 transition-all relative">
+        <div>
+          <div class="flex items-center gap-2 mb-1"><span class="w-2 h-2 rounded-full bg-outline-variant"></span><span class="font-label text-[9px] font-bold tracking-[0.15em] text-outline uppercase">UPCOMING</span></div>
+          <h3 class="font-headline text-xl font-bold tracking-tight">APR 23 — 02:00 PM</h3>
+          <p class="font-body text-sm text-on-surface-variant mt-1">Beard & Shape · Mayfair</p>
+        </div>
+        <div class="relative">
+          <span class="material-symbols-outlined text-outline cursor-pointer hover:text-primary transition-colors" onclick="toggleBookingMenu('menu-apr23')">more_vert</span>
+          <div id="menu-apr23" class="hidden absolute right-0 bottom-8 bg-surface-container-high border border-outline-variant z-50 min-w-[160px] shadow-xl">
+            <button onclick="editBookingHour('APR 23 — 02:00 PM'); toggleBookingMenu('menu-apr23')" class="w-full text-left px-5 py-3 font-label text-[10px] tracking-[0.15em] uppercase text-on-surface hover:bg-surface-container-highest flex items-center gap-3"><span class="material-symbols-outlined text-sm">edit</span>EDIT HOUR</button>
+            <div class="h-px bg-outline-variant/30"></div>
+            <button onclick="cancelBooking('APR 23 — 02:00 PM'); toggleBookingMenu('menu-apr23')" class="w-full text-left px-5 py-3 font-label text-[10px] tracking-[0.15em] uppercase text-error/80 hover:bg-error/10 flex items-center gap-3"><span class="material-symbols-outlined text-sm">cancel</span>CANCEL</button>
+          </div>
+        </div>
+      </div>
+      <div class="bg-surface-container-low p-6 flex items-center justify-between border border-transparent hover:border-outline-variant/40 transition-all relative">
+        <div>
+          <div class="flex items-center gap-2 mb-1"><span class="w-2 h-2 rounded-full bg-outline-variant"></span><span class="font-label text-[9px] font-bold tracking-[0.15em] text-outline uppercase">UPCOMING</span></div>
+          <h3 class="font-headline text-xl font-bold tracking-tight">MAY 7 — 11:00 AM</h3>
+          <p class="font-body text-sm text-on-surface-variant mt-1">Royal Cut · Mayfair</p>
+        </div>
+        <div class="relative">
+          <span class="material-symbols-outlined text-outline cursor-pointer hover:text-primary transition-colors" onclick="toggleBookingMenu('menu-may7')">more_vert</span>
+          <div id="menu-may7" class="hidden absolute right-0 bottom-8 bg-surface-container-high border border-outline-variant z-50 min-w-[160px] shadow-xl">
+            <button onclick="editBookingHour('MAY 7 — 11:00 AM'); toggleBookingMenu('menu-may7')" class="w-full text-left px-5 py-3 font-label text-[10px] tracking-[0.15em] uppercase text-on-surface hover:bg-surface-container-highest flex items-center gap-3"><span class="material-symbols-outlined text-sm">edit</span>EDIT HOUR</button>
+            <div class="h-px bg-outline-variant/30"></div>
+            <button onclick="cancelBooking('MAY 7 — 11:00 AM'); toggleBookingMenu('menu-may7')" class="w-full text-left px-5 py-3 font-label text-[10px] tracking-[0.15em] uppercase text-error/80 hover:bg-error/10 flex items-center gap-3"><span class="material-symbols-outlined text-sm">cancel</span>CANCEL</button>
+          </div>
+        </div>
+      </div>
+      <div id="dynamic-booking" class="hidden bg-surface-container-highest border-l-4 border-primary-container p-6 flex flex-col gap-2">
+        <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-primary live-dot"></span><span class="font-label text-[9px] font-bold tracking-[0.15em] text-primary uppercase">NEWLY CONFIRMED</span></div>
+        <h3 class="font-headline text-xl font-bold tracking-tight" id="dynamic-booking-title">—</h3>
+        <p class="font-body text-sm text-on-surface-variant" id="dynamic-booking-sub">—</p>
+      </div>
+    </div>
+    <button onclick="navigateTo('screen-booking')" class="mt-8 w-full py-5 border-2 border-primary-container text-primary-container font-label text-sm font-extrabold tracking-[0.15em] uppercase hover:bg-primary-container hover:text-on-primary-container transition-all active:scale-[0.98]">
+      + BOOK ANOTHER SESSION
+    </button>
+  </main>
+</div>
+
+<!-- ===== SCREEN: BARBER DASHBOARD ===== -->
+<div class="screen" id="screen-barber">
+  <!-- Hero header -->
+  <header class="relative w-full h-56 flex flex-col justify-end overflow-hidden flex-shrink-0">
+    <div class="absolute inset-0 bg-cover bg-center" style="background-image:url('https://lh3.googleusercontent.com/aida-public/AB6AXuCles3iVvrmpw7hY6jouccPNSyZkpHSMPAiXrwsglwDhvT-G0ewJUzgig-6IbYh7QuunwA-yg2PFZZITFRU9J3nx6A6EKipU4FedgCY2P0QH35nkXw7jLWhWjhCjS7KBJJgxFTE090PxdneyqiN41Hl3rzTQ3LT0PAwjxwvoN88XiK6urB0knYrIc7I5-ySQsn5RFcWUmGzErpS75k_s4h-hYNOQEfWYFzq5Fs-JT2pC2fJx50ZubJetYlU-stSB50q8Y0RIy47YfTR');"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent"></div>
+    <div class="relative z-10 px-6 pb-6 flex justify-between items-end w-full">
+      <div>
+        <span class="font-label text-[10px] font-bold tracking-[0.2em] text-primary uppercase flex items-center gap-2 mb-1">
+          <span class="w-2 h-2 rounded-full bg-red-500 live-dot"></span> LIVE STATUS
+        </span>
+        <h1 class="font-headline text-4xl font-extrabold tracking-tighter text-on-surface leading-none">JULIAN<br/>VANCE</h1>
+      </div>
+    </div>
+    <!-- Home button top right -->
+    <button onclick="navigateTo('screen-portal')" class="absolute top-4 right-5 z-20 text-[#D4AF37] hover:text-[#f2ca50] transition-colors active:scale-95 bg-[#131313]/60 backdrop-blur-sm p-2" title="Back to home">
+      <span class="material-symbols-outlined text-2xl">home</span>
+    </button>
+  </header>
+
+  <main class="flex-1 px-6 py-8 pb-28 overflow-y-auto">
+    <!-- Stats — clients only, no revenue/rating -->
+    <section class="mb-10">
+      <h2 class="font-label text-[11px] font-extrabold tracking-[0.2em] uppercase text-on-surface-variant mb-5">Today's Performance</h2>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="bg-surface-container-high p-5 border-l-4 border-primary">
+          <div class="flex justify-between items-start mb-3">
+            <span class="font-label text-[9px] font-extrabold tracking-widest text-on-surface-variant uppercase">Clients Today</span>
+            <span class="material-symbols-outlined text-primary text-lg">group</span>
+          </div>
+          <div class="font-headline text-4xl font-bold tracking-tighter text-on-surface">12</div>
+          <div class="mt-2 flex items-end gap-0.5 h-5">
+            <div class="flex-1 bg-primary/20 h-2"></div><div class="flex-1 bg-primary/30 h-3"></div><div class="flex-1 bg-primary/20 h-2"></div><div class="flex-1 bg-primary/50 h-4"></div><div class="flex-1 bg-primary h-5"></div>
+          </div>
+        </div>
+        <div class="bg-surface-container-high p-5">
+          <div class="flex justify-between items-start mb-3">
+            <span class="font-label text-[9px] font-extrabold tracking-widest text-on-surface-variant uppercase">This Week</span>
+            <span class="material-symbols-outlined text-gray-500 text-lg">calendar_view_week</span>
+          </div>
+          <div class="font-headline text-4xl font-bold tracking-tighter text-on-surface">58</div>
+          <div class="mt-2 font-label text-[9px] text-green-500 font-bold uppercase tracking-widest">+5 vs last week</div>
+        </div>
+        <div class="bg-surface-container-high p-5">
+          <div class="flex justify-between items-start mb-3">
+            <span class="font-label text-[9px] font-extrabold tracking-widest text-on-surface-variant uppercase">Next Client</span>
+            <span class="material-symbols-outlined text-gray-500 text-lg">schedule</span>
+          </div>
+          <div class="font-headline text-2xl font-bold tracking-tighter text-on-surface">2:30 PM</div>
+          <div class="mt-2 font-label text-[9px] text-primary tracking-widest uppercase">In 45 minutes</div>
+        </div>
+        <div class="bg-surface-container-high p-5">
+          <div class="flex justify-between items-start mb-3">
+            <span class="font-label text-[9px] font-extrabold tracking-widest text-on-surface-variant uppercase">Remaining</span>
+            <span class="material-symbols-outlined text-gray-500 text-lg">pending_actions</span>
+          </div>
+          <div class="font-headline text-2xl font-bold tracking-tighter text-on-surface">3</div>
+          <div class="mt-2 font-label text-[9px] text-on-surface-variant tracking-widest uppercase">Today's slots left</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Today's Schedule -->
+    <section class="mb-10">
+      <h2 class="font-label text-[11px] font-extrabold tracking-[0.2em] uppercase text-on-surface-variant mb-5">Today's Schedule</h2>
+      <div class="flex flex-col gap-3">
+        <div class="bg-surface-container-low p-4 flex items-center gap-4 border-l-2 border-outline-variant/40">
+          <div class="text-center w-14 flex-shrink-0">
+            <p class="font-headline font-bold text-sm text-on-surface-variant">10:00</p>
+            <p class="font-label text-[9px] text-outline">AM</p>
+          </div>
+          <div class="flex-1">
+            <p class="font-body font-semibold text-sm">Alexander Vance</p>
+            <p class="font-label text-[9px] text-outline uppercase tracking-widest">Royal Cut · 45min</p>
+          </div>
+          <span class="font-label text-[9px] text-green-500 font-bold uppercase tracking-wider border border-green-500/30 px-2 py-1">DONE</span>
+        </div>
+        <div class="bg-surface-container-low p-4 flex items-center gap-4 border-l-2 border-outline-variant/40">
+          <div class="text-center w-14 flex-shrink-0">
+            <p class="font-headline font-bold text-sm text-on-surface-variant">11:30</p>
+            <p class="font-label text-[9px] text-outline">AM</p>
+          </div>
+          <div class="flex-1">
+            <p class="font-body font-semibold text-sm">Marcus Reed</p>
+            <p class="font-label text-[9px] text-outline uppercase tracking-widest">Beard Sculpt · 30min</p>
+          </div>
+          <span class="font-label text-[9px] text-green-500 font-bold uppercase tracking-wider border border-green-500/30 px-2 py-1">DONE</span>
+        </div>
+        <div class="bg-surface-container-highest p-4 flex items-center gap-4 border-l-4 border-primary">
+          <div class="text-center w-14 flex-shrink-0">
+            <p class="font-headline font-bold text-base text-primary">02:30</p>
+            <p class="font-label text-[9px] text-primary">PM</p>
+          </div>
+          <div class="flex-1">
+            <p class="font-body font-bold text-sm text-on-surface">James Holloway</p>
+            <p class="font-label text-[9px] text-primary uppercase tracking-widest">Special Cut · 60min</p>
+          </div>
+          <span class="font-label text-[9px] text-primary font-bold uppercase tracking-wider border border-primary/50 px-2 py-1">NEXT</span>
+        </div>
+        <div class="bg-surface-container-low p-4 flex items-center gap-4 border-l-2 border-outline-variant/20 opacity-50">
+          <div class="text-center w-14 flex-shrink-0">
+            <p class="font-headline font-bold text-sm text-on-surface-variant">04:00</p>
+            <p class="font-label text-[9px] text-outline">PM</p>
+          </div>
+          <div class="flex-1">
+            <p class="font-body font-semibold text-sm">Thomas Blake</p>
+            <p class="font-label text-[9px] text-outline uppercase tracking-widest">Royal Cut · 45min</p>
+          </div>
+          <span class="font-label text-[9px] text-outline font-bold uppercase tracking-wider">4:00PM</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Bottom Nav -->
+  <nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-8 pt-3 bg-[#131313]/80 backdrop-blur-xl z-50 border-t-2 border-[#D4AF37]">
+    <a class="nav-link flex flex-col items-center text-[#D4AF37] scale-110 cursor-pointer">
+      <span class="material-symbols-outlined text-[26px]" style="font-variation-settings:'FILL' 1">dashboard</span>
+      <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5">DASHBOARD</span>
+    </a>
+    <a class="nav-link flex flex-col items-center text-gray-600 hover:text-[#f2ca50] cursor-pointer active:scale-95" onclick="navigateTo('screen-barber-settings')">
+      <span class="material-symbols-outlined text-[26px]">tune</span>
+      <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5">SCHEDULE</span>
+    </a>
+  </nav>
+</div>
+
+<!-- ===== SCREEN: BARBER AVAILABILITY CALENDAR ===== -->
+<div class="screen" id="screen-barber-settings">
+  <header class="bg-[#131313] flex justify-between items-center w-full px-6 py-5 sticky top-0 z-40 border-b border-outline-variant/20">
+    <button onclick="navigateTo('screen-barber')" class="text-[#D4AF37] hover:text-[#f2ca50] transition-colors active:scale-95">
+      <span class="material-symbols-outlined text-2xl">arrow_back</span>
+    </button>
+    <h1 class="text-lg font-bold tracking-tighter text-[#D4AF37] font-headline">SCHEDULE</h1>
+    <button onclick="navigateTo('screen-portal')" class="text-[#D4AF37] hover:text-[#f2ca50] transition-colors active:scale-95" title="Back to home">
+      <span class="material-symbols-outlined text-2xl">home</span>
+    </button>
+  </header>
+
+  <main class="flex-1 px-6 py-8 pb-28 overflow-y-auto">
+    <div class="mb-8">
+      <h2 class="text-3xl font-headline font-extrabold tracking-tighter">MANAGE AVAILABILITY</h2>
+      <p class="font-label text-[10px] tracking-[0.2em] uppercase text-outline mt-1">Tap a day to edit hours or lock it</p>
+    </div>
+
+    <!-- Legend -->
+    <div class="flex gap-6 mb-8">
+      <div class="flex items-center gap-2">
+        <div class="w-3 h-3 bg-primary-container/60"></div>
+        <span class="font-label text-[9px] uppercase tracking-widest text-on-surface-variant">Open</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <div class="w-3 h-3 bg-error/20 border border-error/30"></div>
+        <span class="font-label text-[9px] uppercase tracking-widest text-on-surface-variant">Locked</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <div class="w-3 h-3 bg-surface-container-highest border border-outline-variant/30"></div>
+        <span class="font-label text-[9px] uppercase tracking-widest text-on-surface-variant">Past</span>
+      </div>
+    </div>
+
+    <!-- Availability Calendar -->
+    <div class="bg-surface-container-lowest p-6 border-l-4 border-primary-container">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="font-headline font-bold text-xl tracking-tight" id="av-month-label">APRIL 2026</h2>
+        <div class="flex gap-4">
+          <span class="material-symbols-outlined text-primary-container cursor-pointer hover:text-primary transition-colors" onclick="avShiftMonth(-1)">chevron_left</span>
+          <span class="material-symbols-outlined text-primary-container cursor-pointer hover:text-primary transition-colors" onclick="avShiftMonth(1)">chevron_right</span>
+        </div>
+      </div>
+      <div class="grid grid-cols-7 gap-1 text-center mb-2">
+        <div class="font-label text-[9px] text-primary-container font-bold pb-2">MON</div>
+        <div class="font-label text-[9px] text-primary-container font-bold pb-2">TUE</div>
+        <div class="font-label text-[9px] text-primary-container font-bold pb-2">WED</div>
+        <div class="font-label text-[9px] text-primary-container font-bold pb-2">THU</div>
+        <div class="font-label text-[9px] text-primary-container font-bold pb-2">FRI</div>
+        <div class="font-label text-[9px] text-primary-container font-bold pb-2">SAT</div>
+        <div class="font-label text-[9px] text-primary-container font-bold pb-2">SUN</div>
+      </div>
+      <div class="grid grid-cols-7 gap-2 text-center" id="av-cal-grid"></div>
+    </div>
+
+    <!-- General Section -->
+    <div id="general-section" class="mt-6 bg-surface-container-low border-l-4 border-primary-container p-5">
+      <p class="font-label text-[10px] tracking-[0.2em] text-primary-container uppercase mb-4">GENERAL</p>
+
+      <!-- Lock controls -->
+      <div class="mb-5">
+        <p class="font-label text-[10px] font-extrabold tracking-[0.15em] text-outline uppercase mb-3">LOCK AVAILABILITY</p>
+        <div class="flex flex-col gap-2">
+          <button onclick="lockToday()" class="w-full py-3 border border-error/50 text-error/80 font-label text-[10px] font-extrabold tracking-[0.15em] uppercase hover:bg-error/10 transition-all active:scale-[0.98] flex items-center justify-center gap-2">
+            <span class="material-symbols-outlined text-sm">lock</span> LOCK TODAY ONLY
+          </button>
+          <button onclick="openLockPeriodModal()" class="w-full py-3 border border-error/50 text-error/80 font-label text-[10px] font-extrabold tracking-[0.15em] uppercase hover:bg-error/10 transition-all active:scale-[0.98] flex items-center justify-center gap-2">
+            <span class="material-symbols-outlined text-sm">date_range</span> LOCK FOR A PERIOD
+          </button>
+          <button onclick="lockUntilUnlock()" id="lock-indefinite-btn" class="w-full py-3 border border-error/50 text-error/80 font-label text-[10px] font-extrabold tracking-[0.15em] uppercase hover:bg-error/10 transition-all active:scale-[0.98] flex items-center justify-center gap-2">
+            <span class="material-symbols-outlined text-sm">lock_clock</span> LOCK UNTIL I UNLOCK
+          </button>
+        </div>
+        <div id="indefinite-lock-status" class="hidden mt-3 bg-error/10 border border-error/30 p-3 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-error/80 text-sm">lock</span>
+            <span class="font-label text-[9px] text-error/80 uppercase tracking-widest">Locked indefinitely</span>
+          </div>
+          <button onclick="removeIndefiniteLock()" class="font-label text-[9px] text-primary uppercase tracking-widest hover:text-secondary">UNLOCK</button>
+        </div>
+      </div>
+
+      <div class="h-px bg-outline-variant/30 my-4"></div>
+
+      <!-- Working Hours -->
+      <div>
+        <p class="font-label text-[10px] font-extrabold tracking-[0.15em] text-outline uppercase mb-3">DEFAULT WORKING HOURS</p>
+        <p class="font-body text-xs text-on-surface-variant mb-3">These hours apply to all upcoming days unless overridden per day.</p>
+        <button onclick="openGeneralHoursModal()" class="w-full py-3 border-2 border-primary-container text-primary-container font-label text-[10px] font-extrabold tracking-[0.15em] uppercase hover:bg-primary-container hover:text-on-primary-container transition-all active:scale-[0.98] flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined text-sm">schedule</span> SET WORKING HOURS
+        </button>
+        <p class="font-label text-[9px] text-outline uppercase tracking-widest mt-2 text-center" id="general-hours-display">Current: 09:00 AM — 06:00 PM</p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ===== DAY EDIT PANEL (slide-up) ===== -->
+<div id="day-panel" class="bg-black/60 backdrop-blur-sm" onclick="closeDayPanelIfBg(event)">
+  <div class="fixed bottom-0 left-0 w-full z-[250] bg-[#131313] border-t-4 border-primary px-6 pt-10 pb-12 max-h-[85dvh] overflow-y-auto">
+    <div class="absolute top-4 left-1/2 -translate-x-1/2 w-12 h-1 bg-outline-variant rounded-full opacity-50"></div>
+    <div class="max-w-md mx-auto">
+      <header class="mb-8">
+        <h2 class="font-headline text-2xl font-extrabold tracking-tighter" id="panel-day-title">MONDAY, APR 7</h2>
+        <p class="font-label text-[10px] uppercase tracking-[0.2em] text-outline mt-1" id="panel-day-status">Currently: Open</p>
+      </header>
+
+      <!-- Action 1: Lock entire day -->
+      <div class="mb-6">
+        <button id="lock-day-btn" onclick="toggleLockDay()" class="w-full py-5 border-2 border-error/50 text-error/80 font-label text-sm font-extrabold tracking-[0.15em] uppercase hover:bg-error/10 transition-all active:scale-[0.98]">
+          LOCK ENTIRE DAY
+        </button>
+      </div>
+
+      <div class="flex items-center gap-4 mb-6">
+        <div class="flex-1 h-px bg-outline-variant/30"></div>
+        <span class="font-label text-[9px] uppercase tracking-widest text-outline">or edit hours</span>
+        <div class="flex-1 h-px bg-outline-variant/30"></div>
+      </div>
+
+      <!-- Action 2: Edit hours -->
+      <div class="space-y-5" id="hours-editor">
+        <div>
+          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2">OPENING TIME</label>
+          <div class="flex gap-3">
+            <select id="open-hour" class="flex-1 bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-headline text-base text-on-surface focus:border-primary outline-none transition-colors">
+              <option>07:00 AM</option><option>08:00 AM</option><option selected>09:00 AM</option><option>10:00 AM</option><option>11:00 AM</option><option>12:00 PM</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2">CLOSING TIME</label>
+          <div class="flex gap-3">
+            <select id="close-hour" class="flex-1 bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-headline text-base text-on-surface focus:border-primary outline-none transition-colors">
+              <option>03:00 PM</option><option>04:00 PM</option><option>05:00 PM</option><option selected>06:00 PM</option><option>07:00 PM</option><option>08:00 PM</option>
+            </select>
+          </div>
+        </div>
+        <button onclick="saveHours()" class="w-full gold-gradient py-5 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98] transition-transform">
+          SAVE HOURS
+        </button>
+      </div>
+
+      <!-- Action 3: Lock specific hours -->
+      <div id="lock-hours-section" class="mt-6">
+        <div class="flex items-center gap-4 mb-5">
+          <div class="flex-1 h-px bg-outline-variant/30"></div>
+          <span class="font-label text-[9px] uppercase tracking-widest text-outline">lock specific hours</span>
+          <div class="flex-1 h-px bg-outline-variant/30"></div>
+        </div>
+        <p class="font-body text-xs text-on-surface-variant mb-3">Select individual slots to block for this day (e.g. lunch, personal).</p>
+        <div class="grid grid-cols-2 gap-2" id="lock-slots-grid">
+          <!-- populated by JS -->
+        </div>
+        <button onclick="saveLockSlots()" class="mt-4 w-full py-4 border-2 border-error/50 text-error/80 font-label text-sm font-extrabold tracking-[0.15em] uppercase hover:bg-error/10 transition-all active:scale-[0.98]">
+          LOCK SELECTED SLOTS
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== LOCK PERIOD MODAL ===== -->
+<div id="lock-period-modal" class="hidden fixed inset-0 z-[300] bg-black/60 backdrop-blur-sm flex items-end" onclick="if(event.target===this)closeLockPeriodModal()">
+  <div class="w-full bg-[#131313] border-t-4 border-error px-6 pt-10 pb-12 max-h-[80dvh] overflow-y-auto">
+    <div class="max-w-md mx-auto">
+      <h2 class="font-headline text-2xl font-extrabold tracking-tighter mb-1">LOCK A PERIOD</h2>
+      <p class="font-body text-sm text-on-surface-variant mb-6">Choose a date range to block all bookings.</p>
+      <div class="space-y-4">
+        <div>
+          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2">FROM</label>
+          <input type="date" id="lock-from" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-headline text-base text-on-surface focus:border-error outline-none transition-colors"/>
+        </div>
+        <div>
+          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2">TO</label>
+          <input type="date" id="lock-to" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-headline text-base text-on-surface focus:border-error outline-none transition-colors"/>
+        </div>
+        <button onclick="applyLockPeriod()" class="w-full py-5 border-2 border-error/50 text-error/80 font-label text-sm font-extrabold tracking-[0.2em] uppercase hover:bg-error/10 transition-all active:scale-[0.98]">
+          LOCK PERIOD
+        </button>
+        <button onclick="closeLockPeriodModal()" class="w-full py-4 border border-outline-variant text-outline font-label text-sm font-extrabold tracking-[0.15em] uppercase hover:border-primary-container hover:text-primary-container transition-all active:scale-[0.98]">
+          CANCEL
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== GENERAL WORKING HOURS MODAL ===== -->
+<div id="general-hours-modal" class="hidden fixed inset-0 z-[300] bg-black/60 backdrop-blur-sm flex items-end" onclick="if(event.target===this)closeGeneralHoursModal()">
+  <div class="w-full bg-[#131313] border-t-4 border-primary px-6 pt-10 pb-12">
+    <div class="max-w-md mx-auto">
+      <h2 class="font-headline text-2xl font-extrabold tracking-tighter mb-1">WORKING HOURS</h2>
+      <p class="font-body text-sm text-on-surface-variant mb-6">Set the default hours for all upcoming days.</p>
+      <div class="space-y-5">
+        <div>
+          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2">OPENING TIME</label>
+          <select id="gen-open-hour" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-headline text-base text-on-surface focus:border-primary outline-none transition-colors">
+            <option>07:00 AM</option><option>08:00 AM</option><option selected>09:00 AM</option><option>10:00 AM</option><option>11:00 AM</option><option>12:00 PM</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2">CLOSING TIME</label>
+          <select id="gen-close-hour" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-headline text-base text-on-surface focus:border-primary outline-none transition-colors">
+            <option>03:00 PM</option><option>04:00 PM</option><option>05:00 PM</option><option selected>06:00 PM</option><option>07:00 PM</option><option>08:00 PM</option>
+          </select>
+        </div>
+        <button onclick="saveGeneralHours()" class="w-full gold-gradient py-5 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98] transition-transform">
+          SAVE HOURS
+        </button>
+        <button onclick="closeGeneralHoursModal()" class="w-full py-4 border border-outline-variant text-outline font-label text-sm font-extrabold tracking-[0.15em] uppercase hover:border-primary-container hover:text-primary-container transition-all active:scale-[0.98]">
+          CANCEL
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== EDIT HOUR MODAL (client) ===== -->
+<div id="edit-hour-modal" class="hidden fixed inset-0 z-[300] bg-black/60 backdrop-blur-sm flex items-end" onclick="if(event.target===this)closeEditHourModal()">
+  <div class="w-full bg-[#131313] border-t-4 border-primary px-6 pt-10 pb-12">
+    <div class="max-w-md mx-auto">
+      <h2 class="font-headline text-2xl font-extrabold tracking-tighter mb-1">EDIT BOOKING HOUR</h2>
+      <p class="font-body text-sm text-on-surface-variant mb-1" id="edit-hour-booking-label">—</p>
+      <p class="font-body text-xs text-on-surface-variant mb-6">Select a new time for this booking.</p>
+      <div class="space-y-4">
+        <select id="edit-hour-select" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-headline text-base text-on-surface focus:border-primary outline-none transition-colors">
+          <option>09:00 AM</option><option>10:00 AM</option><option>11:30 AM</option><option>01:00 PM</option><option>02:30 PM</option><option>04:00 PM</option><option>05:30 PM</option>
+        </select>
+        <button onclick="confirmEditHour()" class="w-full gold-gradient py-5 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98] transition-transform">
+          CONFIRM NEW TIME
+        </button>
+        <button onclick="closeEditHourModal()" class="w-full py-4 border border-outline-variant text-outline font-label text-sm font-extrabold tracking-[0.15em] uppercase hover:border-primary-container hover:text-primary-container transition-all active:scale-[0.98]">
+          CANCEL
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== STATE =====
+let currentScreen = 'screen-portal';
+let selectedDay = null, selectedTime = null, selectedService = 'ROYAL CUT';
+let currentMonth = { year: 2026, month: 3 }; // April
+let avMonth = { year: 2026, month: 3 };
+let lockedDays = new Set(); // tracks locked days for barber calendar
+let selectedAvDay = null;
+
+const MONTH_NAMES = ['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE','JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'];
+const DAY_NAMES = ['MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY','SUNDAY'];
+const BOOKED_SLOTS = {
+  '2026-4-7': ['09:00 AM','01:00 PM'],
+  '2026-4-9': ['10:30 AM'],
+  '2026-4-14': ['09:00 AM','11:30 AM','04:00 PM'],
+  '2026-4-16': ['10:00 AM'],
+};
+const ALL_SLOTS = ['09:00 AM','10:00 AM','11:30 AM','01:00 PM','02:30 PM','04:00 PM','05:30 PM'];
+
+// ===== NAVIGATION =====
+function navigateTo(screenId) {
+  document.getElementById(currentScreen).classList.remove('active');
+  document.getElementById(screenId).classList.add('active');
+  currentScreen = screenId;
+  const s = document.getElementById(screenId);
+  const m = s.querySelector('main');
+  if (m) m.scrollTop = 0;
+}
+
+// ===== CLIENT CALENDAR =====
+function buildCalendar() {
+  const { year, month } = currentMonth;
+  document.getElementById('cal-month-label').textContent = `${MONTH_NAMES[month]} ${year}`;
+  const grid = document.getElementById('cal-grid');
+  grid.innerHTML = '';
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const today = new Date();
+  const offset = firstDay === 0 ? 6 : firstDay - 1;
+
+  for (let i = 0; i < offset; i++) grid.appendChild(document.createElement('div'));
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const jsDate = new Date(year, month, d);
+    const isPast = jsDate < new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const isToday = jsDate.toDateString() === today.toDateString();
+    const isSelected = selectedDay && selectedDay.day === d && selectedDay.month === month && selectedDay.year === year;
+
+    const cell = document.createElement('div');
+    cell.className = 'cal-day flex items-center justify-center py-1' + (isPast ? ' past' : '');
+    cell.innerHTML = `<div class="day-inner w-9 h-9 flex items-center justify-center font-headline font-bold text-sm ${isSelected ? 'gold-gradient text-on-primary-fixed' : isToday ? 'border border-primary text-primary' : 'text-on-surface'} transition-all">${d}</div>`;
+    if (!isPast) cell.addEventListener('click', () => { selectedDay = {day:d, month, year}; selectedTime = null; buildCalendar(); buildTimeSlots(); updatePreview(); });
+    grid.appendChild(cell);
+  }
+}
+
+function shiftMonth(dir) {
+  let { year, month } = currentMonth;
+  month += dir;
+  if (month > 11) { month = 0; year++; } if (month < 0) { month = 11; year--; }
+  currentMonth = { year, month };
+  selectedDay = null; selectedTime = null;
+  buildCalendar(); buildTimeSlots(); updatePreview();
+}
+
+// ===== TIME SLOTS =====
+function buildTimeSlots() {
+  const container = document.getElementById('time-slots-container');
+  const label = document.getElementById('time-slots-label');
+  container.innerHTML = '';
+  if (!selectedDay) {
+    label.textContent = 'AVAILABLE SLOTS — SELECT A DATE FIRST';
+    container.innerHTML = '<p class="font-body text-sm text-on-surface-variant opacity-60">Please select a date from the calendar above.</p>';
+    return;
+  }
+  const { day, month, year } = selectedDay;
+  const dateStr = new Date(year, month, day).toLocaleDateString('en-GB', { weekday:'long', day:'numeric', month:'long' }).toUpperCase();
+  label.textContent = `AVAILABLE SLOTS — ${dateStr}`;
+  const key = `${year}-${month+1}-${day}`;
+  const booked = BOOKED_SLOTS[key] || [];
+  ALL_SLOTS.forEach(slot => {
+    const isBooked = booked.includes(slot);
+    const isSelected = selectedTime === slot;
+    const div = document.createElement('div');
+    div.className = 'flex items-center gap-4';
+    if (isBooked) {
+      div.innerHTML = `<span class="w-20 font-headline font-bold text-surface-container-highest text-sm">${slot}</span><div class="flex-1 h-px bg-outline-variant/20"></div><div class="px-4 py-2 bg-surface-container-low text-surface-container-highest font-label text-[9px] tracking-widest border border-outline-variant/30 uppercase line-through">BOOKED</div>`;
+    } else {
+      div.innerHTML = `<span class="w-20 font-headline font-bold text-on-surface text-sm">${slot}</span><div class="flex-1 h-px bg-outline-variant"></div><button class="time-slot-btn px-5 py-2 border-2 border-primary-container text-primary-container font-label text-[9px] tracking-widest uppercase ${isSelected ? 'selected' : ''}">${isSelected ? 'SELECTED' : 'SELECT'}</button>`;
+      div.querySelector('button').addEventListener('click', () => { selectedTime = slot; buildTimeSlots(); updatePreview(); });
+    }
+    container.appendChild(div);
+  });
+}
+
+function updatePreview() {
+  const dateEl = document.getElementById('preview-date');
+  const timeEl = document.getElementById('preview-time');
+  const cta = document.getElementById('confirm-cta');
+  if (selectedDay) {
+    const { day, month, year } = selectedDay;
+    dateEl.textContent = new Date(year, month, day).toLocaleDateString('en-GB', { weekday:'long', day:'numeric', month:'long', year:'numeric' }).toUpperCase();
+    timeEl.textContent = selectedTime ? `${selectedTime} — ${selectedService}` : 'Select a time slot above';
+  } else {
+    dateEl.textContent = 'No date selected'; timeEl.textContent = 'Select a date and time above';
+  }
+  if (selectedDay && selectedTime) { cta.disabled = false; cta.classList.remove('opacity-40','pointer-events-none'); }
+  else { cta.disabled = true; cta.classList.add('opacity-40','pointer-events-none'); }
+}
+
+function openBookingModal() {
+  if (!selectedDay || !selectedTime) return;
+  const { day, month, year } = selectedDay;
+  document.getElementById('modal-date-label').textContent = new Date(year, month, day).toLocaleDateString('en-GB', { weekday:'short', day:'numeric', month:'short' }).toUpperCase() + ` AT ${selectedTime}`;
+  document.getElementById('modal-overlay').classList.add('active');
+}
+
+function closeModalIfBg(e) { if (e.target === document.getElementById('modal-overlay')) document.getElementById('modal-overlay').classList.remove('active'); }
+
+function selectService(btn, val) {
+  document.querySelectorAll('.service-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected'); selectedService = val;
+}
+
+function confirmBooking() {
+  if (!selectedDay || !selectedTime) return;
+  const { day, month, year } = selectedDay;
+  const dateStr = new Date(year, month, day).toLocaleDateString('en-GB', { weekday:'long', day:'numeric', month:'long' }).toUpperCase();
+  document.getElementById('modal-overlay').classList.remove('active');
+  document.getElementById('ticket-date').textContent = dateStr;
+  document.getElementById('ticket-time').textContent = selectedTime;
+  document.getElementById('ticket-service').textContent = selectedService;
+  document.getElementById('success-msg').textContent = `Session secured. See you soon.`;
+  document.getElementById('confirm-success').classList.add('active');
+  const dyn = document.getElementById('dynamic-booking');
+  document.getElementById('dynamic-booking-title').textContent = `${new Date(year, month, day).toLocaleDateString('en-GB', {day:'numeric', month:'short'}).toUpperCase()} — ${selectedTime}`;
+  document.getElementById('dynamic-booking-sub').textContent = `${selectedService} · Mayfair`;
+  dyn.classList.remove('hidden');
+}
+
+function backToHome() {
+  document.getElementById('confirm-success').classList.remove('active');
+  selectedDay = null; selectedTime = null;
+  buildCalendar(); buildTimeSlots(); updatePreview();
+  navigateTo('screen-home');
+}
+
+// ===== BARBER AVAILABILITY CALENDAR =====
+function buildAvCalendar() {
+  const { year, month } = avMonth;
+  document.getElementById('av-month-label').textContent = `${MONTH_NAMES[month]} ${year}`;
+  const grid = document.getElementById('av-cal-grid');
+  grid.innerHTML = '';
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const today = new Date();
+  const offset = firstDay === 0 ? 6 : firstDay - 1;
+
+  for (let i = 0; i < offset; i++) grid.appendChild(document.createElement('div'));
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const jsDate = new Date(year, month, d);
+    const isPast = jsDate < new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const dayKey = `${year}-${month}-${d}`;
+    const isLocked = lockedDays.has(dayKey);
+
+    const cell = document.createElement('div');
+    cell.className = 'av-day' + (isPast ? ' av-past' : '') + (isLocked ? ' av-locked' : '');
+
+    let innerClass = 'av-inner w-full aspect-square flex flex-col items-center justify-center font-headline font-bold text-sm transition-all ';
+    if (isLocked) innerClass += 'bg-error/10 text-error/60 border border-error/20';
+    else if (!isPast) innerClass += 'bg-surface-container-high text-on-surface hover:bg-surface-container-highest border border-outline-variant/20';
+    else innerClass += 'bg-surface-container-lowest text-surface-container-highest';
+
+    cell.innerHTML = `<div class="${innerClass}">
+      <span>${d}</span>
+      ${isLocked ? '<span class="material-symbols-outlined text-[10px] mt-0.5 av-lock-icon" style="font-size:10px">lock</span>' : ''}
+    </div>`;
+
+    if (!isPast) {
+      cell.addEventListener('click', () => openDayPanel(d, month, year, dayKey, isLocked));
+    }
+    grid.appendChild(cell);
+  }
+}
+
+function avShiftMonth(dir) {
+  let { year, month } = avMonth;
+  month += dir;
+  if (month > 11) { month = 0; year++; } if (month < 0) { month = 11; year--; }
+  avMonth = { year, month };
+  buildAvCalendar();
+}
+
+// ===== DAY PANEL =====
+function openDayPanel(d, month, year, dayKey, isLocked) {
+  selectedAvDay = { d, month, year, dayKey };
+  const jsDate = new Date(year, month, d);
+  const dayOfWeek = DAY_NAMES[(jsDate.getDay() + 6) % 7];
+  const monthName = MONTH_NAMES[month].slice(0,3);
+  document.getElementById('panel-day-title').textContent = `${dayOfWeek}, ${monthName} ${d}`;
+  document.getElementById('panel-day-status').textContent = isLocked ? 'Currently: LOCKED' : 'Currently: Open';
+  const lockBtn = document.getElementById('lock-day-btn');
+  if (isLocked) {
+    lockBtn.textContent = 'UNLOCK DAY';
+    lockBtn.classList.remove('border-error/50','text-error/80','hover:bg-error/10');
+    lockBtn.classList.add('border-primary-container','text-primary-container','hover:bg-primary-container/10');
+    document.getElementById('hours-editor').style.opacity = '0.3';
+    document.getElementById('hours-editor').style.pointerEvents = 'none';
+  } else {
+    lockBtn.textContent = 'LOCK ENTIRE DAY';
+    lockBtn.classList.remove('border-primary-container','text-primary-container','hover:bg-primary-container/10');
+    lockBtn.classList.add('border-error/50','text-error/80','hover:bg-error/10');
+    document.getElementById('hours-editor').style.opacity = '1';
+    document.getElementById('hours-editor').style.pointerEvents = 'auto';
+  }
+  // Update summary
+  buildLockSlotsGrid(dayKey);
+
+  document.getElementById('day-panel').classList.add('active');
+}
+
+function closeDayPanelIfBg(e) { if (e.target === document.getElementById('day-panel')) closeDayPanel(); }
+function closeDayPanel() { document.getElementById('day-panel').classList.remove('active'); }
+
+function toggleLockDay() {
+  if (!selectedAvDay) return;
+  const { dayKey } = selectedAvDay;
+  if (lockedDays.has(dayKey)) lockedDays.delete(dayKey);
+  else lockedDays.add(dayKey);
+  buildAvCalendar();
+  closeDayPanel();
+  // Reopen to reflect new state
+  setTimeout(() => openDayPanel(selectedAvDay.d, selectedAvDay.month, selectedAvDay.year, dayKey, lockedDays.has(dayKey)), 120);
+}
+
+function saveHours() {
+  const open = document.getElementById('open-hour').value;
+  const close = document.getElementById('close-hour').value;
+  if (selectedAvDay) {
+    const { d, month, year } = selectedAvDay;
+    const monthName = MONTH_NAMES[month].slice(0,3);
+    const jsDate = new Date(year, month, d);
+    const dayOfWeek = DAY_NAMES[(jsDate.getDay() + 6) % 7];
+    document.getElementById('av-selected-day-status').textContent = `Open — ${open} to ${close}`;
+    document.getElementById('av-day-summary').classList.remove('hidden');
+  }
+  closeDayPanel();
+}
+
+// ===== TICKET MENU (active booking on home) =====
+function toggleTicketMenu(e) {
+  e.stopPropagation();
+  const menu = document.getElementById('ticket-menu');
+  menu.classList.toggle('hidden');
+  if (!menu.classList.contains('hidden')) {
+    const close = (ev) => { menu.classList.add('hidden'); document.removeEventListener('click', close); };
+    setTimeout(() => document.addEventListener('click', close), 10);
+  }
+}
+
+// Active booking state (the ticket)
+const activeBooking = { date: 'WEDNESDAY, APR 9', time: '10:30 AM', dayKey: '2026-3-9', day: 9, month: 3, year: 2026 };
+let editActiveSelectedTime = null;
+
+function openEditActiveHour() {
+  document.getElementById('ticket-menu').classList.add('hidden');
+  editActiveSelectedTime = null;
+  // Set label
+  document.getElementById('edit-active-label').textContent = activeBooking.date;
+  document.getElementById('edit-active-preview-date').textContent = activeBooking.date;
+  document.getElementById('edit-active-preview-time').textContent = 'Select a time slot above';
+  // Disable CTA
+  const cta = document.getElementById('edit-active-cta');
+  cta.disabled = true; cta.classList.add('opacity-40','pointer-events-none');
+  // Build slots
+  buildEditActiveSlots();
+  navigateTo('screen-edit-active-hour');
+}
+
+function buildEditActiveSlots() {
+  const container = document.getElementById('edit-active-slots-container');
+  container.innerHTML = '';
+  const { day, month, year } = activeBooking;
+  const key = `${year}-${month+1}-${day}`;
+  const booked = BOOKED_SLOTS[key] || [];
+  ALL_SLOTS.forEach(slot => {
+    // Skip the currently booked slot
+    if (slot === activeBooking.time) return;
+    const isBooked = booked.includes(slot);
+    const isSelected = editActiveSelectedTime === slot;
+    const div = document.createElement('div');
+    div.className = 'flex items-center gap-4';
+    if (isBooked) {
+      div.innerHTML = `<span class="w-20 font-headline font-bold text-surface-container-highest text-sm">${slot}</span><div class="flex-1 h-px bg-outline-variant/20"></div><div class="px-4 py-2 bg-surface-container-low text-surface-container-highest font-label text-[9px] tracking-widest border border-outline-variant/30 uppercase line-through">BOOKED</div>`;
+    } else {
+      div.innerHTML = `<span class="w-20 font-headline font-bold text-on-surface text-sm">${slot}</span><div class="flex-1 h-px bg-outline-variant"></div><button class="time-slot-btn px-5 py-2 border-2 border-primary-container text-primary-container font-label text-[9px] tracking-widest uppercase ${isSelected ? 'selected' : ''}">${isSelected ? 'SELECTED' : 'SELECT'}</button>`;
+      div.querySelector('button').addEventListener('click', () => {
+        editActiveSelectedTime = slot;
+        buildEditActiveSlots();
+        document.getElementById('edit-active-preview-time').textContent = slot;
+        const cta = document.getElementById('edit-active-cta');
+        cta.disabled = false; cta.classList.remove('opacity-40','pointer-events-none');
+      });
+    }
+    container.appendChild(div);
+  });
+}
+
+function confirmActiveEdit() {
+  if (!editActiveSelectedTime) return;
+  // Update the ticket on home screen
+  document.getElementById('active-booking-time').textContent = editActiveSelectedTime;
+  navigateTo('screen-home');
+}
+
+function cancelActiveBooking() {
+  document.getElementById('ticket-menu').classList.add('hidden');
+  if (confirm('Cancel your booking for ' + activeBooking.date + ' at ' + activeBooking.time + '?')) {
+    // Hide the active booking section
+    document.querySelector('#screen-home section.mb-10:first-of-type').style.display = 'none';
+  }
+}
+
+// ===== BOOKING MENU (client) =====
+function toggleBookingMenu(id) {
+  const menu = document.getElementById(id);
+  // Close all other menus first
+  document.querySelectorAll('[id^="menu-"]').forEach(m => { if(m.id !== id) m.classList.add('hidden'); });
+  menu.classList.toggle('hidden');
+  // Close on outside click
+  setTimeout(() => {
+    const handler = (e) => {
+      if (!menu.contains(e.target)) { menu.classList.add('hidden'); document.removeEventListener('click', handler); }
+    };
+    document.addEventListener('click', handler);
+  }, 10);
+}
+
+let currentEditBooking = null;
+function editBookingHour(label) {
+  currentEditBooking = label;
+  document.getElementById('edit-hour-booking-label').textContent = label;
+  document.getElementById('edit-hour-modal').classList.remove('hidden');
+}
+function closeEditHourModal() { document.getElementById('edit-hour-modal').classList.add('hidden'); }
+function confirmEditHour() {
+  const newTime = document.getElementById('edit-hour-select').value;
+  alert(`Booking rescheduled to ${newTime}`);
+  closeEditHourModal();
+}
+function cancelBooking(label) {
+  if (confirm(`Cancel booking: ${label}?`)) {
+    alert('Booking cancelled.');
+  }
+}
+
+// ===== GENERAL SECTION — LOCK FUNCTIONS =====
+let indefiniteLock = false;
+
+function lockToday() {
+  const today = new Date();
+  const key = `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`;
+  lockedDays.add(key);
+  buildAvCalendar();
+  alert('Today has been locked.');
+}
+
+function lockUntilUnlock() {
+  indefiniteLock = true;
+  document.getElementById('indefinite-lock-status').classList.remove('hidden');
+  document.getElementById('lock-indefinite-btn').classList.add('hidden');
+  // Lock all days from today onward for 60 days
+  const today = new Date();
+  for (let i = 0; i < 60; i++) {
+    const d = new Date(today); d.setDate(today.getDate() + i);
+    lockedDays.add(`${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`);
+  }
+  buildAvCalendar();
+}
+
+function removeIndefiniteLock() {
+  indefiniteLock = false;
+  const today = new Date();
+  for (let i = 0; i < 60; i++) {
+    const d = new Date(today); d.setDate(today.getDate() + i);
+    lockedDays.delete(`${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`);
+  }
+  document.getElementById('indefinite-lock-status').classList.add('hidden');
+  document.getElementById('lock-indefinite-btn').classList.remove('hidden');
+  buildAvCalendar();
+}
+
+function openLockPeriodModal() { document.getElementById('lock-period-modal').classList.remove('hidden'); }
+function closeLockPeriodModal() { document.getElementById('lock-period-modal').classList.add('hidden'); }
+
+function applyLockPeriod() {
+  const from = new Date(document.getElementById('lock-from').value);
+  const to = new Date(document.getElementById('lock-to').value);
+  if (!from || !to || isNaN(from) || isNaN(to) || from > to) { alert('Please select a valid date range.'); return; }
+  for (let d = new Date(from); d <= to; d.setDate(d.getDate() + 1)) {
+    lockedDays.add(`${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`);
+  }
+  buildAvCalendar();
+  closeLockPeriodModal();
+  alert(`Period locked from ${from.toLocaleDateString()} to ${to.toLocaleDateString()}`);
+}
+
+// ===== GENERAL WORKING HOURS =====
+function openGeneralHoursModal() { document.getElementById('general-hours-modal').classList.remove('hidden'); }
+function closeGeneralHoursModal() { document.getElementById('general-hours-modal').classList.add('hidden'); }
+function saveGeneralHours() {
+  const open = document.getElementById('gen-open-hour').value;
+  const close = document.getElementById('gen-close-hour').value;
+  document.getElementById('general-hours-display').textContent = `Current: ${open} — ${close}`;
+  closeGeneralHoursModal();
+}
+
+// ===== LOCK SPECIFIC SLOTS (day panel) =====
+let lockedSlots = {}; // dayKey -> Set of slots
+
+function buildLockSlotsGrid(dayKey) {
+  const grid = document.getElementById('lock-slots-grid');
+  grid.innerHTML = '';
+  const locked = lockedSlots[dayKey] || new Set();
+  ALL_SLOTS.forEach(slot => {
+    const isLocked = locked.has(slot);
+    const btn = document.createElement('button');
+    btn.className = `py-2 px-3 border font-label text-[9px] tracking-widest uppercase transition-all active:scale-95 ${isLocked ? 'border-error/50 bg-error/10 text-error/80' : 'border-outline-variant text-outline hover:border-error/40 hover:text-error/60'}`;
+    btn.textContent = slot;
+    btn.dataset.slot = slot;
+    btn.onclick = () => { btn.classList.toggle('border-error/50'); btn.classList.toggle('bg-error/10'); btn.classList.toggle('text-error/80'); btn.classList.toggle('border-outline-variant'); btn.classList.toggle('text-outline'); };
+    grid.appendChild(btn);
+  });
+}
+
+function saveLockSlots() {
+  if (!selectedAvDay) return;
+  const { dayKey } = selectedAvDay;
+  const selected = new Set();
+  document.querySelectorAll('#lock-slots-grid button').forEach(btn => {
+    if (btn.classList.contains('bg-error/10')) selected.add(btn.dataset.slot);
+  });
+  lockedSlots[dayKey] = selected;
+  const count = selected.size;
+  closeDayPanel();
+  if (count > 0) alert(`${count} slot(s) locked for this day.`);
+}
+
+// ===== INIT =====
+buildCalendar();
+buildTimeSlots();
+buildAvCalendar();
+</script>
+</body>
+</html>
