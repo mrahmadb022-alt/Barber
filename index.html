@@ -136,13 +136,6 @@
   }
   .photo-card:hover { border-color:#d4af37; }
   .photo-card img { width:100%;height:100%;object-fit:cover; }
-  .photo-card .photo-label {
-    position:absolute;bottom:0;left:0;right:0;
-    background:linear-gradient(to top,rgba(13,13,13,0.9),transparent);
-    padding:8px 10px;
-    font-family:'Plus Jakarta Sans',sans-serif;font-size:8px;letter-spacing:0.2em;
-    text-transform:uppercase;color:#d4af37;
-  }
 
   /* ===== SETTINGS SCREEN ===== */
   .settings-row {
@@ -405,36 +398,36 @@
           <!-- Photos duplicated for seamless loop -->
           <div class="photo-card">
             <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=400&q=80" alt="Barbershop"/>
-            <div class="photo-label" data-t="photoChair">הכיסא</div>
+            
           </div>
           <div class="photo-card">
             <img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=400&q=80" alt="Barbershop"/>
-            <div class="photo-label" data-t="photoCraft">המלאכה</div>
+            
           </div>
           <div class="photo-card">
             <img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=400&q=80" alt="Barbershop"/>
-            <div class="photo-label" data-t="photoStudio">הסטודיו</div>
+            
           </div>
           <div class="photo-card">
             <img src="https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=400&q=80" alt="Barbershop"/>
-            <div class="photo-label" data-t="photoResult">התוצאה</div>
+            
           </div>
           <!-- Duplicate for seamless loop -->
           <div class="photo-card">
             <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=400&q=80" alt="Barbershop"/>
-            <div class="photo-label" data-t="photoChair">הכיסא</div>
+            
           </div>
           <div class="photo-card">
             <img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=400&q=80" alt="Barbershop"/>
-            <div class="photo-label" data-t="photoCraft">המלאכה</div>
+            
           </div>
           <div class="photo-card">
             <img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=400&q=80" alt="Barbershop"/>
-            <div class="photo-label" data-t="photoStudio">הסטודיו</div>
+            
           </div>
           <div class="photo-card">
             <img src="https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=400&q=80" alt="Barbershop"/>
-            <div class="photo-label" data-t="photoResult">התוצאה</div>
+            
           </div>
         </div>
       </div>
@@ -516,7 +509,7 @@
       <div class="bg-surface-container-low border-l-4 border-primary-container p-5 space-y-4">
         <div>
           <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="profileName">שם</label>
-          <input id="cp-name" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base text-on-surface focus:border-primary outline-none transition-colors" placeholder="—"/>
+          <input id="cp-name" dir="auto" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base text-on-surface focus:border-primary outline-none transition-colors" placeholder="—"/>
         </div>
         <div>
           <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="profilePhone">טלפון</label>
@@ -524,7 +517,7 @@
         </div>
         <div>
           <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="profileEmail">אימייל</label>
-          <input id="cp-email" type="email" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base text-on-surface focus:border-primary outline-none transition-colors" placeholder="—" dir="ltr"/>
+          <input id="cp-email" dir="auto" type="email" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base text-on-surface focus:border-primary outline-none transition-colors" placeholder="—" dir="ltr"/>
         </div>
         <button onclick="saveClientProfile()" class="w-full gold-gradient py-4 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98] transition-transform" data-t="save">שמור</button>
       </div>
@@ -622,8 +615,8 @@
   </main>
 
   <div class="fixed bottom-0 left-0 w-full bg-[#131313]/90 backdrop-blur-xl border-t-2 border-[#D4AF37] px-6 pt-3 pb-8 z-40">
-    <button onclick="openBookingModal()" id="confirm-cta" class="w-full gold-gradient py-4 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98] transition-transform opacity-40 pointer-events-none mb-3" disabled>
-      PROCEED TO BOOKING
+    <button onclick="openBookingModal()" id="confirm-cta" class="w-full gold-gradient py-4 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98] transition-transform opacity-40 pointer-events-none mb-3" data-t="proceedToBooking" disabled>
+      המשך להזמנה
     </button>
     <div class="flex justify-around items-center">
       <a class="nav-link flex flex-col items-center text-gray-600 hover:text-[#f2ca50] cursor-pointer active:scale-95" onclick="navigateTo('screen-home')">
@@ -661,21 +654,21 @@
 
     <!-- Available slots for the booked day -->
     <section class="mb-10">
-      <h2 class="font-label text-[10px] tracking-[0.2em] uppercase text-primary-container mb-6 border-b border-primary-container/20 pb-2">AVAILABLE SLOTS</h2>
+      <h2 class="font-label text-[10px] tracking-[0.2em] uppercase text-primary-container mb-6 border-b border-primary-container/20 pb-2" data-t="availableSlots">זמנים פנויים</h2>
       <div class="flex flex-col gap-4" id="edit-active-slots-container"></div>
     </section>
 
     <!-- Preview -->
     <div class="bg-surface-container-highest border-l-4 border-primary-container p-6 flex flex-col gap-2">
-      <p class="font-label text-[10px] tracking-[0.1em] text-primary-container uppercase">New Selection</p>
+      <p class="font-label text-[10px] tracking-[0.1em] text-primary-container uppercase" data-t="newSelection">בחירה חדשה</p>
       <h3 class="font-headline font-bold text-xl" id="edit-active-preview-date">—</h3>
-      <p class="font-body text-sm text-on-surface-variant" id="edit-active-preview-time">Select a time slot above</p>
+      <p class="font-body text-sm text-on-surface-variant" id="edit-active-preview-time" data-t="selectTimeAbove">בחר שעה למעלה</p>
     </div>
   </main>
 
   <div class="fixed bottom-0 left-0 w-full bg-[#131313]/90 backdrop-blur-xl border-t-2 border-[#D4AF37] px-6 pt-4 pb-8 z-40">
-    <button onclick="confirmActiveEdit()" id="edit-active-cta" class="w-full gold-gradient py-5 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98] transition-transform opacity-40 pointer-events-none" disabled>
-      CONFIRM NEW TIME
+    <button onclick="confirmActiveEdit()" id="edit-active-cta" class="w-full gold-gradient py-5 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98] transition-transform opacity-40 pointer-events-none" disabled data-t="confirmNewTime">
+      אשר שעה חדשה
     </button>
   </div>
 </div>
@@ -699,11 +692,11 @@
           <input id="inp-phone" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-5 py-4 font-headline text-lg tracking-tight focus:border-primary focus:ring-0 text-on-surface placeholder:text-surface-container-highest transition-all outline-none" placeholder="+1 (555) 000-0000" type="tel"/>
         </div>
         <div>
-          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-3">SERVICE TYPE</label>
+          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-3" data-t="serviceType">סוג שירות</label>
           <div class="flex gap-3">
-            <button onclick="selectService(this,'ROYAL CUT')" class="service-btn selected flex-1 py-4 border-2 border-primary-container text-primary font-label text-xs font-black tracking-[0.08em] transition-all" data-val="ROYAL CUT">ROYAL CUT</button>
-            <button onclick="selectService(this,'BEARD')" class="service-btn flex-1 py-4 border-2 border-outline-variant text-outline font-label text-xs font-black tracking-[0.08em] hover:border-primary/50 transition-all" data-val="BEARD">BEARD</button>
-            <button onclick="selectService(this,'SPECIAL')" class="service-btn flex-1 py-4 border-2 border-outline-variant text-outline font-label text-xs font-black tracking-[0.08em] hover:border-primary/50 transition-all" data-val="SPECIAL">SPECIAL</button>
+            <button onclick="selectService(this,'ROYAL CUT')" class="service-btn selected flex-1 py-4 border-2 border-primary-container text-primary font-label text-xs font-black tracking-[0.08em] transition-all" data-val="ROYAL CUT" data-t="royalCut">תספורת מלכותית</button>
+            <button onclick="selectService(this,'BEARD')" class="service-btn flex-1 py-4 border-2 border-outline-variant text-outline font-label text-xs font-black tracking-[0.08em] hover:border-primary/50 transition-all" data-val="BEARD" data-t="beardSculpt">פיסול זקן</button>
+            <button onclick="selectService(this,'SPECIAL')" class="service-btn flex-1 py-4 border-2 border-outline-variant text-outline font-label text-xs font-black tracking-[0.08em] hover:border-primary/50 transition-all" data-val="SPECIAL" data-t="specialCut">תספורת מיוחדת</button>
           </div>
         </div>
         <div class="pt-2">
@@ -713,7 +706,7 @@
         </div>
       </div>
       <div class="mt-6 text-center">
-        <p class="font-body text-[10px] text-outline uppercase tracking-widest">By confirming, you agree to our <span class="text-primary underline cursor-pointer">Sovereign Terms</span></p>
+        <p class="font-body text-[10px] text-outline uppercase tracking-widest" data-t="agreeTerms">בלחיצה על אשר, אתה מסכים לתנאי השימוש שלנו</p>
       </div>
     </div>
   </div>
@@ -731,22 +724,22 @@
     <div class="flex items-stretch overflow-hidden shadow-[0_20px_50px_rgba(212,175,55,0.2)]" style="background:linear-gradient(45deg,#f2ca50,#d4af37)">
       <div class="ticket-perf opacity-30"></div>
       <div class="flex-grow p-6 text-[#241a00] border-l border-[#241a00]/20 text-left">
-        <p class="font-label text-[9px] font-extrabold tracking-[0.2em] opacity-70">YOUR SESSION</p>
+        <p class="font-label text-[9px] font-extrabold tracking-[0.2em] opacity-70" data-t="yourSession">הפגישה שלך</p>
         <p class="font-headline text-2xl font-bold tracking-tight mt-1" id="ticket-date">—</p>
         <div class="flex gap-8 mt-3">
           <div>
-            <p class="font-label text-[9px] font-extrabold tracking-widest opacity-70">TIME</p>
+            <p class="font-label text-[9px] font-extrabold tracking-widest opacity-70" data-t="time">שעה</p>
             <p class="font-headline text-xl font-bold" id="ticket-time">—</p>
           </div>
           <div>
-            <p class="font-label text-[9px] font-extrabold tracking-widest opacity-70">SERVICE</p>
+            <p class="font-label text-[9px] font-extrabold tracking-widest opacity-70" data-t="service">שירות</p>
             <p class="font-headline text-xl font-bold" id="ticket-service">—</p>
           </div>
         </div>
       </div>
     </div>
     <button onclick="backToHome()" class="mt-10 w-full border-2 border-primary-container text-primary-container font-label text-sm font-extrabold tracking-[0.15em] py-5 hover:bg-primary-container hover:text-on-primary-container transition-all active:scale-[0.98]">
-      BACK TO HOME
+      <span data-t="backToHome">חזרה לדף הבית</span>
     </button>
   </div>
 </div>
@@ -757,7 +750,7 @@
     <button onclick="navigateTo('screen-home')" class="text-[#D4AF37] hover:text-[#f2ca50] transition-colors active:scale-95">
       <span class="material-symbols-outlined text-2xl">arrow_back</span>
     </button>
-    <h1 class="text-lg font-bold tracking-tighter text-[#D4AF37] font-headline">MY BOOKINGS</h1>
+    <h1 class="text-lg font-bold tracking-tighter text-[#D4AF37] font-headline" data-t="myBookings">ההזמנות שלי</h1>
     <button onclick="navigateTo('screen-portal')" class="text-[#D4AF37] hover:text-[#f2ca50] transition-colors active:scale-95" title="Back to home">
       <span class="material-symbols-outlined text-2xl">home</span>
     </button>
@@ -887,7 +880,7 @@
             <span class="font-label text-[9px] font-extrabold tracking-widest text-on-surface-variant uppercase" data-t="nextClient">הלקוח הבא</span>
             <span class="material-symbols-outlined text-gray-500 text-lg">schedule</span>
           </div>
-          <div class="font-headline text-2xl font-bold tracking-tighter text-on-surface">2:30 PM</div>
+          <div class="font-headline text-2xl font-bold tracking-tighter text-on-surface">14:30</div>
           <div class="mt-2 font-label text-[9px] text-primary tracking-widest uppercase" data-t="inMinutes">בעוד 45 דקות</div>
         </div>
         <div class="bg-surface-container-high p-5">
@@ -929,7 +922,7 @@
         </div>
         <div class="bg-surface-container-highest p-4 flex items-center gap-4 border-l-4 border-primary">
           <div class="text-center w-14 flex-shrink-0">
-            <p class="font-headline font-bold text-base text-primary">02:30</p>
+            <p class="font-headline font-bold text-base text-primary">14:30</p>
             <p class="font-label text-[9px] text-primary" data-t="pmLabel">אחה"צ</p>
           </div>
           <div class="flex-1">
@@ -940,7 +933,7 @@
         </div>
         <div class="bg-surface-container-low p-4 flex items-center gap-4 border-l-2 border-outline-variant/20 opacity-50">
           <div class="text-center w-14 flex-shrink-0">
-            <p class="font-headline font-bold text-sm text-on-surface-variant">04:00</p>
+            <p class="font-headline font-bold text-sm text-on-surface-variant">16:00</p>
             <p class="font-label text-[9px] text-outline" data-t="pmLabel">אחה"צ</p>
           </div>
           <div class="flex-1">
@@ -957,14 +950,14 @@
       <p class="font-label text-[10px] font-bold tracking-[0.25em] uppercase text-outline mb-4 px-6" data-t="studioGallery">גלריית הסטודיו</p>
       <div class="photo-carousel px-6">
         <div class="photo-track" id="barber-photo-track">
-          <div class="photo-card"><img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=400&q=80"/><div class="photo-label" data-t="photoChair">הכיסא</div></div>
-          <div class="photo-card"><img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=400&q=80"/><div class="photo-label" data-t="photoCraft">המלאכה</div></div>
-          <div class="photo-card"><img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=400&q=80"/><div class="photo-label" data-t="photoStudio">הסטודיו</div></div>
-          <div class="photo-card"><img src="https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=400&q=80"/><div class="photo-label" data-t="photoResult">התוצאה</div></div>
-          <div class="photo-card"><img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=400&q=80"/><div class="photo-label" data-t="photoChair">הכיסא</div></div>
-          <div class="photo-card"><img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=400&q=80"/><div class="photo-label" data-t="photoCraft">המלאכה</div></div>
-          <div class="photo-card"><img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=400&q=80"/><div class="photo-label" data-t="photoStudio">הסטודיו</div></div>
-          <div class="photo-card"><img src="https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=400&q=80"/><div class="photo-label" data-t="photoResult">התוצאה</div></div>
+          <div class="photo-card"><img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=400&q=80"/></div>
+          <div class="photo-card"><img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=400&q=80"/></div>
+          <div class="photo-card"><img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=400&q=80"/></div>
+          <div class="photo-card"><img src="https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=400&q=80"/></div>
+          <div class="photo-card"><img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=400&q=80"/></div>
+          <div class="photo-card"><img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=400&q=80"/></div>
+          <div class="photo-card"><img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=400&q=80"/></div>
+          <div class="photo-card"><img src="https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=400&q=80"/></div>
         </div>
       </div>
     </section>
@@ -1088,7 +1081,7 @@
         <button onclick="openGeneralHoursModal()" class="w-full py-3 border-2 border-primary-container text-primary-container font-label text-[10px] font-extrabold tracking-[0.15em] uppercase hover:bg-primary-container hover:text-on-primary-container transition-all active:scale-[0.98] flex items-center justify-center gap-2">
           <span class="material-symbols-outlined text-sm">schedule</span> <span data-t="setWorkingHours">קבע שעות עבודה</span>
         </button>
-        <p class="font-label text-[9px] text-outline uppercase tracking-widest mt-2 text-center" id="general-hours-display"><span data-t="current">נוכחי</span>: 09:00 — 18:00</p>
+        <p class="font-label text-[9px] text-outline uppercase tracking-widest mt-2 text-center" id="general-hours-display"><span data-t="current">נוכחי</span>: <span id="general-hours-text">09:00 — 18:00</span></p>
       </div>
     </div>
   </main>
@@ -1117,7 +1110,7 @@
     <div class="max-w-md mx-auto">
       <header class="mb-8">
         <h2 class="font-headline text-2xl font-extrabold tracking-tighter" id="panel-day-title">MONDAY, APR 7</h2>
-        <p class="font-label text-[10px] uppercase tracking-[0.2em] text-outline mt-1" id="panel-day-status">Currently: Open</p>
+        <p class="font-label text-[10px] uppercase tracking-[0.2em] text-outline mt-1" id="panel-day-status" data-t="currentlyOpen">כרגע: פתוח</p>
       </header>
 
       <!-- Action 1: Lock entire day -->
@@ -1139,7 +1132,7 @@
           <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="openingTime">שעת פתיחה</label>
           <div class="flex gap-3">
             <select id="open-hour" class="flex-1 bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-headline text-base text-on-surface focus:border-primary outline-none transition-colors">
-              <option>07:00 AM</option><option>08:00 AM</option><option selected>09:00 AM</option><option>10:00 AM</option><option>11:00 AM</option><option>12:00 PM</option>
+              <option>07:00</option><option>08:00</option><option selected>09:00</option><option>10:00</option><option>11:00</option><option>12:00</option>
             </select>
           </div>
         </div>
@@ -1147,7 +1140,7 @@
           <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="closingTime">שעת סגירה</label>
           <div class="flex gap-3">
             <select id="close-hour" class="flex-1 bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-headline text-base text-on-surface focus:border-primary outline-none transition-colors">
-              <option>03:00 PM</option><option>04:00 PM</option><option>05:00 PM</option><option selected>06:00 PM</option><option>07:00 PM</option><option>08:00 PM</option>
+              <option>15:00</option><option>16:00</option><option>17:00</option><option selected>18:00</option><option>19:00</option><option>20:00</option>
             </select>
           </div>
         </div>
@@ -1211,13 +1204,13 @@
         <div>
           <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="openingTime">שעת פתיחה</label>
           <select id="gen-open-hour" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-headline text-base text-on-surface focus:border-primary outline-none transition-colors">
-            <option>07:00 AM</option><option>08:00 AM</option><option selected>09:00 AM</option><option>10:00 AM</option><option>11:00 AM</option><option>12:00 PM</option>
+            <option>06:00</option><option>07:00</option><option>08:00</option><option selected>09:00</option><option>10:00</option><option>11:00</option><option>12:00</option>
           </select>
         </div>
         <div>
           <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="closingTime">שעת סגירה</label>
           <select id="gen-close-hour" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-headline text-base text-on-surface focus:border-primary outline-none transition-colors">
-            <option>03:00 PM</option><option>04:00 PM</option><option>05:00 PM</option><option selected>06:00 PM</option><option>07:00 PM</option><option>08:00 PM</option>
+            <option>14:00</option><option>15:00</option><option>16:00</option><option>17:00</option><option selected>18:00</option><option>19:00</option><option>20:00</option><option>21:00</option>
           </select>
         </div>
         <button onclick="saveGeneralHours()" class="w-full gold-gradient py-5 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98] transition-transform" data-t="saveHours">
@@ -1240,7 +1233,7 @@
       <p class="font-body text-xs text-on-surface-variant mb-6" data-t="selectNewTime">בחר שעה חדשה לפגישה זו.</p>
       <div class="space-y-4">
         <select id="edit-hour-select" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-headline text-base text-on-surface focus:border-primary outline-none transition-colors">
-          <option>09:00 AM</option><option>10:00 AM</option><option>11:30 AM</option><option>01:00 PM</option><option>02:30 PM</option><option>04:00 PM</option><option>05:30 PM</option>
+          <option>09:00</option><option>10:00</option><option>11:30</option><option>13:00</option><option>14:30</option><option>16:00</option><option>17:30</option>
         </select>
         <button onclick="confirmEditHour()" class="w-full gold-gradient py-5 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98] transition-transform" data-t="confirmNewTime">
           אשר שעה חדשה
@@ -1345,9 +1338,7 @@
             <p class="font-label text-[9px] uppercase tracking-widest text-outline mb-2" data-t="currentName">שם נוכחי</p>
             <p class="font-headline font-bold text-xl text-primary" id="settings-shop-name-display">SOVEREIGN</p>
           </div>
-          <button onclick="openShopNameModal()" class="px-4 py-2 border-2 border-primary-container text-primary-container font-label text-[10px] font-extrabold tracking-widest uppercase hover:bg-primary-container hover:text-on-primary-container transition-all active:scale-95">
-            EDIT
-          </button>
+          <button onclick="openShopNameModal()" class="px-4 py-2 border-2 border-primary-container text-primary-container font-label text-[10px] font-extrabold tracking-widest uppercase hover:bg-primary-container hover:text-on-primary-container transition-all active:scale-95" data-t="edit">עריכה</button>
         </div>
       </div>
     </section>
@@ -1371,7 +1362,7 @@
 
     <!-- LOGO -->
     <section class="mb-8">
-      <p class="font-label text-[10px] font-extrabold tracking-[0.25em] uppercase text-outline mb-4">LOGO</p>
+      <p class="font-label text-[10px] font-extrabold tracking-[0.25em] uppercase text-outline mb-4" data-t="logo">לוגו</p>
       <div class="bg-surface-container-low border-l-4 border-primary-container p-5">
         <div class="flex items-center gap-5">
           <div class="w-16 h-16 bg-surface-container-high border-2 border-primary-container flex items-center justify-center overflow-hidden" id="settings-logo-preview">
@@ -1462,8 +1453,8 @@
       <h2 class="font-headline text-2xl font-extrabold tracking-tighter mb-1" data-t="shopName">שם העסק</h2>
       <p class="font-body text-sm text-on-surface-variant mb-6">This name appears across the entire app.</p>
       <input id="shop-name-input" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-5 py-4 font-headline text-xl tracking-tight focus:border-primary text-on-surface uppercase outline-none transition-all mb-4" placeholder="SOVEREIGN" value="SOVEREIGN"/>
-      <button onclick="saveShopName()" class="w-full gold-gradient py-5 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98] transition-transform mb-3">SAVE NAME</button>
-      <button onclick="closeShopNameModal()" class="w-full py-4 border border-outline-variant text-outline font-label text-sm font-extrabold tracking-[0.15em] uppercase hover:border-primary-container hover:text-primary-container transition-all active:scale-[0.98]">CANCEL</button>
+      <button onclick="saveShopName()" class="w-full gold-gradient py-5 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98] transition-transform mb-3"><span data-t="save">שמור</span></button>
+      <button onclick="closeShopNameModal()" class="w-full py-4 border border-outline-variant text-outline font-label text-sm font-extrabold tracking-[0.15em] uppercase hover:border-primary-container hover:text-primary-container transition-all active:scale-[0.98]" data-t="cancel">ביטול</button>
     </div>
   </div>
 </div>
@@ -1545,7 +1536,7 @@ const T = {
     lockUntilUnlock:'נעל עד שאפתח', lockedIndef:'נעול ללא הגבלה', unlock:'פתח נעילה',
     defaultHours:'שעות עבודה ברירת מחדל',
     hoursDesc:'שעות אלה חלות על כל הימים הקרובים אלא אם כן שונו.',
-    current:'נוכחי', lockDay:'נעל יום שלם', orEditHours:'או ערוך שעות',
+    current:'נוכחי', lockDay:'נעל יום שלם', currentlyOpen:'כרגע: פתוח', currentlyLocked:'כרגע: נעול', unlockDay:'פתח יום', orEditHours:'או ערוך שעות',
     openingTime:'שעת פתיחה', closingTime:'שעת סגירה', saveHours:'שמור שעות',
     lockSpecificHours:'נעל שעות ספציפיות', selectSlotsDesc:'בחר שעות לחסימה',
     lockSelectedSlots:'נעל שעות שנבחרו', lockPeriodDesc:'בחר טווח תאריכים לחסימה.',
@@ -1553,7 +1544,11 @@ const T = {
     selectNewTime:'בחר שעה חדשה לפגישה זו.', confirmNewTime:'אשר שעה חדשה',
     selectAccentColor:'בחר צבע ערכת נושא', defaultLogoName:'כתר ומספריים — ברירת מחדל',
     photoChair:'הכיסא', photoCraft:'המלאכה', photoStudio:'הסטודיו', photoResult:'התוצאה',
-        noSessionBooked:'אין הזמנה פעילה', availableSlotsLabel:'זמנים פנויים',
+        save:'שמור', cancel:'ביטול', logo:'לוגו',
+    priceLabel:'מחיר (₪)', agreeTerms:'בלחיצה על אשר, אתה מסכים לתנאי השימוש',
+    yourSession:'הפגישה שלך', newSelection:'בחירה חדשה', selectTimeAbove:'בחר שעה למעלה',
+    availableSlots:'זמנים פנויים', uploadPhoto:'העלאת תמונה',
+    noSessionBooked:'אין הזמנה פעילה', availableSlotsLabel:'זמנים פנויים',
     addNews:'הוסף עדכון', noNews:'אין עדכונים עדיין', saveNews:'שמור עדכון',
     newsTitle:'כותרת', newsBody:'תוכן', newsType:'סוג',
     noBookings:'אין הזמנות עדיין', bookYourFirst:'קבע את התור הראשון שלך',
@@ -1613,7 +1608,7 @@ const T = {
     lockUntilUnlock:'قفل حتى أفتح', lockedIndef:'مقفل بشكل دائم', unlock:'فتح القفل',
     defaultHours:'ساعات العمل الافتراضية',
     hoursDesc:'تنطبق هذه الساعات على جميع الأيام القادمة ما لم يتم تجاوزها.',
-    current:'الحالي', lockDay:'قفل اليوم كاملاً', orEditHours:'أو تعديل الساعات',
+    current:'الحالي', lockDay:'قفل اليوم كاملاً', currentlyOpen:'حالياً: مفتوح', currentlyLocked:'حالياً: مقفل', unlockDay:'فتح اليوم', orEditHours:'أو تعديل الساعات',
     openingTime:'وقت الفتح', closingTime:'وقت الإغلاق', saveHours:'حفظ الساعات',
     lockSpecificHours:'قفل ساعات محددة', selectSlotsDesc:'اختر فترات للحظر',
     lockSelectedSlots:'قفل الفترات المحددة', lockPeriodDesc:'اختر نطاقاً زمنياً للحجب.',
@@ -1621,7 +1616,11 @@ const T = {
     selectNewTime:'اختر وقتاً جديداً.', confirmNewTime:'تأكيد الوقت الجديد',
     selectAccentColor:'اختر لون التطبيق', defaultLogoName:'التاج والمقص — افتراضي',
     photoChair:'الكرسي', photoCraft:'الحرفة', photoStudio:'الاستوديو', photoResult:'النتيجة',
-        noSessionBooked:'لا يوجد حجز نشط', availableSlotsLabel:'المواعيد المتاحة',
+        save:'حفظ', cancel:'إلغاء', logo:'الشعار',
+    priceLabel:'السعر (₪)', agreeTerms:'بالتأكيد توافق على شروطنا',
+    yourSession:'جلستك', newSelection:'اختيار جديد', selectTimeAbove:'اختر وقتاً أعلاه',
+    availableSlots:'المواعيد المتاحة', uploadPhoto:'رفع صورة',
+    noSessionBooked:'لا يوجد حجز نشط', availableSlotsLabel:'المواعيد المتاحة',
     addNews:'إضافة خبر', noNews:'لا توجد أخبار', saveNews:'حفظ الخبر',
     newsTitle:'العنوان', newsBody:'المحتوى', newsType:'النوع',
     noBookings:'لا توجد حجوزات بعد', bookYourFirst:'احجز موعدك الأول',
@@ -1677,7 +1676,7 @@ const T = {
     lockUntilUnlock:'LOCK UNTIL I UNLOCK', lockedIndef:'Locked indefinitely', unlock:'UNLOCK',
     defaultHours:'DEFAULT WORKING HOURS',
     hoursDesc:'These hours apply to all upcoming days unless overridden per day.',
-    current:'Current', lockDay:'LOCK ENTIRE DAY', orEditHours:'or edit hours',
+    current:'Current', lockDay:'LOCK ENTIRE DAY', currentlyOpen:'Currently: Open', currentlyLocked:'Currently: LOCKED', unlockDay:'UNLOCK DAY', orEditHours:'or edit hours',
     openingTime:'OPENING TIME', closingTime:'CLOSING TIME', saveHours:'SAVE HOURS',
     lockSpecificHours:'lock specific hours', selectSlotsDesc:'Select slots to block for this day.',
     lockSelectedSlots:'LOCK SELECTED SLOTS', lockPeriodDesc:'Choose a date range to block bookings.',
@@ -1692,13 +1691,73 @@ const T = {
   }
 };
 
+
+// ═══════════════════════════════════════════════
+// SECURITY LAYER (OWASP guidelines for client-side)
+// ═══════════════════════════════════════════════
+
+// Rate limiter — prevents rapid repeated calls (e.g. form spam)
+const _rateLimits = {};
+function rateLimit(key, limitMs = 1000) {
+  const now = Date.now();
+  if (_rateLimits[key] && now - _rateLimits[key] < limitMs) return false;
+  _rateLimits[key] = now;
+  return true;
+}
+
+// Input sanitizer — strips HTML tags, trims, limits length
+function sanitize(val, maxLen = 200) {
+  if (typeof val !== 'string') return '';
+  return val
+    .replace(/[<>'"&]/g, c => ({'<':'','>':"''","'":"'",'"':'"','&':'&'}[c]))
+    .trim()
+    .slice(0, maxLen);
+}
+
+// Validate phone — allows +, digits, spaces, dashes, parens
+function validatePhone(val) {
+  return /^[+\d\s\-().]{6,20}$/.test(val.trim());
+}
+
+// Validate price — positive number ≤ 99999
+function validatePrice(val) {
+  const n = parseFloat(val);
+  return !isNaN(n) && n >= 0 && n <= 99999;
+}
+
+// Validate text field — not empty, no script injection
+function validateText(val, minLen = 1) {
+  return typeof val === 'string' && val.trim().length >= minLen && !/script/i.test(val);
+}
+
+// Show inline validation error under an element
+function showFieldError(inputId, msg) {
+  const inp = document.getElementById(inputId);
+  if (!inp) return;
+  let err = inp.parentNode.querySelector('.field-error');
+  if (!err) {
+    err = document.createElement('p');
+    err.className = 'field-error font-label text-[9px] text-error/80 mt-1 tracking-widest';
+    inp.parentNode.appendChild(err);
+  }
+  err.textContent = msg;
+  inp.classList.add('border-error/60');
+}
+function clearFieldError(inputId) {
+  const inp = document.getElementById(inputId);
+  if (!inp) return;
+  const err = inp.parentNode.querySelector('.field-error');
+  if (err) err.remove();
+  inp.classList.remove('border-error/60');
+}
+
 const BOOKED_SLOTS = {
-  '2026-4-7': ['09:00 AM','01:00 PM'],
+  '2026-4-7': ['09:00','13:00'],
   '2026-4-9': ['10:30 AM'],
-  '2026-4-14': ['09:00 AM','11:30 AM','04:00 PM'],
+  '2026-4-14': ['09:00','11:30','16:00'],
   '2026-4-16': ['10:00 AM'],
 };
-const ALL_SLOTS = ['09:00 AM','10:00 AM','11:30 AM','01:00 PM','02:30 PM','04:00 PM','05:30 PM'];
+const ALL_SLOTS = ['09:00','10:00','11:30','13:00','14:30','16:00','17:30'];
 
 // ===== NAVIGATION =====
 function navigateTo(screenId) {
@@ -1787,12 +1846,13 @@ function updatePreview() {
   if (selectedDay) {
     const { day, month, year } = selectedDay;
     dateEl.textContent = new Date(year, month, day).toLocaleDateString(currentLang==='he'?'he-IL':currentLang==='ar'?'ar-SA':'en-GB', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
-    timeEl.textContent = selectedTime ? `${selectedTime} — ${selectedService}` : (currentLang==='he'?'בחר שעה':currentLang==='ar'?'اختر وقتاً':'Select a time slot above');
+    const svcLabel = {'ROYAL CUT':t('royalCut')||'תספורת מלכותית','BEARD':t('beardSculpt')||'פיסול זקן','SPECIAL':t('specialCut')||'תספורת מיוחדת'}[selectedService] || selectedService;
+    timeEl.textContent = selectedTime ? `${selectedTime} — ${svcLabel}` : (currentLang==='he'?'בחר שעה':currentLang==='ar'?'اختر وقتاً':'Select a time slot above');
   } else {
     dateEl.textContent = (currentLang==='he'?'לא נבחר תאריך':currentLang==='ar'?'لم يتم اختيار تاريخ':'No date selected');
     timeEl.textContent = (currentLang==='he'?'בחר תאריך ושעה':currentLang==='ar'?'اختر تاريخاً ووقتاً':'Select a date and time above');
   }
-  if (selectedDay && selectedTime) { cta.disabled = false; cta.classList.remove('opacity-40','pointer-events-none'); }
+  if (selectedDay && selectedTime) { cta.disabled = false; cta.classList.remove('opacity-40','pointer-events-none'); cta.textContent = t('proceedToBooking'); }
   else { cta.disabled = true; cta.classList.add('opacity-40','pointer-events-none'); }
 }
 
@@ -1812,6 +1872,20 @@ function selectService(btn, val) {
 
 function confirmBooking() {
   if (!selectedDay || !selectedTime) return;
+  if (!rateLimit('confirmBooking', 2000)) return;
+  const rawName  = document.getElementById('inp-name')?.value || '';
+  const rawPhone = document.getElementById('inp-phone')?.value || '';
+  clearFieldError('inp-name'); clearFieldError('inp-phone');
+  const clientName  = sanitize(rawName, 60);
+  const clientPhone = sanitize(rawPhone, 20);
+  if (!validateText(clientName)) {
+    showFieldError('inp-name', currentLang==='he'?'שם נדרש':currentLang==='ar'?'الاسم مطلوب':'Name required');
+    return;
+  }
+  if (rawPhone && !validatePhone(clientPhone)) {
+    showFieldError('inp-phone', currentLang==='he'?'מספר לא תקין':currentLang==='ar'?'رقم غير صحيح':'Invalid phone');
+    return;
+  }
   const { day, month, year } = selectedDay;
   const locale = currentLang==='he'?'he-IL':currentLang==='ar'?'ar-SA':'en-GB';
   const dateStr = new Date(year, month, day).toLocaleDateString(locale, { weekday:'long', day:'numeric', month:'long' });
@@ -1819,9 +1893,16 @@ function confirmBooking() {
   document.getElementById('modal-overlay').classList.remove('active');
   document.getElementById('ticket-date').textContent = dateStr;
   document.getElementById('ticket-time').textContent = selectedTime;
-  document.getElementById('ticket-service').textContent = selectedService;
+  // Map service val to translated name
+  const svcMap = {
+    'ROYAL CUT':  t('royalCut')  || 'תספורת מלכותית',
+    'BEARD':      t('beardSculpt')|| 'פיסול זקן',
+    'SPECIAL':    t('specialCut') || 'תספורת מיוחדת',
+  };
+  document.getElementById('ticket-service').textContent = svcMap[selectedService] || selectedService;
   document.getElementById('success-msg').textContent = currentLang==='he'?'הפגישה נקבעה. נתראה בקרוב.':currentLang==='ar'?'تم تأكيد الجلسة. نراك قريباً.':'Session secured. See you soon.';
-  showActiveBooking(dateStr, selectedTime, selectedService);
+  const svcDisplayMap = {'ROYAL CUT':t('royalCut')||'תספורת מלכותית','BEARD':t('beardSculpt')||'פיסול זקן','SPECIAL':t('specialCut')||'תספורת מיוחדת'};
+  showActiveBooking(dateStr, selectedTime, svcDisplayMap[selectedService] || selectedService);
   document.getElementById('confirm-success').classList.add('active');
   const dyn = document.getElementById('dynamic-booking');
   document.getElementById('dynamic-booking-title').textContent = `${new Date(year, month, day).toLocaleDateString('en-GB', {day:'numeric', month:'short'}).toUpperCase()} — ${selectedTime}`;
@@ -1892,16 +1973,16 @@ function openDayPanel(d, month, year, dayKey, isLocked) {
   const dayOfWeek = getDayNames()[(jsDate.getDay() + 6) % 7];
   const monthName = getMonthNames()[month].slice(0,3);
   document.getElementById('panel-day-title').textContent = `${dayOfWeek}, ${monthName} ${d}`;
-  document.getElementById('panel-day-status').textContent = isLocked ? 'Currently: LOCKED' : 'Currently: Open';
+  document.getElementById('panel-day-status').textContent = isLocked ? t('currentlyLocked') : t('currentlyOpen');
   const lockBtn = document.getElementById('lock-day-btn');
   if (isLocked) {
-    lockBtn.textContent = 'UNLOCK DAY';
+    lockBtn.textContent = t('unlockDay');
     lockBtn.classList.remove('border-error/50','text-error/80','hover:bg-error/10');
     lockBtn.classList.add('border-primary-container','text-primary-container','hover:bg-primary-container/10');
     document.getElementById('hours-editor').style.opacity = '0.3';
     document.getElementById('hours-editor').style.pointerEvents = 'none';
   } else {
-    lockBtn.textContent = 'LOCK ENTIRE DAY';
+    lockBtn.textContent = t('lockDay');
     lockBtn.classList.remove('border-primary-container','text-primary-container','hover:bg-primary-container/10');
     lockBtn.classList.add('border-error/50','text-error/80','hover:bg-error/10');
     document.getElementById('hours-editor').style.opacity = '1';
@@ -1930,12 +2011,13 @@ function toggleLockDay() {
 function saveHours() {
   const open = document.getElementById('open-hour').value;
   const close = document.getElementById('close-hour').value;
+  // 24h format — no conversion needed
   if (selectedAvDay) {
     const { d, month, year } = selectedAvDay;
     const monthName = getMonthNames()[month].slice(0,3);
     const jsDate = new Date(year, month, d);
     const dayOfWeek = getDayNames()[(jsDate.getDay() + 6) % 7];
-    document.getElementById('av-selected-day-status').textContent = `Open — ${open} to ${close}`;
+    document.getElementById('av-selected-day-status').textContent = `${t('open')} — ${open} ${currentLang==='he'?'עד':currentLang==='ar'?'إلى':'to'} ${close}`;
     document.getElementById('av-day-summary').classList.remove('hidden');
   }
   closeDayPanel();
@@ -1993,7 +2075,7 @@ function buildEditActiveSlots() {
         buildEditActiveSlots();
         document.getElementById('edit-active-preview-time').textContent = slot;
         const cta = document.getElementById('edit-active-cta');
-        cta.disabled = false; cta.classList.remove('opacity-40','pointer-events-none');
+        cta.disabled = false; cta.classList.remove('opacity-40','pointer-events-none'); cta.textContent = t('proceedToBooking');
       });
     }
     container.appendChild(div);
@@ -2127,7 +2209,8 @@ function closeGeneralHoursModal() { document.getElementById('general-hours-modal
 function saveGeneralHours() {
   const open = document.getElementById('gen-open-hour').value;
   const close = document.getElementById('gen-close-hour').value;
-  document.getElementById('general-hours-display').textContent = `Current: ${open} — ${close}`;
+  const txt = document.getElementById('general-hours-text');
+  if (txt) txt.textContent = `${open} — ${close}`;
   closeGeneralHoursModal();
 }
 
@@ -2241,7 +2324,7 @@ function rebuildCarousels() {
     track.innerHTML = all.map(p => `
       <div class="photo-card">
         <img src="${p.url}" alt="${p.label}" style="width:100%;height:100%;object-fit:cover"/>
-        <div class="photo-label">${p.label}</div>
+        
       </div>`).join('');
   });
 }
@@ -2253,9 +2336,9 @@ function openShopNameModal() {
 }
 function closeShopNameModal() { document.getElementById('shop-name-modal').classList.add('hidden'); }
 function saveShopName() {
-  const name = document.getElementById('shop-name-input').value.trim().toUpperCase() || 'SOVEREIGN';
-  // Update everywhere
+  const name = document.getElementById('shop-name-input').value.trim() || 'SOVEREIGN';
   document.getElementById('settings-shop-name-display').textContent = name;
+  // Update all sovereign title elements across app
   document.querySelectorAll('.sovereign-title').forEach(el => el.textContent = name);
   closeShopNameModal();
 }
@@ -2282,8 +2365,14 @@ function setThemeColor(primary, light) {
     if (s.style.background === primary || s.getAttribute('onclick')?.includes(primary)) s.classList.add('active');
   });
   // Update label
-  const names = {'#D4AF37':'Gold','#e05c5c':'Crimson','#5c8ae0':'Royal Blue','#5ce0a0':'Emerald','#c05ce0':'Violet','#e0995c':'Copper'};
-  document.getElementById('color-preview-label').textContent = 'Active: ' + (names[primary] || primary);
+  const colorNames = {
+    he: {'#D4AF37':'זהב','#e05c5c':'אדום','#5c8ae0':'כחול מלכותי','#5ce0a0':'ירוק','#c05ce0':'סגול','#e0995c':'נחושת'},
+    ar: {'#D4AF37':'ذهبي','#e05c5c':'قرمزي','#5c8ae0':'أزرق ملكي','#5ce0a0':'زمردي','#c05ce0':'بنفسجي','#e0995c':'نحاسي'},
+    en: {'#D4AF37':'Gold','#e05c5c':'Crimson','#5c8ae0':'Royal Blue','#5ce0a0':'Emerald','#c05ce0':'Violet','#e0995c':'Copper'},
+  };
+  const names = colorNames[currentLang] || colorNames.he;
+  const colorNameEl = document.getElementById('color-name');
+  if (colorNameEl) colorNameEl.textContent = names[primary] || primary;
 }
 
 // ===== SETTINGS — LOGO UPLOAD =====
@@ -2443,25 +2532,46 @@ function renderClientProducts() {
 function renderBarbersManage() {
   const list = document.getElementById('barbers-manage-list');
   if (!list) return;
-  list.innerHTML = barbers.map((b,i) => `
-    <div class="flex items-center gap-3 bg-surface-container-high p-3 border border-outline-variant/20">
-      <div class="w-10 h-10 flex-shrink-0 overflow-hidden border border-primary-container/50">
+  if (!barbers.length) {
+    list.innerHTML = '<p class="font-label text-[10px] text-outline uppercase tracking-widest py-2">—</p>';
+    return;
+  }
+  list.innerHTML = barbers.map((b,i) => {
+    const isActive = b.active !== false;
+    const deactivateLbl = currentLang==='ar' ? 'إلغاء التفعيل' : currentLang==='en' ? 'Deactivate' : 'השהה';
+    const activateLbl   = currentLang==='ar' ? 'تفعيل' : currentLang==='en' ? 'Activate' : 'הפעל';
+    const deleteLbl     = currentLang==='ar' ? 'حذف' : currentLang==='en' ? 'Delete' : 'מחק';
+    return `
+    <div class="flex items-center gap-3 bg-surface-container-high p-3 border border-outline-variant/20 ${isActive ? '' : 'opacity-50'}">
+      <div class="w-10 h-10 flex-shrink-0 overflow-hidden border border-primary-container/50 relative">
         <img src="${b.photo}" style="width:100%;height:100%;object-fit:cover;object-position:top"/>
+        ${!isActive ? '<div style="position:absolute;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center"><span class="material-symbols-outlined text-xs text-error/80">pause</span></div>' : ''}
       </div>
       <div class="flex-1 min-w-0">
         <p class="font-headline font-bold text-sm truncate">${b.name}</p>
         <p class="font-label text-[9px] text-outline uppercase tracking-widest">${b.role}</p>
         <p class="font-body text-xs text-primary mt-0.5">${b.hours}</p>
+        ${!isActive ? '<p class="font-label text-[9px] text-error/70 uppercase tracking-widest mt-0.5">' + (currentLang==='en'?'Inactive':currentLang==='ar'?'غير نشط':'לא פעיל') + '</p>' : ''}
       </div>
-      <div class="flex gap-2">
-        <button onclick="openEditBarberModal(${i})" class="w-8 h-8 flex items-center justify-center border border-primary-container text-primary-container hover:bg-primary-container hover:text-on-primary-container transition-all active:scale-95">
+      <div class="flex gap-1 flex-shrink-0">
+        <button onclick="openEditBarberModal(${i})" title="עריכה" class="w-8 h-8 flex items-center justify-center border border-primary-container text-primary-container hover:bg-primary-container hover:text-on-primary-container transition-all active:scale-95">
           <span class="material-symbols-outlined text-sm">edit</span>
         </button>
-        <button onclick="deleteBarber(${i})" class="w-8 h-8 flex items-center justify-center border border-error/40 text-error/70 hover:bg-error/10 transition-all active:scale-95">
+        <button onclick="toggleBarberActive(${i})" title="${isActive ? deactivateLbl : activateLbl}" class="w-8 h-8 flex items-center justify-center border ${isActive ? 'border-yellow-500/40 text-yellow-500/70 hover:bg-yellow-500/10' : 'border-green-500/40 text-green-500/70 hover:bg-green-500/10'} transition-all active:scale-95">
+          <span class="material-symbols-outlined text-sm">${isActive ? 'pause' : 'play_arrow'}</span>
+        </button>
+        <button onclick="deleteBarber(${i})" title="${deleteLbl}" class="w-8 h-8 flex items-center justify-center border border-error/40 text-error/70 hover:bg-error/10 transition-all active:scale-95">
           <span class="material-symbols-outlined text-sm">delete</span>
         </button>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
+}
+
+function toggleBarberActive(i) {
+  barbers[i].active = barbers[i].active === false ? true : false;
+  renderBarbersManage();
+  renderClientBarberCard();
 }
 
 function renderServicesManage() {
@@ -2473,7 +2583,7 @@ function renderServicesManage() {
         <p class="font-headline font-bold text-sm">${s.name}</p>
         <p class="font-label text-[9px] text-outline uppercase tracking-widest">${s.duration}</p>
       </div>
-      <p class="font-headline font-bold text-base text-primary mr-2">£${s.price}</p>
+      <p class="font-headline font-bold text-base text-primary mr-2">₪${s.price}</p>
       <div class="flex gap-2">
         <button onclick="openEditServiceModal(${i})" class="w-8 h-8 flex items-center justify-center border border-primary-container text-primary-container hover:bg-primary-container hover:text-on-primary-container transition-all active:scale-95">
           <span class="material-symbols-outlined text-sm">edit</span>
@@ -2494,7 +2604,7 @@ function renderDealsManage() {
         <p class="font-headline font-bold text-sm">${d.name}</p>
         <p class="font-label text-[9px] text-outline uppercase tracking-widest">${d.desc}</p>
       </div>
-      <p class="font-headline font-bold text-base text-primary mr-2">£${d.price}</p>
+      <p class="font-headline font-bold text-base text-primary mr-2">₪${d.price}</p>
       <div class="flex gap-2">
         <button onclick="openEditDealModal(${i})" class="w-8 h-8 flex items-center justify-center border border-primary-container text-primary-container hover:bg-primary-container hover:text-on-primary-container transition-all active:scale-95">
           <span class="material-symbols-outlined text-sm">edit</span>
@@ -2516,7 +2626,7 @@ function renderProductsManage() {
       </div>
       <div class="flex-1 min-w-0">
         <p class="font-headline font-bold text-sm truncate">${p.name}</p>
-        <p class="font-headline font-bold text-sm text-primary">£${p.price}</p>
+        <p class="font-headline font-bold text-sm text-primary">₪${p.price}</p>
       </div>
       <div class="flex gap-2">
         <button onclick="openEditProductModal(${i})" class="w-8 h-8 flex items-center justify-center border border-primary-container text-primary-container hover:bg-primary-container hover:text-on-primary-container transition-all active:scale-95">
@@ -2551,12 +2661,17 @@ function openBarberNameModal() {
   showModal('barber-name-modal');
 }
 function saveBarberName() {
-  const val = document.getElementById('barber-name-input').value.trim().toUpperCase() || 'JULIAN VANCE';
-  barbers[0].name = val;
+  const val = document.getElementById('barber-name-input').value.trim() || 'JULIAN VANCE';
   document.getElementById('settings-barber-name-display').textContent = val;
-  // Also update dashboard h1
-  const h1 = document.querySelector('#screen-barber h1.font-headline');
-  if (h1) h1.textContent = val;
+  // Update barbers array if exists, create first entry if empty
+  if (barbers.length === 0) {
+    barbers.push({ id:1, name:val, photo:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80', role:'', days:[], hours:'' });
+  } else {
+    barbers[0].name = val;
+  }
+  // Update dashboard barber name display
+  const dashName = document.getElementById('barber-dashboard-title');
+  if (dashName) dashName.textContent = val;
   refreshAll(); hideModal('barber-name-modal');
 }
 
@@ -2566,7 +2681,7 @@ function openAddBarberModal() {
   document.getElementById('barber-modal-title').textContent = t('addBarber');
   document.getElementById('bm-name').value='';
   document.getElementById('bm-role').value='';
-  document.getElementById('bm-hours').value='09:00 AM — 06:00 PM';
+  document.getElementById('bm-hours').value='09:00 — 18:00';
   document.getElementById('bm-days').value='MON,TUE,WED,THU,FRI';
   document.getElementById('bm-photo-preview').src='https://images.unsplash.com/photo-1531384441138-2736e62e0919?w=400&q=80';
   showModal('barber-modal');
@@ -2585,7 +2700,7 @@ function openEditBarberModal(i) {
 function saveBarberModal() {
   const name  = document.getElementById('bm-name').value.trim().toUpperCase() || 'NEW BARBER';
   const role  = document.getElementById('bm-role').value.trim() || 'Barber';
-  const hours = document.getElementById('bm-hours').value.trim() || '09:00 AM — 06:00 PM';
+  const hours = document.getElementById('bm-hours').value.trim() || '09:00 — 18:00';
   const days  = document.getElementById('bm-days').value.split(',').map(d=>d.trim().toUpperCase()).filter(Boolean);
   const photo = document.getElementById('bm-photo-preview').src;
   if (editingBarber !== null) {
@@ -2628,9 +2743,12 @@ function openEditServiceModal(i) {
   showModal('service-modal');
 }
 function saveServiceModal() {
-  const name=document.getElementById('svc-name').value.trim().toUpperCase()||'SERVICE';
-  const price=parseFloat(document.getElementById('svc-price').value)||0;
-  const dur=document.getElementById('svc-duration').value.trim()||'30 min';
+  if (!rateLimit('saveService', 600)) return;
+  const name  = sanitize(document.getElementById('svc-name').value)||'שירות';
+  const price = parseFloat(document.getElementById('svc-price').value)||0;
+  const dur   = sanitize(document.getElementById('svc-duration').value)||"30 דק'";
+  clearFieldError('svc-price');
+  if (!validatePrice(price)) { showFieldError('svc-price', currentLang==='he'?'מחיר לא תקין':'Invalid price'); return; }
   if (editingService!==null) services[editingService]={...services[editingService],name,price,duration:dur};
   else services.push({id:Date.now(),name,price,duration:dur});
   refreshAll(); hideModal('service-modal');
@@ -2658,10 +2776,11 @@ function openEditDealModal(i) {
   showModal('deal-modal');
 }
 function saveDealModal() {
-  const name=document.getElementById('deal-name').value.trim().toUpperCase()||'DEAL';
-  const desc=document.getElementById('deal-desc').value.trim()||'';
-  const price=parseFloat(document.getElementById('deal-price').value)||0;
-  const badge=document.getElementById('deal-badge').value.trim().toUpperCase()||'SPECIAL';
+  if (!rateLimit('saveDeal', 600)) return;
+  const name  = sanitize(document.getElementById('deal-name').value)||'מבצע';
+  const desc  = sanitize(document.getElementById('deal-desc').value, 300)||'';
+  const price = parseFloat(document.getElementById('deal-price').value)||0;
+  const badge = sanitize(document.getElementById('deal-badge').value)||'מיוחד';
   if (editingDeal!==null) deals[editingDeal]={...deals[editingDeal],name,desc,price,badge};
   else deals.push({id:Date.now(),name,desc,price,badge});
   refreshAll(); hideModal('deal-modal');
@@ -2687,9 +2806,12 @@ function openEditProductModal(i) {
   showModal('product-modal');
 }
 function saveProductModal() {
-  const name=document.getElementById('prod-name').value.trim().toUpperCase()||'PRODUCT';
-  const price=parseFloat(document.getElementById('prod-price').value)||0;
-  const photo=document.getElementById('prod-photo-preview').src;
+  if (!rateLimit('saveProduct', 600)) return;
+  const name  = sanitize(document.getElementById('prod-name').value)||'מוצר';
+  const price = parseFloat(document.getElementById('prod-price').value)||0;
+  const photo = document.getElementById('prod-photo-preview').src;
+  clearFieldError('prod-price');
+  if (!validatePrice(price)) { showFieldError('prod-price', currentLang==='he'?'מחיר לא תקין':'Invalid price'); return; }
   if (editingProduct!==null) products[editingProduct]={...products[editingProduct],name,price,photo};
   else products.push({id:Date.now(),name,price,photo});
   refreshAll(); hideModal('product-modal');
@@ -2781,14 +2903,38 @@ function openEditNewsModal(i) {
   showModal('news-modal');
 }
 function saveNewsModal() {
-  const title=document.getElementById('news-title-input').value.trim();
-  const body=document.getElementById('news-body-input').value.trim();
-  const type=document.getElementById('news-type-input').value.trim().toUpperCase()||'NOTICE';
-  if(!title) return;
-  const date=new Date().toLocaleDateString(currentLang==='he'?'he-IL':currentLang==='ar'?'ar-SA':'en-GB',{day:'numeric',month:'short',year:'numeric'});
-  if(editingNews!==null) news[editingNews]={...news[editingNews],title,body,type};
-  else news.unshift({id:Date.now(),title,body,type,date});
-  renderNewsList(); renderNewsManage(); hideModal('news-modal');
+  // Rate limit — prevent double-tap saves
+  if (!rateLimit('saveNews', 800)) return;
+
+  const rawTitle = document.getElementById('news-title-input').value;
+  const rawBody  = document.getElementById('news-body-input').value;
+  const rawType  = document.getElementById('news-type-input').value;
+
+  // Sanitize
+  const title = sanitize(rawTitle, 120);
+  const body  = sanitize(rawBody, 500);
+  const type  = sanitize(rawType, 30).toUpperCase() || (currentLang==='he'?'הודעה':currentLang==='ar'?'إشعار':'NOTICE');
+
+  // Validate
+  clearFieldError('news-title-input');
+  if (!validateText(title)) {
+    const errMsg = currentLang==='he'?'כותרת נדרשת':currentLang==='ar'?'العنوان مطلوب':'Title is required';
+    showFieldError('news-title-input', errMsg);
+    return;
+  }
+
+  const locale = currentLang==='he'?'he-IL':currentLang==='ar'?'ar-SA':'en-GB';
+  const date = new Date().toLocaleDateString(locale, {day:'numeric', month:'short', year:'numeric'});
+
+  if (editingNews !== null) {
+    news[editingNews] = { ...news[editingNews], title, body, type };
+  } else {
+    news.unshift({ id: Date.now(), title, body, type, date });
+  }
+
+  renderNewsList();
+  renderNewsManage();
+  hideModal('news-modal');
 }
 function deleteNews(i) {
   const msg=currentLang==='he'?'למחוק עדכון זה?':currentLang==='ar'?'حذف هذا التحديث؟':'Delete this update?';
@@ -2832,6 +2978,8 @@ function deleteNews(i) {
     refreshAll();
     resetActiveBooking();
     applyLanguage('he');
+    // Ensure all data-t elements are translated on first load
+    setTimeout(applyStaticTranslations, 50);
   }, 4500);
 })();
 
@@ -2871,8 +3019,8 @@ function saveClientProfile() {
   <div class="w-full bg-[#131313] border-t-4 border-primary px-6 pt-10 pb-12">
     <div class="max-w-md mx-auto">
       <h2 class="font-headline text-2xl font-extrabold tracking-tighter mb-6" data-t="barberName">שם הספר</h2>
-      <input id="barber-name-input" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-5 py-4 font-headline text-xl uppercase text-on-surface focus:border-primary outline-none mb-4" placeholder="JULIAN VANCE"/>
-      <button onclick="saveBarberName()" class="w-full gold-gradient py-5 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98] mb-3">SAVE</button>
+      <input id="barber-name-input" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-5 py-4 font-headline text-xl uppercase text-on-surface focus:border-primary outline-none mb-4" placeholder="ג׳וליאן ואנס"/>
+      <button onclick="saveBarberName()" class="w-full gold-gradient py-5 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98] mb-3" data-t="save">שמור</button>
       <button onclick="hideModal('barber-name-modal')" class="w-full py-4 border border-outline-variant text-outline font-label text-sm font-extrabold tracking-widest uppercase hover:border-primary-container hover:text-primary-container transition-all active:scale-[0.98]" data-t="cancel">ביטול</button>
     </div>
   </div>
@@ -2882,34 +3030,34 @@ function saveClientProfile() {
 <div id="barber-modal" class="hidden fixed inset-0 z-[300] bg-black/60 backdrop-blur-sm flex items-end" onclick="if(event.target===this)hideModal('barber-modal')">
   <div class="w-full bg-[#131313] border-t-4 border-primary px-6 pt-10 pb-12 max-h-[90dvh] overflow-y-auto">
     <div class="max-w-md mx-auto">
-      <h2 class="font-headline text-2xl font-extrabold tracking-tighter mb-6" id="barber-modal-title">ADD BARBER</h2>
+      <h2 class="font-headline text-2xl font-extrabold tracking-tighter mb-6" id="barber-modal-title" data-t="addBarber">הוסף ספר</h2>
       <!-- Photo -->
       <div class="flex items-center gap-4 mb-6">
         <div class="w-16 h-16 overflow-hidden border-2 border-primary-container flex-shrink-0">
           <img id="bm-photo-preview" src="https://images.unsplash.com/photo-1531384441138-2736e62e0919?w=400&q=80" style="width:100%;height:100%;object-fit:cover;object-position:top"/>
         </div>
         <label class="flex-1 py-3 border-2 border-dashed border-primary-container/60 text-primary-container font-label text-[10px] font-extrabold tracking-widest uppercase text-center cursor-pointer hover:border-primary-container transition-all">
-          UPLOAD PHOTO <input type="file" accept="image/*" class="hidden" onchange="handleBarberPhotoUpload(event)"/>
+          <span data-t="uploadPhoto">העלאת תמונה</span> <input type="file" accept="image/*" class="hidden" onchange="handleBarberPhotoUpload(event)"/>
         </label>
       </div>
       <div class="space-y-4">
         <div>
-          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2">NAME</label>
-          <input id="bm-name" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-headline text-base uppercase text-on-surface focus:border-primary outline-none" placeholder="JULIAN VANCE"/>
+          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="profileName">שם</label>
+          <input id="bm-name" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-headline text-base uppercase text-on-surface focus:border-primary outline-none" placeholder="ג׳וליאן ואנס"/>
         </div>
         <div>
-          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2">ROLE</label>
-          <input id="bm-role" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base text-on-surface focus:border-primary outline-none" placeholder="Master Barber"/>
+          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="role">תפקיד</label>
+          <input id="bm-role" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base text-on-surface focus:border-primary outline-none" placeholder="ספר מומחה"/>
         </div>
         <div>
-          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2">WORKING HOURS</label>
-          <input id="bm-hours" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base text-on-surface focus:border-primary outline-none" placeholder="09:00 AM — 06:00 PM"/>
+          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="workingHours">שעות עבודה</label>
+          <input id="bm-hours" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base text-on-surface focus:border-primary outline-none" placeholder="09:00 — 18:00"/>
         </div>
         <div>
-          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2">WORKING DAYS (comma separated)</label>
-          <input id="bm-days" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base text-on-surface focus:border-primary outline-none" placeholder="MON,TUE,WED,THU,FRI"/>
+          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="workingDays">ימי עבודה (מופרדים בפסיק)</label>
+          <input id="bm-days" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base text-on-surface focus:border-primary outline-none" placeholder="שני,שלישי,רביעי,חמישי,שישי"/>
         </div>
-        <button onclick="saveBarberModal()" class="w-full gold-gradient py-5 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98]" data-t="saveBarber"></button>
+        <button onclick="saveBarberModal()" class="w-full gold-gradient py-5 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98]" data-t="saveBarber">שמור ספר</button>
         <button onclick="hideModal('barber-modal')" class="w-full py-4 border border-outline-variant text-outline font-label text-sm font-extrabold tracking-widest uppercase hover:border-primary-container hover:text-primary-container transition-all active:scale-[0.98]" data-t="cancel">ביטול</button>
       </div>
     </div>
@@ -2920,21 +3068,21 @@ function saveClientProfile() {
 <div id="service-modal" class="hidden fixed inset-0 z-[300] bg-black/60 backdrop-blur-sm flex items-end" onclick="if(event.target===this)hideModal('service-modal')">
   <div class="w-full bg-[#131313] border-t-4 border-primary px-6 pt-10 pb-12">
     <div class="max-w-md mx-auto">
-      <h2 class="font-headline text-2xl font-extrabold tracking-tighter mb-6" id="svc-modal-title">ADD SERVICE</h2>
+      <h2 class="font-headline text-2xl font-extrabold tracking-tighter mb-6" id="svc-modal-title" data-t="addService">הוסף שירות</h2>
       <div class="space-y-4">
         <div>
-          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2">SERVICE NAME</label>
-          <input id="svc-name" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-headline text-base uppercase text-on-surface focus:border-primary outline-none" placeholder="ROYAL CUT"/>
+          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="serviceName">שם השירות</label>
+          <input id="svc-name" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-headline text-base uppercase text-on-surface focus:border-primary outline-none" placeholder="תספורת מלכותית"/>
         </div>
         <div>
-          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2">PRICE (£)</label>
+          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="priceLabel">מחיר (₪)</label>
           <input id="svc-price" type="number" min="0" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-headline text-base text-on-surface focus:border-primary outline-none" placeholder="35"/>
         </div>
         <div>
-          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2">DURATION</label>
-          <input id="svc-duration" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base text-on-surface focus:border-primary outline-none" placeholder="45 min"/>
+          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="duration">משך זמן</label>
+          <input id="svc-duration" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base text-on-surface focus:border-primary outline-none" placeholder="45 דק׳"/>
         </div>
-        <button onclick="saveServiceModal()" class="w-full gold-gradient py-5 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98]" data-t="saveService"></button>
+        <button onclick="saveServiceModal()" class="w-full gold-gradient py-5 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98]" data-t="saveService">שמור שירות</button>
         <button onclick="hideModal('service-modal')" class="w-full py-4 border border-outline-variant text-outline font-label text-sm font-extrabold tracking-widest uppercase hover:border-primary-container hover:text-primary-container transition-all active:scale-[0.98]" data-t="cancel">ביטול</button>
       </div>
     </div>
@@ -2945,25 +3093,25 @@ function saveClientProfile() {
 <div id="deal-modal" class="hidden fixed inset-0 z-[300] bg-black/60 backdrop-blur-sm flex items-end" onclick="if(event.target===this)hideModal('deal-modal')">
   <div class="w-full bg-[#131313] border-t-4 border-primary px-6 pt-10 pb-12">
     <div class="max-w-md mx-auto">
-      <h2 class="font-headline text-2xl font-extrabold tracking-tighter mb-6" id="deal-modal-title">ADD DEAL</h2>
+      <h2 class="font-headline text-2xl font-extrabold tracking-tighter mb-6" id="deal-modal-title" data-t="addDeal">הוסף מבצע</h2>
       <div class="space-y-4">
         <div>
-          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2">DEAL NAME</label>
-          <input id="deal-name" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-headline text-base uppercase text-on-surface focus:border-primary outline-none" placeholder="WEDDING CUT"/>
+          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="dealName">שם המבצע</label>
+          <input id="deal-name" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-headline text-base uppercase text-on-surface focus:border-primary outline-none" placeholder="תספורת לחתונה"/>
         </div>
         <div>
-          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2">DESCRIPTION</label>
-          <input id="deal-desc" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base text-on-surface focus:border-primary outline-none" placeholder="Full prep for the big day"/>
+          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="description">תיאור</label>
+          <input id="deal-desc" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base text-on-surface focus:border-primary outline-none" placeholder="הכנה מלאה ליום הגדול"/>
         </div>
         <div>
-          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2">PRICE (£)</label>
+          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="priceLabel">מחיר (₪)</label>
           <input id="deal-price" type="number" min="0" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-headline text-base text-on-surface focus:border-primary outline-none" placeholder="120"/>
         </div>
         <div>
-          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2">BADGE LABEL</label>
-          <input id="deal-badge" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base uppercase text-on-surface focus:border-primary outline-none" placeholder="POPULAR"/>
+          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="badgeLabel">תווית תג</label>
+          <input id="deal-badge" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base uppercase text-on-surface focus:border-primary outline-none" placeholder="מיוחד"/>
         </div>
-        <button onclick="saveDealModal()" class="w-full gold-gradient py-5 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98]" data-t="saveDeal"></button>
+        <button onclick="saveDealModal()" class="w-full gold-gradient py-5 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98]" data-t="saveDeal">שמור מבצע</button>
         <button onclick="hideModal('deal-modal')" class="w-full py-4 border border-outline-variant text-outline font-label text-sm font-extrabold tracking-widest uppercase hover:border-primary-container hover:text-primary-container transition-all active:scale-[0.98]" data-t="cancel">ביטול</button>
       </div>
     </div>
@@ -2974,27 +3122,63 @@ function saveClientProfile() {
 <div id="product-modal" class="hidden fixed inset-0 z-[300] bg-black/60 backdrop-blur-sm flex items-end" onclick="if(event.target===this)hideModal('product-modal')">
   <div class="w-full bg-[#131313] border-t-4 border-primary px-6 pt-10 pb-12">
     <div class="max-w-md mx-auto">
-      <h2 class="font-headline text-2xl font-extrabold tracking-tighter mb-6" id="prod-modal-title">ADD PRODUCT</h2>
+      <h2 class="font-headline text-2xl font-extrabold tracking-tighter mb-6" id="prod-modal-title" data-t="addProduct">הוסף מוצר</h2>
       <!-- Photo -->
       <div class="flex items-center gap-4 mb-6">
         <div class="w-16 h-16 overflow-hidden border-2 border-primary-container flex-shrink-0">
           <img id="prod-photo-preview" src="https://images.unsplash.com/photo-1585751119414-ef2636f8aede?w=300&q=80" style="width:100%;height:100%;object-fit:cover"/>
         </div>
         <label class="flex-1 py-3 border-2 border-dashed border-primary-container/60 text-primary-container font-label text-[10px] font-extrabold tracking-widest uppercase text-center cursor-pointer hover:border-primary-container transition-all">
-          UPLOAD PHOTO <input type="file" accept="image/*" class="hidden" onchange="handleProductPhotoUpload(event)"/>
+          <span data-t="uploadPhoto">העלאת תמונה</span> <input type="file" accept="image/*" class="hidden" onchange="handleProductPhotoUpload(event)"/>
         </label>
       </div>
       <div class="space-y-4">
         <div>
-          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2">PRODUCT NAME</label>
-          <input id="prod-name" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-headline text-base uppercase text-on-surface focus:border-primary outline-none" placeholder="MATTE POMADE"/>
+          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="productName">שם המוצר</label>
+          <input id="prod-name" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-headline text-base uppercase text-on-surface focus:border-primary outline-none" placeholder="פומד מאט"/>
         </div>
         <div>
-          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2">PRICE (£)</label>
+          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="priceLabel">מחיר (₪)</label>
           <input id="prod-price" type="number" min="0" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-headline text-base text-on-surface focus:border-primary outline-none" placeholder="18"/>
         </div>
-        <button onclick="saveProductModal()" class="w-full gold-gradient py-5 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98]" data-t="saveProduct"></button>
+        <button onclick="saveProductModal()" class="w-full gold-gradient py-5 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98]" data-t="saveProduct">שמור מוצר</button>
         <button onclick="hideModal('product-modal')" class="w-full py-4 border border-outline-variant text-outline font-label text-sm font-extrabold tracking-widest uppercase hover:border-primary-container hover:text-primary-container transition-all active:scale-[0.98]" data-t="cancel">ביטול</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ===== NEWS ADD/EDIT MODAL ===== -->
+<div id="news-modal" class="hidden fixed inset-0 z-[300] bg-black/60 backdrop-blur-sm flex items-end" onclick="if(event.target===this)hideModal('news-modal')">
+  <div class="w-full bg-[#131313] border-t-4 border-primary px-6 pt-10 pb-12 max-h-[85dvh] overflow-y-auto">
+    <div class="max-w-md mx-auto">
+      <h2 class="font-headline text-2xl font-extrabold tracking-tighter mb-6" id="news-modal-title" data-t="addNews">הוסף עדכון</h2>
+      <div class="space-y-5">
+        <div>
+          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="newsTitle">כותרת</label>
+          <input id="news-title-input" type="text" dir="auto"
+            class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base text-on-surface focus:border-primary outline-none transition-colors"
+            placeholder="כותרת העדכון..."/>
+        </div>
+        <div>
+          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="newsBody">תוכן</label>
+          <textarea id="news-body-input" rows="4" dir="auto"
+            class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base text-on-surface focus:border-primary outline-none resize-none transition-colors"
+            placeholder="תוכן העדכון..."></textarea>
+        </div>
+        <div>
+          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="newsType">סוג</label>
+          <input id="news-type-input" type="text" dir="auto"
+            class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base text-on-surface focus:border-primary outline-none transition-colors"
+            placeholder="הודעה / עדכון / הכרזה"/>
+        </div>
+        <button onclick="saveNewsModal()"
+          class="w-full gold-gradient py-5 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98] transition-transform"
+          data-t="saveNews">שמור עדכון</button>
+        <button onclick="hideModal('news-modal')"
+          class="w-full py-4 border border-outline-variant text-outline font-label text-sm font-extrabold tracking-widest uppercase hover:border-primary-container hover:text-primary-container transition-all active:scale-[0.98]"
+          data-t="cancel">ביטול</button>
       </div>
     </div>
   </div>
