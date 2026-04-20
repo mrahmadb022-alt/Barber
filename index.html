@@ -341,15 +341,15 @@
           </div>
           <!-- Active booking state -->
           <div id="active-booking-content" style="display:none">
-            <p class="font-label text-[9px] font-extrabold tracking-[0.2em] mb-1 opacity-70" data-t="nextSession">הפגישה הבאה</p>
+            <p class="font-label text-[11px] font-extrabold tracking-[0.15em] mb-1 opacity-70" data-t="nextSession">הפגישה הבאה</p>
             <p class="font-headline text-xl font-bold tracking-tight" id="active-booking-date">—</p>
             <div class="flex gap-10 mt-3">
               <div>
-                <p class="font-label text-[9px] font-extrabold tracking-[0.15em] opacity-70" data-t="time">שעה</p>
+                <p class="font-label text-[11px] font-extrabold tracking-[0.12em] opacity-70" data-t="time">שעה</p>
                 <p class="font-headline text-lg font-bold" id="active-booking-time">—</p>
               </div>
               <div>
-                <p class="font-label text-[9px] font-extrabold tracking-[0.15em] opacity-70" data-t="service">שירות</p>
+                <p class="font-label text-[11px] font-extrabold tracking-[0.12em] opacity-70" data-t="service">שירות</p>
                 <p class="font-headline text-lg font-bold" id="active-booking-service">—</p>
               </div>
             </div>
@@ -360,7 +360,7 @@
 
     <!-- Barber Profile Card --><!-- Barber Profile Card -->
     <section class="mb-10" id="client-barber-section">
-      <p class="font-label text-[10px] font-bold tracking-[0.25em] uppercase text-outline mb-4" data-t="yourBarber">הספר שלך</p>
+      <p class="font-label text-[12px] font-bold tracking-[0.2em] uppercase text-outline mb-4" data-t="yourBarber">הספר שלך</p>
       <div class="bg-surface-container-low border border-outline-variant/30 overflow-hidden" id="client-barber-card">
         <!-- populated by renderClientBarberCard() -->
       </div>
@@ -368,7 +368,7 @@
 
     <!-- Special Deals -->
     <section class="mb-10">
-      <p class="font-label text-[10px] font-bold tracking-[0.25em] uppercase text-outline mb-4" data-t="specialDeals">מבצעים מיוחדים</p>
+      <p class="font-label text-[12px] font-bold tracking-[0.2em] uppercase text-outline mb-4" data-t="specialDeals">מבצעים מיוחדים</p>
       <div class="flex gap-3 overflow-x-auto pb-2 -mx-6 px-6" style="scrollbar-width:none" id="deals-track">
         <!-- populated by renderDeals() -->
       </div>
@@ -376,7 +376,7 @@
 
     <!-- Services & Prices -->
     <section class="mb-10">
-      <p class="font-label text-[10px] font-bold tracking-[0.25em] uppercase text-outline mb-4" data-t="servicesAndPrices">שירותים ומחירים</p>
+      <p class="font-label text-[12px] font-bold tracking-[0.2em] uppercase text-outline mb-4" data-t="servicesAndPrices">שירותים ומחירים</p>
       <div class="flex flex-col gap-2" id="client-services-list">
         <!-- populated by renderClientServices() -->
       </div>
@@ -384,7 +384,7 @@
 
     <!-- Products -->
     <section class="mb-10">
-      <p class="font-label text-[10px] font-bold tracking-[0.25em] uppercase text-outline mb-4" data-t="shopProducts">מוצרי חנות</p>
+      <p class="font-label text-[12px] font-bold tracking-[0.2em] uppercase text-outline mb-4" data-t="shopProducts">מוצרי חנות</p>
       <div class="grid grid-cols-2 gap-3" id="client-products-grid">
         <!-- populated by renderClientProducts() -->
       </div>
@@ -392,7 +392,7 @@
 
     <!-- Barbershop Photos Carousel -->
     <section class="mb-10 -mx-6">
-      <p class="font-label text-[10px] font-bold tracking-[0.25em] uppercase text-outline mb-4 px-6" data-t="ourStudio">הסטודיו שלנו</p>
+      <p class="font-label text-[12px] font-bold tracking-[0.2em] uppercase text-outline mb-4 px-6" data-t="ourStudio">הסטודיו שלנו</p>
       <div class="photo-carousel px-6">
         <div class="photo-track" id="photo-track">
           <!-- Photos duplicated for seamless loop -->
@@ -435,39 +435,9 @@
 
     <!-- News from Barber -->
     <section>
-      <p class="font-label text-[10px] font-bold tracking-[0.25em] uppercase text-outline mb-4"data-t="newsFromBarber">עדכונים מהספר</p>
-      <!-- News card 1 -->
-      <div class="bg-surface-container-low border-l-2 border-primary-container p-5 mb-3">
-        <div class="flex items-start gap-4">
-          <div class="w-2 h-2 rounded-full bg-primary mt-1.5 flex-shrink-0 live-dot"></div>
-          <div>
-            <p class="font-label text-[9px] uppercase tracking-[0.2em] text-primary mb-1">APR 4, 2026 · ANNOUNCEMENT</p>
-            <h4 class="font-headline font-bold text-base leading-tight">New weekend hours starting April 12</h4>
-            <p class="font-body text-sm text-on-surface-variant mt-1.5">Saturday sessions now available from 09:00 AM to 3:00 PM. Book your spot before it fills up.</p>
-          </div>
-        </div>
-      </div>
-      <!-- News card 2 -->
-      <div class="bg-surface-container-low border-l-2 border-outline-variant/40 p-5 mb-3">
-        <div class="flex items-start gap-4">
-          <div class="w-2 h-2 rounded-full bg-outline-variant mt-1.5 flex-shrink-0"></div>
-          <div>
-            <p class="font-label text-[9px] uppercase tracking-[0.2em] text-outline mb-1">MAR 28, 2026 · NOTICE</p>
-            <h4 class="font-headline font-bold text-base leading-tight">Studio closed Apr 7 — Bank Holiday</h4>
-            <p class="font-body text-sm text-on-surface-variant mt-1.5">All existing bookings have been rescheduled. Check your confirmation.</p>
-          </div>
-        </div>
-      </div>
-      <!-- News card 3 -->
-      <div class="bg-surface-container-low border-l-2 border-outline-variant/40 p-5">
-        <div class="flex items-start gap-4">
-          <div class="w-2 h-2 rounded-full bg-outline-variant mt-1.5 flex-shrink-0"></div>
-          <div>
-            <p class="font-label text-[9px] uppercase tracking-[0.2em] text-outline mb-1">MAR 15, 2026 · UPDATE</p>
-            <h4 class="font-headline font-bold text-base leading-tight">New service: The Royal Package</h4>
-            <p class="font-body text-sm text-on-surface-variant mt-1.5">Full cut, hot towel shave and scalp treatment. 90 minutes of precision. Ask at your next visit.</p>
-          </div>
-        </div>
+      <p class="font-label text-[12px] font-bold tracking-[0.2em] uppercase text-outline mb-4" data-t="newsFromBarber">עדכונים מהספר</p>
+      <div id="client-news-list">
+        <p class="font-label text-[10px] text-outline text-center py-6 tracking-widest" data-t="noNews">אין עדכונים עדיין</p>
       </div>
     </section>
   </main>
@@ -476,15 +446,15 @@
   <nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-8 pt-3 bg-[#131313]/80 backdrop-blur-xl z-50 border-t-2 border-[#D4AF37]">
     <a class="nav-link flex flex-col items-center text-[#D4AF37] scale-110 cursor-pointer">
       <span class="material-symbols-outlined text-[26px]" style="font-variation-settings:'FILL' 1">home_max</span>
-      <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5" data-t="home">בית</span>
+      <span class="font-label text-[11px] font-bold tracking-[0.08em] uppercase mt-0.5" data-t="home">בית</span>
     </a>
     <a class="nav-link flex flex-col items-center text-gray-600 hover:text-[#f2ca50] cursor-pointer active:scale-95" onclick="navigateTo('screen-booking')">
       <span class="material-symbols-outlined text-[26px]">add_circle</span>
-      <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5" data-t="book">הזמנה</span>
+      <span class="font-label text-[11px] font-bold tracking-[0.08em] uppercase mt-0.5" data-t="book">הזמנה</span>
     </a>
     <a class="nav-link flex flex-col items-center text-gray-600 hover:text-[#f2ca50] cursor-pointer active:scale-95" onclick="openClientSettings()">
       <span class="material-symbols-outlined text-[26px]">manage_accounts</span>
-      <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5" data-t="settings">הגדרות</span>
+      <span class="font-label text-[11px] font-bold tracking-[0.08em] uppercase mt-0.5" data-t="settings">הגדרות</span>
     </a>
   </nav>
 </div>
@@ -505,18 +475,18 @@
 
     <!-- MY PROFILE -->
     <section class="mb-8">
-      <p class="font-label text-[10px] font-extrabold tracking-[0.25em] uppercase text-outline mb-4" data-t="myProfile">הפרופיל שלי</p>
+      <p class="font-label text-[12px] font-extrabold tracking-[0.2em] uppercase text-outline mb-4" data-t="myProfile">הפרופיל שלי</p>
       <div class="bg-surface-container-low border-l-4 border-primary-container p-5 space-y-4">
         <div>
-          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="profileName">שם</label>
+          <label class="block font-label text-[12px] font-extrabold tracking-[0.15em] text-outline mb-2" data-t="profileName">שם</label>
           <input id="cp-name" dir="auto" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base text-on-surface focus:border-primary outline-none transition-colors" placeholder="—"/>
         </div>
         <div>
-          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="profilePhone">טלפון</label>
+          <label class="block font-label text-[12px] font-extrabold tracking-[0.15em] text-outline mb-2" data-t="profilePhone">טלפון</label>
           <input id="cp-phone" type="tel" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base text-on-surface focus:border-primary outline-none transition-colors" placeholder="—" dir="ltr"/>
         </div>
         <div>
-          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="profileEmail">אימייל</label>
+          <label class="block font-label text-[12px] font-extrabold tracking-[0.15em] text-outline mb-2" data-t="profileEmail">אימייל</label>
           <input id="cp-email" dir="auto" type="email" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base text-on-surface focus:border-primary outline-none transition-colors" placeholder="—" dir="ltr"/>
         </div>
         <button onclick="saveClientProfile()" class="w-full gold-gradient py-4 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98] transition-transform" data-t="save">שמור</button>
@@ -525,7 +495,7 @@
 
     <!-- LANGUAGE -->
     <section class="mb-8">
-      <p class="font-label text-[10px] font-extrabold tracking-[0.25em] uppercase text-outline mb-4" data-t="appLanguage">שפת אפליקציה</p>
+      <p class="font-label text-[12px] font-extrabold tracking-[0.2em] uppercase text-outline mb-4" data-t="appLanguage">שפת אפליקציה</p>
       <div class="bg-surface-container-low border-l-4 border-primary-container p-5">
                 <div class="lang-selector-grid">
           <div class="lang-card selected" data-lang="he" onclick="selectLang('he')">
@@ -551,15 +521,15 @@
   <nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-8 pt-3 bg-[#131313]/80 backdrop-blur-xl z-50 border-t-2 border-[#D4AF37]">
     <a class="nav-link flex flex-col items-center text-gray-600 hover:text-[#f2ca50] cursor-pointer active:scale-95" onclick="navigateTo('screen-home')">
       <span class="material-symbols-outlined text-[26px]">home_max</span>
-      <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5" data-t="home">בית</span>
+      <span class="font-label text-[11px] font-bold tracking-[0.08em] uppercase mt-0.5" data-t="home">בית</span>
     </a>
     <a class="nav-link flex flex-col items-center text-gray-600 hover:text-[#f2ca50] cursor-pointer active:scale-95" onclick="navigateTo('screen-booking')">
       <span class="material-symbols-outlined text-[26px]">add_circle</span>
-      <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5" data-t="book">הזמנה</span>
+      <span class="font-label text-[11px] font-bold tracking-[0.08em] uppercase mt-0.5" data-t="book">הזמנה</span>
     </a>
     <a class="nav-link flex flex-col items-center text-[#D4AF37] scale-110 cursor-pointer">
       <span class="material-symbols-outlined text-[26px]" style="font-variation-settings:'FILL' 1">manage_accounts</span>
-      <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5" data-t="settings">הגדרות</span>
+      <span class="font-label text-[11px] font-bold tracking-[0.08em] uppercase mt-0.5" data-t="settings">הגדרות</span>
     </a>
   </nav>
 </div>
@@ -621,15 +591,15 @@
     <div class="flex justify-around items-center">
       <a class="nav-link flex flex-col items-center text-gray-600 hover:text-[#f2ca50] cursor-pointer active:scale-95" onclick="navigateTo('screen-home')">
         <span class="material-symbols-outlined text-[26px]">home_max</span>
-        <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5" data-t="home">בית</span>
+        <span class="font-label text-[11px] font-bold tracking-[0.08em] uppercase mt-0.5" data-t="home">בית</span>
       </a>
       <a class="nav-link flex flex-col items-center text-[#D4AF37] scale-110 cursor-pointer">
         <span class="material-symbols-outlined text-[26px]" style="font-variation-settings:'FILL' 1">add_circle</span>
-        <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5" data-t="book">הזמנה</span>
+        <span class="font-label text-[11px] font-bold tracking-[0.08em] uppercase mt-0.5" data-t="book">הזמנה</span>
       </a>
       <a class="nav-link flex flex-col items-center text-gray-600 hover:text-[#f2ca50] cursor-pointer active:scale-95" onclick="openClientSettings()">
         <span class="material-symbols-outlined text-[26px]">manage_accounts</span>
-        <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5" data-t="settings">הגדרות</span>
+        <span class="font-label text-[11px] font-bold tracking-[0.08em] uppercase mt-0.5" data-t="settings">הגדרות</span>
       </a>
     </div>
   </div>
@@ -684,11 +654,11 @@
       </header>
       <div class="space-y-6">
         <div>
-          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="fullName">שם מלא</label>
+          <label class="block font-label text-[12px] font-extrabold tracking-[0.15em] text-outline mb-2" data-t="fullName">שם מלא</label>
           <input id="inp-name" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-5 py-4 font-headline text-lg tracking-tight focus:border-primary focus:ring-0 text-on-surface placeholder:text-surface-container-highest uppercase transition-all outline-none" placeholder="ALEXANDER VANCE" type="text"/>
         </div>
         <div>
-          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="phoneNumber">מספר טלפון</label>
+          <label class="block font-label text-[12px] font-extrabold tracking-[0.15em] text-outline mb-2" data-t="phoneNumber">מספר טלפון</label>
           <input id="inp-phone" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-5 py-4 font-headline text-lg tracking-tight focus:border-primary focus:ring-0 text-on-surface placeholder:text-surface-container-highest transition-all outline-none" placeholder="+1 (555) 000-0000" type="tel"/>
         </div>
         <div>
@@ -819,15 +789,15 @@
   <nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-8 pt-3 bg-[#131313]/80 backdrop-blur-xl z-50 border-t-2 border-[#D4AF37]">
     <a class="nav-link flex flex-col items-center text-gray-600 hover:text-[#f2ca50] cursor-pointer active:scale-95" onclick="navigateTo('screen-home')">
       <span class="material-symbols-outlined text-[26px]">home_max</span>
-      <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5" data-t="home">בית</span>
+      <span class="font-label text-[11px] font-bold tracking-[0.08em] uppercase mt-0.5" data-t="home">בית</span>
     </a>
     <a class="nav-link flex flex-col items-center text-[#D4AF37] scale-110 cursor-pointer">
       <span class="material-symbols-outlined text-[26px]" style="font-variation-settings:'FILL' 1">confirmation_number</span>
-      <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5" data-t="myBookings">ההזמנות שלי</span>
+      <span class="font-label text-[11px] font-bold tracking-[0.08em] uppercase mt-0.5" data-t="myBookings">ההזמנות שלי</span>
     </a>
     <a class="nav-link flex flex-col items-center text-gray-600 hover:text-[#f2ca50] cursor-pointer active:scale-95" onclick="openClientSettings()">
       <span class="material-symbols-outlined text-[26px]">manage_accounts</span>
-      <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5" data-t="settings">הגדרות</span>
+      <span class="font-label text-[11px] font-bold tracking-[0.08em] uppercase mt-0.5" data-t="settings">הגדרות</span>
     </a>
   </nav>
 </div>
@@ -859,7 +829,7 @@
       <div class="grid grid-cols-2 gap-4">
         <div class="bg-surface-container-high p-5 border-l-4 border-primary">
           <div class="flex justify-between items-start mb-3">
-            <span class="font-label text-[9px] font-extrabold tracking-widest text-on-surface-variant uppercase" data-t="clientsToday">לקוחות היום</span>
+            <span class="font-label text-[11px] font-extrabold tracking-wider text-on-surface-variant uppercase" data-t="clientsToday">לקוחות היום</span>
             <span class="material-symbols-outlined text-primary text-lg">group</span>
           </div>
           <div class="font-headline text-4xl font-bold tracking-tighter text-on-surface">12</div>
@@ -869,7 +839,7 @@
         </div>
         <div class="bg-surface-container-high p-5">
           <div class="flex justify-between items-start mb-3">
-            <span class="font-label text-[9px] font-extrabold tracking-widest text-on-surface-variant uppercase" data-t="thisWeek">השבוע</span>
+            <span class="font-label text-[11px] font-extrabold tracking-wider text-on-surface-variant uppercase" data-t="thisWeek">השבוע</span>
             <span class="material-symbols-outlined text-gray-500 text-lg">calendar_view_week</span>
           </div>
           <div class="font-headline text-4xl font-bold tracking-tighter text-on-surface">58</div>
@@ -877,7 +847,7 @@
         </div>
         <div class="bg-surface-container-high p-5">
           <div class="flex justify-between items-start mb-3">
-            <span class="font-label text-[9px] font-extrabold tracking-widest text-on-surface-variant uppercase" data-t="nextClient">הלקוח הבא</span>
+            <span class="font-label text-[11px] font-extrabold tracking-wider text-on-surface-variant uppercase" data-t="nextClient">הלקוח הבא</span>
             <span class="material-symbols-outlined text-gray-500 text-lg">schedule</span>
           </div>
           <div class="font-headline text-2xl font-bold tracking-tighter text-on-surface">14:30</div>
@@ -885,7 +855,7 @@
         </div>
         <div class="bg-surface-container-high p-5">
           <div class="flex justify-between items-start mb-3">
-            <span class="font-label text-[9px] font-extrabold tracking-widest text-on-surface-variant uppercase" data-t="remaining">נותרו</span>
+            <span class="font-label text-[11px] font-extrabold tracking-wider text-on-surface-variant uppercase" data-t="remaining">נותרו</span>
             <span class="material-symbols-outlined text-gray-500 text-lg">pending_actions</span>
           </div>
           <div class="font-headline text-2xl font-bold tracking-tighter text-on-surface">3</div>
@@ -905,7 +875,7 @@
           </div>
           <div class="flex-1">
             <p class="font-body font-semibold text-sm">Alexander Vance</p>
-            <p class="font-label text-[9px] text-outline uppercase tracking-widest"><span data-t="royalCut">תספורת רויאל</span> · <span data-t="min45">45 דק׳</span></p>
+            <p class="font-label text-[11px] text-outline uppercase tracking-widest"><span data-t="royalCut">תספורת רויאל</span> · <span data-t="min45">45 דק׳</span></p>
           </div>
           <span class="font-label text-[9px] text-green-500 font-bold uppercase tracking-wider border border-green-500/30 px-2 py-1" data-t="done">בוצע</span>
         </div>
@@ -916,7 +886,7 @@
           </div>
           <div class="flex-1">
             <p class="font-body font-semibold text-sm">Marcus Reed</p>
-            <p class="font-label text-[9px] text-outline uppercase tracking-widest"><span data-t="beardSculpt">פיסול זקן</span> · <span data-t="min30">30 דק׳</span></p>
+            <p class="font-label text-[11px] text-outline uppercase tracking-widest"><span data-t="beardSculpt">פיסול זקן</span> · <span data-t="min30">30 דק׳</span></p>
           </div>
           <span class="font-label text-[9px] text-green-500 font-bold uppercase tracking-wider border border-green-500/30 px-2 py-1" data-t="done">בוצע</span>
         </div>
@@ -938,7 +908,7 @@
           </div>
           <div class="flex-1">
             <p class="font-body font-semibold text-sm">Thomas Blake</p>
-            <p class="font-label text-[9px] text-outline uppercase tracking-widest"><span data-t="royalCut">תספורת רויאל</span> · <span data-t="min45">45 דק׳</span></p>
+            <p class="font-label text-[11px] text-outline uppercase tracking-widest"><span data-t="royalCut">תספורת רויאל</span> · <span data-t="min45">45 דק׳</span></p>
           </div>
           <span class="font-label text-[9px] text-outline font-bold uppercase tracking-wider">4:00PM</span>
         </div>
@@ -947,7 +917,7 @@
 
     <!-- Studio Photos (managed via settings) -->
     <section class="mb-10 -mx-6">
-      <p class="font-label text-[10px] font-bold tracking-[0.25em] uppercase text-outline mb-4 px-6" data-t="studioGallery">גלריית הסטודיו</p>
+      <p class="font-label text-[12px] font-bold tracking-[0.2em] uppercase text-outline mb-4 px-6" data-t="studioGallery">גלריית הסטודיו</p>
       <div class="photo-carousel px-6">
         <div class="photo-track" id="barber-photo-track">
           <div class="photo-card"><img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=400&q=80"/></div>
@@ -965,17 +935,17 @@
 
     <!-- Special Deals preview -->
     <section class="mb-10">
-      <p class="font-label text-[10px] font-bold tracking-[0.25em] uppercase text-outline mb-4" data-t="specialDeals">מבצעים מיוחדים</p>
+      <p class="font-label text-[12px] font-bold tracking-[0.2em] uppercase text-outline mb-4" data-t="specialDeals">מבצעים מיוחדים</p>
       <div class="flex gap-3 overflow-x-auto pb-2 -mx-6 px-6" style="scrollbar-width:none" id="barber-deals-track"><p class="font-label text-[10px] text-outline py-3">—</p></div>
     </section>
     <!-- Products preview -->
     <section class="mb-10">
-      <p class="font-label text-[10px] font-bold tracking-[0.25em] uppercase text-outline mb-4" data-t="shopProducts">מוצרי חנות</p>
+      <p class="font-label text-[12px] font-bold tracking-[0.2em] uppercase text-outline mb-4" data-t="shopProducts">מוצרי חנות</p>
       <div class="grid grid-cols-2 gap-3" id="barber-products-grid"><p class="col-span-2 font-label text-[10px] text-outline py-3">—</p></div>
     </section>
     <!-- News preview -->
     <section class="mb-10">
-      <p class="font-label text-[10px] font-bold tracking-[0.25em] uppercase text-outline mb-4" data-t="newsFromBarber">עדכונים מהספר</p>
+      <p class="font-label text-[12px] font-bold tracking-[0.2em] uppercase text-outline mb-4" data-t="newsFromBarber">עדכונים מהספר</p>
       <div id="barber-news-list"><p class="font-label text-[10px] text-outline py-3">—</p></div>
     </section>
 
@@ -985,15 +955,15 @@
   <nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-8 pt-3 bg-[#131313]/80 backdrop-blur-xl z-50 border-t-2 border-[#D4AF37]">
     <a class="nav-link flex flex-col items-center text-[#D4AF37] scale-110 cursor-pointer" onclick="navigateTo('screen-barber');setBarberNav('dashboard')">
       <span class="material-symbols-outlined text-[26px]" style="font-variation-settings:'FILL' 1" id="bnav-dashboard">dashboard</span>
-      <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5"><span data-t="dashboard">לוח בקרה</span></span>
+      <span class="font-label text-[11px] font-bold tracking-[0.08em] uppercase mt-0.5"><span data-t="dashboard">לוח בקרה</span></span>
     </a>
     <a class="nav-link flex flex-col items-center text-gray-600 hover:text-[#f2ca50] cursor-pointer active:scale-95" onclick="navigateTo('screen-barber-settings');setBarberNav('schedule')">
       <span class="material-symbols-outlined text-[26px]" id="bnav-schedule">tune</span>
-      <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5"><span data-t="schedule">לוח זמנים</span></span>
+      <span class="font-label text-[11px] font-bold tracking-[0.08em] uppercase mt-0.5"><span data-t="schedule">לוח זמנים</span></span>
     </a>
     <a class="nav-link flex flex-col items-center text-gray-600 hover:text-[#f2ca50] cursor-pointer active:scale-95" onclick="navigateTo('screen-barber-app-settings');setBarberNav('settings');buildPhotoManageGrid()">
       <span class="material-symbols-outlined text-[26px]" id="bnav-settings">settings</span>
-      <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5" data-t="settings">הגדרות</span>
+      <span class="font-label text-[11px] font-bold tracking-[0.08em] uppercase mt-0.5" data-t="settings">הגדרות</span>
     </a>
   </nav>
 </div>
@@ -1090,15 +1060,15 @@
   <nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-8 pt-3 bg-[#131313]/80 backdrop-blur-xl z-50 border-t-2 border-[#D4AF37]">
     <a class="nav-link flex flex-col items-center text-gray-600 hover:text-[#f2ca50] cursor-pointer active:scale-95" onclick="navigateTo('screen-barber');setBarberNav('dashboard')">
       <span class="material-symbols-outlined text-[26px]">dashboard</span>
-      <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5"><span data-t="dashboard">לוח בקרה</span></span>
+      <span class="font-label text-[11px] font-bold tracking-[0.08em] uppercase mt-0.5"><span data-t="dashboard">לוח בקרה</span></span>
     </a>
     <a class="nav-link flex flex-col items-center text-[#D4AF37] scale-110 cursor-pointer">
       <span class="material-symbols-outlined text-[26px]" style="font-variation-settings:'FILL' 1">tune</span>
-      <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5"><span data-t="schedule">לוח זמנים</span></span>
+      <span class="font-label text-[11px] font-bold tracking-[0.08em] uppercase mt-0.5"><span data-t="schedule">לוח זמנים</span></span>
     </a>
     <a class="nav-link flex flex-col items-center text-gray-600 hover:text-[#f2ca50] cursor-pointer active:scale-95" onclick="navigateTo('screen-barber-app-settings');setBarberNav('settings');buildPhotoManageGrid()">
       <span class="material-symbols-outlined text-[26px]">settings</span>
-      <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5" data-t="settings">הגדרות</span>
+      <span class="font-label text-[11px] font-bold tracking-[0.08em] uppercase mt-0.5" data-t="settings">הגדרות</span>
     </a>
   </nav>
 </div>
@@ -1129,7 +1099,7 @@
       <!-- Action 2: Edit hours -->
       <div class="space-y-5" id="hours-editor">
         <div>
-          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="openingTime">שעת פתיחה</label>
+          <label class="block font-label text-[12px] font-extrabold tracking-[0.15em] text-outline mb-2" data-t="openingTime">שעת פתיחה</label>
           <div class="flex gap-3">
             <select id="open-hour" class="flex-1 bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-headline text-base text-on-surface focus:border-primary outline-none transition-colors">
               <option>07:00</option><option>08:00</option><option selected>09:00</option><option>10:00</option><option>11:00</option><option>12:00</option>
@@ -1137,7 +1107,7 @@
           </div>
         </div>
         <div>
-          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="closingTime">שעת סגירה</label>
+          <label class="block font-label text-[12px] font-extrabold tracking-[0.15em] text-outline mb-2" data-t="closingTime">שעת סגירה</label>
           <div class="flex gap-3">
             <select id="close-hour" class="flex-1 bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-headline text-base text-on-surface focus:border-primary outline-none transition-colors">
               <option>15:00</option><option>16:00</option><option>17:00</option><option selected>18:00</option><option>19:00</option><option>20:00</option>
@@ -1176,11 +1146,11 @@
       <p class="font-body text-sm text-on-surface-variant mb-6" data-t="lockPeriodDesc">בחר טווח תאריכים לחסימת הזמנות.</p>
       <div class="space-y-4">
         <div>
-          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="fromDate">מתאריך</label>
+          <label class="block font-label text-[12px] font-extrabold tracking-[0.15em] text-outline mb-2" data-t="fromDate">מתאריך</label>
           <input type="date" id="lock-from" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-headline text-base text-on-surface focus:border-error outline-none transition-colors"/>
         </div>
         <div>
-          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="toDate">עד תאריך</label>
+          <label class="block font-label text-[12px] font-extrabold tracking-[0.15em] text-outline mb-2" data-t="toDate">עד תאריך</label>
           <input type="date" id="lock-to" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-headline text-base text-on-surface focus:border-error outline-none transition-colors"/>
         </div>
         <button onclick="applyLockPeriod()" class="w-full py-5 border-2 border-error/50 text-error/80 font-label text-sm font-extrabold tracking-[0.2em] uppercase hover:bg-error/10 transition-all active:scale-[0.98]" data-t="lockPeriod">
@@ -1202,13 +1172,13 @@
       <p class="font-body text-sm text-on-surface-variant mb-6" data-t="setDefaultHoursDesc">קבע שעות ברירת מחדל לכל הימים הבאים.</p>
       <div class="space-y-5">
         <div>
-          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="openingTime">שעת פתיחה</label>
+          <label class="block font-label text-[12px] font-extrabold tracking-[0.15em] text-outline mb-2" data-t="openingTime">שעת פתיחה</label>
           <select id="gen-open-hour" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-headline text-base text-on-surface focus:border-primary outline-none transition-colors">
             <option>06:00</option><option>07:00</option><option>08:00</option><option selected>09:00</option><option>10:00</option><option>11:00</option><option>12:00</option>
           </select>
         </div>
         <div>
-          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="closingTime">שעת סגירה</label>
+          <label class="block font-label text-[12px] font-extrabold tracking-[0.15em] text-outline mb-2" data-t="closingTime">שעת סגירה</label>
           <select id="gen-close-hour" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-headline text-base text-on-surface focus:border-primary outline-none transition-colors">
             <option>14:00</option><option>15:00</option><option>16:00</option><option>17:00</option><option selected>18:00</option><option>19:00</option><option>20:00</option><option>21:00</option>
           </select>
@@ -1262,7 +1232,7 @@
 
     <!-- BARBER NAME -->
     <section class="mb-8">
-      <p class="font-label text-[10px] font-extrabold tracking-[0.25em] uppercase text-outline mb-4" data-t="barberName">שם הספר</p>
+      <p class="font-label text-[12px] font-extrabold tracking-[0.2em] uppercase text-outline mb-4" data-t="barberName">שם הספר</p>
       <div class="bg-surface-container-low border-l-4 border-primary-container p-5">
         <div class="flex items-center justify-between" style="border:none;padding:0">
           <div>
@@ -1276,7 +1246,7 @@
 
     <!-- MANAGE BARBERS -->
     <section class="mb-8">
-      <p class="font-label text-[10px] font-extrabold tracking-[0.25em] uppercase text-outline mb-4" data-t="barbers">ספרים</p>
+      <p class="font-label text-[12px] font-extrabold tracking-[0.2em] uppercase text-outline mb-4" data-t="barbers">ספרים</p>
       <div class="bg-surface-container-low border-l-4 border-primary-container p-5">
         <div id="barbers-manage-list" class="flex flex-col gap-3 mb-4"><!-- populated by JS --></div>
         <button onclick="openAddBarberModal()" class="w-full py-3 border-2 border-dashed border-primary-container/60 text-primary-container font-label text-[10px] font-extrabold tracking-widest uppercase hover:border-primary-container hover:bg-primary-container/5 transition-all active:scale-95 flex items-center justify-center gap-2">
@@ -1287,7 +1257,7 @@
 
     <!-- SERVICES & PRICES -->
     <section class="mb-8">
-      <p class="font-label text-[10px] font-extrabold tracking-[0.25em] uppercase text-outline mb-4" data-t="servicesAndPricesLabel">שירותים ומחירים</p>
+      <p class="font-label text-[12px] font-extrabold tracking-[0.2em] uppercase text-outline mb-4" data-t="servicesAndPricesLabel">שירותים ומחירים</p>
       <div class="bg-surface-container-low border-l-4 border-primary-container p-5">
         <div id="services-manage-list" class="flex flex-col gap-2 mb-4"><!-- populated by JS --></div>
         <button onclick="openAddServiceModal()" class="w-full py-3 border-2 border-dashed border-primary-container/60 text-primary-container font-label text-[10px] font-extrabold tracking-widest uppercase hover:border-primary-container hover:bg-primary-container/5 transition-all active:scale-95 flex items-center justify-center gap-2">
@@ -1298,7 +1268,7 @@
 
     <!-- SPECIAL DEALS -->
     <section class="mb-8">
-      <p class="font-label text-[10px] font-extrabold tracking-[0.25em] uppercase text-outline mb-4" data-t="specialDealsLabel">מבצעים מיוחדים</p>
+      <p class="font-label text-[12px] font-extrabold tracking-[0.2em] uppercase text-outline mb-4" data-t="specialDealsLabel">מבצעים מיוחדים</p>
       <div class="bg-surface-container-low border-l-4 border-primary-container p-5">
         <div id="deals-manage-list" class="flex flex-col gap-2 mb-4"><!-- populated by JS --></div>
         <button onclick="openAddDealModal()" class="w-full py-3 border-2 border-dashed border-primary-container/60 text-primary-container font-label text-[10px] font-extrabold tracking-widest uppercase hover:border-primary-container hover:bg-primary-container/5 transition-all active:scale-95 flex items-center justify-center gap-2">
@@ -1309,7 +1279,7 @@
 
     <!-- PRODUCTS -->
     <section class="mb-8">
-      <p class="font-label text-[10px] font-extrabold tracking-[0.25em] uppercase text-outline mb-4" data-t="shopProductsLabel">מוצרי חנות</p>
+      <p class="font-label text-[12px] font-extrabold tracking-[0.2em] uppercase text-outline mb-4" data-t="shopProductsLabel">מוצרי חנות</p>
       <div class="bg-surface-container-low border-l-4 border-primary-container p-5">
         <div id="products-manage-list" class="flex flex-col gap-3 mb-4"><!-- populated by JS --></div>
         <button onclick="openAddProductModal()" class="w-full py-3 border-2 border-dashed border-primary-container/60 text-primary-container font-label text-[10px] font-extrabold tracking-widest uppercase hover:border-primary-container hover:bg-primary-container/5 transition-all active:scale-95 flex items-center justify-center gap-2">
@@ -1320,7 +1290,7 @@
 
     <!-- NEWS MANAGEMENT -->
     <section class="mb-8">
-      <p class="font-label text-[10px] font-extrabold tracking-[0.25em] uppercase text-outline mb-4" data-t="newsFromBarber">עדכונים</p>
+      <p class="font-label text-[12px] font-extrabold tracking-[0.2em] uppercase text-outline mb-4" data-t="newsFromBarber">עדכונים</p>
       <div class="bg-surface-container-low border-l-4 border-primary-container p-5">
         <div id="news-manage-list" class="flex flex-col gap-2 mb-4"></div>
         <button onclick="openAddNewsModal()" class="w-full py-3 border-2 border-dashed border-primary-container/60 text-primary-container font-label text-[10px] font-extrabold tracking-widest uppercase hover:border-primary-container hover:bg-primary-container/5 transition-all active:scale-95 flex items-center justify-center gap-2">
@@ -1331,7 +1301,7 @@
 
     <!-- SHOP NAME -->
     <section class="mb-8">
-      <p class="font-label text-[10px] font-extrabold tracking-[0.25em] uppercase text-outline mb-4" data-t="shopName">שם העסק</p>
+      <p class="font-label text-[12px] font-extrabold tracking-[0.2em] uppercase text-outline mb-4" data-t="shopName">שם העסק</p>
       <div class="bg-surface-container-low border-l-4 border-primary-container p-5">
         <div class="settings-row" style="border:none;padding:0">
           <div class="flex-1">
@@ -1345,7 +1315,7 @@
 
     <!-- THEME COLORS -->
     <section class="mb-8">
-      <p class="font-label text-[10px] font-extrabold tracking-[0.25em] uppercase text-outline mb-4" data-t="themeColor">צבע ערכת נושא</p>
+      <p class="font-label text-[12px] font-extrabold tracking-[0.2em] uppercase text-outline mb-4" data-t="themeColor">צבע ערכת נושא</p>
       <div class="bg-surface-container-low border-l-4 border-primary-container p-5">
         <p class="font-label text-[9px] uppercase tracking-widest text-outline mb-4" data-t="selectAccentColor">בחר צבע ערכת נושא</p>
         <div class="flex gap-4 flex-wrap">
@@ -1362,7 +1332,7 @@
 
     <!-- LOGO -->
     <section class="mb-8">
-      <p class="font-label text-[10px] font-extrabold tracking-[0.25em] uppercase text-outline mb-4" data-t="logo">לוגו</p>
+      <p class="font-label text-[12px] font-extrabold tracking-[0.2em] uppercase text-outline mb-4" data-t="logo">לוגו</p>
       <div class="bg-surface-container-low border-l-4 border-primary-container p-5">
         <div class="flex items-center gap-5">
           <div class="w-16 h-16 bg-surface-container-high border-2 border-primary-container flex items-center justify-center overflow-hidden" id="settings-logo-preview">
@@ -1392,7 +1362,7 @@
 
     <!-- STUDIO PHOTOS -->
     <section class="mb-8">
-      <p class="font-label text-[10px] font-extrabold tracking-[0.25em] uppercase text-outline mb-4" data-t="studioPhotos">תמונות סטודיו</p>
+      <p class="font-label text-[12px] font-extrabold tracking-[0.2em] uppercase text-outline mb-4" data-t="studioPhotos">תמונות סטודיו</p>
       <div class="bg-surface-container-low border-l-4 border-primary-container p-5">
         <p class="font-label text-[9px] uppercase tracking-widest text-outline mb-4"><span data-t="manageGallery">ניהול גלריה</span> · <span id="photo-count">4</span> <span data-t="photos">תמונות</span></p>
         <div class="photo-manage-grid" id="photo-manage-grid">
@@ -1407,7 +1377,7 @@
 
     <!-- LANGUAGE -->
     <section class="mb-8">
-      <p class="font-label text-[10px] font-extrabold tracking-[0.25em] uppercase text-outline mb-4" data-t="language">שפה</p>
+      <p class="font-label text-[12px] font-extrabold tracking-[0.2em] uppercase text-outline mb-4" data-t="language">שפה</p>
       <div class="bg-surface-container-low border-l-4 border-primary-container p-5">
                 <div class="lang-selector-grid">
           <div class="lang-card selected" data-lang="he" onclick="selectLang('he')">
@@ -1433,15 +1403,15 @@
   <nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-8 pt-3 bg-[#131313]/80 backdrop-blur-xl z-50 border-t-2 border-[#D4AF37]">
     <a class="nav-link flex flex-col items-center text-gray-600 hover:text-[#f2ca50] cursor-pointer active:scale-95" onclick="navigateTo('screen-barber');setBarberNav('dashboard')">
       <span class="material-symbols-outlined text-[26px]">dashboard</span>
-      <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5"><span data-t="dashboard">לוח בקרה</span></span>
+      <span class="font-label text-[11px] font-bold tracking-[0.08em] uppercase mt-0.5"><span data-t="dashboard">לוח בקרה</span></span>
     </a>
     <a class="nav-link flex flex-col items-center text-gray-600 hover:text-[#f2ca50] cursor-pointer active:scale-95" onclick="navigateTo('screen-barber-settings');setBarberNav('schedule')">
       <span class="material-symbols-outlined text-[26px]">tune</span>
-      <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5"><span data-t="schedule">לוח זמנים</span></span>
+      <span class="font-label text-[11px] font-bold tracking-[0.08em] uppercase mt-0.5"><span data-t="schedule">לוח זמנים</span></span>
     </a>
     <a class="nav-link flex flex-col items-center text-[#D4AF37] scale-110 cursor-pointer">
       <span class="material-symbols-outlined text-[26px]" style="font-variation-settings:'FILL' 1">settings</span>
-      <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5" data-t="settings">הגדרות</span>
+      <span class="font-label text-[11px] font-bold tracking-[0.08em] uppercase mt-0.5" data-t="settings">הגדרות</span>
     </a>
   </nav>
 </div>
@@ -2489,7 +2459,7 @@ function renderClientServices() {
     <div class="flex items-center justify-between bg-surface-container-low p-4 border-l-2 border-outline-variant/30">
       <div>
         <p class="font-headline font-bold text-sm tracking-tight">${s.name}</p>
-        <p class="font-label text-[9px] uppercase tracking-widest text-outline mt-0.5">${s.duration}</p>
+        <p class="font-label text-[11px] uppercase tracking-widest text-outline mt-0.5">${s.duration}</p>
       </div>
       <span class="font-headline font-bold text-lg text-primary">₪${s.price}</span>
     </div>`).join('');
@@ -2549,7 +2519,7 @@ function renderBarbersManage() {
       </div>
       <div class="flex-1 min-w-0">
         <p class="font-headline font-bold text-sm truncate">${b.name}</p>
-        <p class="font-label text-[9px] text-outline uppercase tracking-widest">${b.role}</p>
+        <p class="font-label text-[11px] text-outline uppercase tracking-widest">${b.role}</p>
         <p class="font-body text-xs text-primary mt-0.5">${b.hours}</p>
         ${!isActive ? '<p class="font-label text-[9px] text-error/70 uppercase tracking-widest mt-0.5">' + (currentLang==='en'?'Inactive':currentLang==='ar'?'غير نشط':'לא פעיל') + '</p>' : ''}
       </div>
@@ -2581,7 +2551,7 @@ function renderServicesManage() {
     <div class="flex items-center gap-3 bg-surface-container-high p-3 border border-outline-variant/20">
       <div class="flex-1">
         <p class="font-headline font-bold text-sm">${s.name}</p>
-        <p class="font-label text-[9px] text-outline uppercase tracking-widest">${s.duration}</p>
+        <p class="font-label text-[11px] text-outline uppercase tracking-widest">${s.duration}</p>
       </div>
       <p class="font-headline font-bold text-base text-primary mr-2">₪${s.price}</p>
       <div class="flex gap-2">
@@ -2602,7 +2572,7 @@ function renderDealsManage() {
     <div class="flex items-center gap-3 bg-surface-container-high p-3 border border-outline-variant/20">
       <div class="flex-1">
         <p class="font-headline font-bold text-sm">${d.name}</p>
-        <p class="font-label text-[9px] text-outline uppercase tracking-widest">${d.desc}</p>
+        <p class="font-label text-[11px] text-outline uppercase tracking-widest">${d.desc}</p>
       </div>
       <p class="font-headline font-bold text-base text-primary mr-2">₪${d.price}</p>
       <div class="flex gap-2">
@@ -2857,19 +2827,28 @@ let editingNews = null;
 function renderNewsList() {
   const cl = document.getElementById('client-news-list');
   const bl = document.getElementById('barber-news-list');
-  const html2 = news.length ? news.map(n=>`
-    <div class="bg-surface-container-low border-r-2 border-primary-container p-5 mb-3">
+
+  if (!news.length) {
+    const emptyHtml = `<p class="font-label text-[10px] text-outline text-center py-6 tracking-widest" data-t="noNews">${t('noNews')}</p>`;
+    if (cl) cl.innerHTML = emptyHtml;
+    if (bl) bl.innerHTML = emptyHtml;
+    return;
+  }
+
+  const cardsHtml = news.map(n => `
+    <div class="bg-surface-container-low border-r-4 border-primary-container p-5 mb-3">
       <div class="flex items-start gap-4">
-        <div class="w-2 h-2 rounded-full bg-primary mt-1.5 flex-shrink-0 live-dot"></div>
-        <div>
-          <p class="font-label text-[9px] uppercase tracking-[0.2em] text-primary mb-1">${n.date} · ${n.type}</p>
-          <h4 class="font-headline font-bold text-base leading-tight">${n.title}</h4>
-          <p class="font-body text-sm text-on-surface-variant mt-1.5">${n.body}</p>
+        <div class="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0 live-dot"></div>
+        <div class="flex-1 min-w-0">
+          <p class="font-label text-[10px] uppercase tracking-[0.15em] text-primary mb-1">${n.date}</p>
+          <h4 class="font-headline font-bold text-lg leading-tight">${n.title}</h4>
+          ${n.body ? `<p class="font-body text-base text-on-surface-variant mt-2 leading-relaxed">${n.body}</p>` : ''}
         </div>
       </div>
-    </div>`).join('') : '<p class="font-label text-[10px] text-outline uppercase tracking-widest py-4 text-center">—</p>';
-  if (cl) cl.innerHTML = html2;
-  if (bl) bl.innerHTML = html2;
+    </div>`).join('');
+
+  if (cl) cl.innerHTML = cardsHtml;
+  if (bl) bl.innerHTML = cardsHtml;
 }
 function renderNewsManage() {
   const list = document.getElementById('news-manage-list');
@@ -2878,7 +2857,7 @@ function renderNewsManage() {
     <div class="flex items-start gap-3 bg-surface-container-high p-3 border border-outline-variant/20">
       <div class="flex-1 min-w-0">
         <p class="font-headline font-bold text-sm truncate">${n.title}</p>
-        <p class="font-label text-[9px] text-outline uppercase tracking-widest">${n.date} · ${n.type}</p>
+        <p class="font-label text-[11px] text-outline uppercase tracking-widest">${n.date} · ${n.type}</p>
       </div>
       <div class="flex gap-2 flex-shrink-0">
         <button onclick="openEditNewsModal(${i})" class="w-8 h-8 flex items-center justify-center border border-primary-container text-primary-container hover:bg-primary-container hover:text-on-primary-container transition-all active:scale-95"><span class="material-symbols-outlined text-sm">edit</span></button>
@@ -2891,7 +2870,6 @@ function openAddNewsModal() {
   document.getElementById('news-modal-title').textContent=t('addNews');
   document.getElementById('news-title-input').value='';
   document.getElementById('news-body-input').value='';
-  document.getElementById('news-type-input').value='';
   showModal('news-modal');
 }
 function openEditNewsModal(i) {
@@ -2899,7 +2877,6 @@ function openEditNewsModal(i) {
   document.getElementById('news-modal-title').textContent=t('saveNews');
   document.getElementById('news-title-input').value=n.title;
   document.getElementById('news-body-input').value=n.body;
-  document.getElementById('news-type-input').value=n.type;
   showModal('news-modal');
 }
 function saveNewsModal() {
@@ -2908,12 +2885,10 @@ function saveNewsModal() {
 
   const rawTitle = document.getElementById('news-title-input').value;
   const rawBody  = document.getElementById('news-body-input').value;
-  const rawType  = document.getElementById('news-type-input').value;
-
   // Sanitize
   const title = sanitize(rawTitle, 120);
   const body  = sanitize(rawBody, 500);
-  const type  = sanitize(rawType, 30).toUpperCase() || (currentLang==='he'?'הודעה':currentLang==='ar'?'إشعار':'NOTICE');
+  const type  = '';
 
   // Validate
   clearFieldError('news-title-input');
@@ -3042,19 +3017,19 @@ function saveClientProfile() {
       </div>
       <div class="space-y-4">
         <div>
-          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="profileName">שם</label>
+          <label class="block font-label text-[12px] font-extrabold tracking-[0.15em] text-outline mb-2" data-t="profileName">שם</label>
           <input id="bm-name" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-headline text-base uppercase text-on-surface focus:border-primary outline-none" placeholder="ג׳וליאן ואנס"/>
         </div>
         <div>
-          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="role">תפקיד</label>
+          <label class="block font-label text-[12px] font-extrabold tracking-[0.15em] text-outline mb-2" data-t="role">תפקיד</label>
           <input id="bm-role" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base text-on-surface focus:border-primary outline-none" placeholder="ספר מומחה"/>
         </div>
         <div>
-          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="workingHours">שעות עבודה</label>
+          <label class="block font-label text-[12px] font-extrabold tracking-[0.15em] text-outline mb-2" data-t="workingHours">שעות עבודה</label>
           <input id="bm-hours" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base text-on-surface focus:border-primary outline-none" placeholder="09:00 — 18:00"/>
         </div>
         <div>
-          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="workingDays">ימי עבודה (מופרדים בפסיק)</label>
+          <label class="block font-label text-[12px] font-extrabold tracking-[0.15em] text-outline mb-2" data-t="workingDays">ימי עבודה (מופרדים בפסיק)</label>
           <input id="bm-days" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base text-on-surface focus:border-primary outline-none" placeholder="שני,שלישי,רביעי,חמישי,שישי"/>
         </div>
         <button onclick="saveBarberModal()" class="w-full gold-gradient py-5 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98]" data-t="saveBarber">שמור ספר</button>
@@ -3071,15 +3046,15 @@ function saveClientProfile() {
       <h2 class="font-headline text-2xl font-extrabold tracking-tighter mb-6" id="svc-modal-title" data-t="addService">הוסף שירות</h2>
       <div class="space-y-4">
         <div>
-          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="serviceName">שם השירות</label>
+          <label class="block font-label text-[12px] font-extrabold tracking-[0.15em] text-outline mb-2" data-t="serviceName">שם השירות</label>
           <input id="svc-name" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-headline text-base uppercase text-on-surface focus:border-primary outline-none" placeholder="תספורת מלכותית"/>
         </div>
         <div>
-          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="priceLabel">מחיר (₪)</label>
+          <label class="block font-label text-[12px] font-extrabold tracking-[0.15em] text-outline mb-2" data-t="priceLabel">מחיר (₪)</label>
           <input id="svc-price" type="number" min="0" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-headline text-base text-on-surface focus:border-primary outline-none" placeholder="35"/>
         </div>
         <div>
-          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="duration">משך זמן</label>
+          <label class="block font-label text-[12px] font-extrabold tracking-[0.15em] text-outline mb-2" data-t="duration">משך זמן</label>
           <input id="svc-duration" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base text-on-surface focus:border-primary outline-none" placeholder="45 דק׳"/>
         </div>
         <button onclick="saveServiceModal()" class="w-full gold-gradient py-5 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98]" data-t="saveService">שמור שירות</button>
@@ -3096,19 +3071,19 @@ function saveClientProfile() {
       <h2 class="font-headline text-2xl font-extrabold tracking-tighter mb-6" id="deal-modal-title" data-t="addDeal">הוסף מבצע</h2>
       <div class="space-y-4">
         <div>
-          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="dealName">שם המבצע</label>
+          <label class="block font-label text-[12px] font-extrabold tracking-[0.15em] text-outline mb-2" data-t="dealName">שם המבצע</label>
           <input id="deal-name" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-headline text-base uppercase text-on-surface focus:border-primary outline-none" placeholder="תספורת לחתונה"/>
         </div>
         <div>
-          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="description">תיאור</label>
+          <label class="block font-label text-[12px] font-extrabold tracking-[0.15em] text-outline mb-2" data-t="description">תיאור</label>
           <input id="deal-desc" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base text-on-surface focus:border-primary outline-none" placeholder="הכנה מלאה ליום הגדול"/>
         </div>
         <div>
-          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="priceLabel">מחיר (₪)</label>
+          <label class="block font-label text-[12px] font-extrabold tracking-[0.15em] text-outline mb-2" data-t="priceLabel">מחיר (₪)</label>
           <input id="deal-price" type="number" min="0" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-headline text-base text-on-surface focus:border-primary outline-none" placeholder="120"/>
         </div>
         <div>
-          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="badgeLabel">תווית תג</label>
+          <label class="block font-label text-[12px] font-extrabold tracking-[0.15em] text-outline mb-2" data-t="badgeLabel">תווית תג</label>
           <input id="deal-badge" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base uppercase text-on-surface focus:border-primary outline-none" placeholder="מיוחד"/>
         </div>
         <button onclick="saveDealModal()" class="w-full gold-gradient py-5 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98]" data-t="saveDeal">שמור מבצע</button>
@@ -3134,11 +3109,11 @@ function saveClientProfile() {
       </div>
       <div class="space-y-4">
         <div>
-          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="productName">שם המוצר</label>
+          <label class="block font-label text-[12px] font-extrabold tracking-[0.15em] text-outline mb-2" data-t="productName">שם המוצר</label>
           <input id="prod-name" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-headline text-base uppercase text-on-surface focus:border-primary outline-none" placeholder="פומד מאט"/>
         </div>
         <div>
-          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="priceLabel">מחיר (₪)</label>
+          <label class="block font-label text-[12px] font-extrabold tracking-[0.15em] text-outline mb-2" data-t="priceLabel">מחיר (₪)</label>
           <input id="prod-price" type="number" min="0" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-headline text-base text-on-surface focus:border-primary outline-none" placeholder="18"/>
         </div>
         <button onclick="saveProductModal()" class="w-full gold-gradient py-5 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98]" data-t="saveProduct">שמור מוצר</button>
@@ -3156,22 +3131,16 @@ function saveClientProfile() {
       <h2 class="font-headline text-2xl font-extrabold tracking-tighter mb-6" id="news-modal-title" data-t="addNews">הוסף עדכון</h2>
       <div class="space-y-5">
         <div>
-          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="newsTitle">כותרת</label>
+          <label class="block font-label text-[12px] font-extrabold tracking-[0.15em] text-outline mb-2" data-t="newsTitle">כותרת</label>
           <input id="news-title-input" type="text" dir="auto"
             class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base text-on-surface focus:border-primary outline-none transition-colors"
             placeholder="כותרת העדכון..."/>
         </div>
         <div>
-          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="newsBody">תוכן</label>
+          <label class="block font-label text-[12px] font-extrabold tracking-[0.15em] text-outline mb-2" data-t="newsBody">תוכן</label>
           <textarea id="news-body-input" rows="4" dir="auto"
             class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base text-on-surface focus:border-primary outline-none resize-none transition-colors"
             placeholder="תוכן העדכון..."></textarea>
-        </div>
-        <div>
-          <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-2" data-t="newsType">סוג</label>
-          <input id="news-type-input" type="text" dir="auto"
-            class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base text-on-surface focus:border-primary outline-none transition-colors"
-            placeholder="הודעה / עדכון / הכרזה"/>
         </div>
         <button onclick="saveNewsModal()"
           class="w-full gold-gradient py-5 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98] transition-transform"
