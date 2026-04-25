@@ -84,7 +84,13 @@
   .ticket-perf { background-image: radial-gradient(circle, #131313 30%, transparent 30%); background-size: 14px 14px; background-position: -7px center; width: 10px; min-height: 100%; }
   .nav-badge { position: absolute; top: -4px; right: -4px; width: 7px; height: 7px; background: #d4af37; border-radius: 9999px; }
 
-  body { font-family: 'Manrope', sans-serif; background: #131313; color: #e5e2e1; overflow-x: hidden; }
+  body { font-family: 'Manrope', sans-serif; background: #131313; color: #e5e2e1; overflow-x: hidden; font-size: 15px; }
+  /* Bump up small label text for readability */
+  .font-label { letter-spacing: 0.06em; }
+  .text-\[9px\] { font-size: 11px !important; }
+  .text-\[10px\] { font-size: 12px !important; }
+  .text-\[11px\] { font-size: 13px !important; }
+  .text-\[12px\] { font-size: 13px !important; }
   ::-webkit-scrollbar { display: none; }
 
   /* ===== SPLASH ===== */
@@ -731,51 +737,54 @@
       <h2 class="text-4xl font-headline font-extrabold tracking-tighter" data-t="futureBookings">הזמנות עתידיות</h2>
     </div>
     <div class="space-y-4">
-      <div class="bg-surface-container-highest border-l-4 border-primary-container p-6 flex flex-col gap-3">
-        <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-primary live-dot"></span><span class="font-label text-[9px] font-bold tracking-[0.15em] text-primary uppercase">CONFIRMED</span></div>
+      <!-- Dynamic bookings from liveBookings -->
+      <div id="dynamic-bookings-list" class="space-y-4"></div>
+      <!-- Static demo bookings -->
+      <div id="static-booking-apr9" class="bg-surface-container-highest border-l-4 border-primary-container p-6 flex flex-col gap-3">
+        <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-primary live-dot"></span><span class="font-label text-[10px] font-bold tracking-[0.15em] text-primary uppercase">CONFIRMED</span></div>
         <div class="flex items-center justify-between">
           <div>
             <h3 class="font-headline text-xl font-bold tracking-tight">APR 9 — 10:30 AM</h3>
             <p class="font-body text-sm text-on-surface-variant mt-1">Royal Cut · Mayfair</p>
           </div>
           <div class="flex flex-col gap-2">
-            <button class="px-5 py-2 border-2 border-primary-container font-label text-[10px] font-extrabold tracking-[0.1em] text-primary-container hover:bg-primary-container hover:text-on-primary-container transition-all uppercase active:scale-95">RESCHEDULE</button>
-            <button class="px-5 py-2 border border-outline-variant/50 font-label text-[10px] font-extrabold tracking-[0.1em] text-outline hover:border-error hover:text-error transition-all uppercase active:scale-95">CANCEL</button>
+            <button class="px-5 py-2 border-2 border-primary-container font-label text-[11px] font-extrabold tracking-[0.1em] text-primary-container hover:bg-primary-container hover:text-on-primary-container transition-all uppercase active:scale-95">RESCHEDULE</button>
+            <button onclick="document.getElementById('static-booking-apr9').remove();showToast('הזמנה בוטלה')" class="px-5 py-2 border border-outline-variant/50 font-label text-[11px] font-extrabold tracking-[0.1em] text-outline hover:border-error hover:text-error transition-all uppercase active:scale-95">CANCEL</button>
           </div>
         </div>
       </div>
-      <div class="bg-surface-container-low p-6 flex items-center justify-between border border-transparent hover:border-outline-variant/40 transition-all relative">
+      <div id="static-booking-apr23" class="bg-surface-container-low p-6 flex items-center justify-between border border-transparent hover:border-outline-variant/40 transition-all relative">
         <div>
-          <div class="flex items-center gap-2 mb-1"><span class="w-2 h-2 rounded-full bg-outline-variant"></span><span class="font-label text-[9px] font-bold tracking-[0.15em] text-outline uppercase">UPCOMING</span></div>
+          <div class="flex items-center gap-2 mb-1"><span class="w-2 h-2 rounded-full bg-outline-variant"></span><span class="font-label text-[10px] font-bold tracking-[0.15em] text-outline uppercase">UPCOMING</span></div>
           <h3 class="font-headline text-xl font-bold tracking-tight">APR 23 — 02:00 PM</h3>
           <p class="font-body text-sm text-on-surface-variant mt-1">Beard & Shape · Mayfair</p>
         </div>
         <div class="relative">
           <span class="material-symbols-outlined text-outline cursor-pointer hover:text-primary transition-colors" onclick="toggleBookingMenu('menu-apr23')">more_vert</span>
           <div id="menu-apr23" class="hidden absolute right-0 bottom-8 bg-surface-container-high border border-outline-variant z-50 min-w-[160px] shadow-xl">
-            <button onclick="editBookingHour('APR 23 — 02:00 PM'); toggleBookingMenu('menu-apr23')" class="w-full text-left px-5 py-3 font-label text-[10px] tracking-[0.15em] uppercase text-on-surface hover:bg-surface-container-highest flex items-center gap-3"><span class="material-symbols-outlined text-sm">edit</span><span data-t="editHour">עריכת שעה</span></button>
+            <button onclick="editBookingHour('APR 23 — 02:00 PM');toggleBookingMenu('menu-apr23')" class="w-full text-left px-5 py-3 font-label text-[11px] tracking-[0.15em] uppercase text-on-surface hover:bg-surface-container-highest flex items-center gap-3"><span class="material-symbols-outlined text-sm">edit</span><span data-t="editHour">עריכת שעה</span></button>
             <div class="h-px bg-outline-variant/30"></div>
-            <button onclick="cancelBooking('APR 23 — 02:00 PM'); toggleBookingMenu('menu-apr23')" class="w-full text-left px-5 py-3 font-label text-[10px] tracking-[0.15em] uppercase text-error/80 hover:bg-error/10 flex items-center gap-3"><span class="material-symbols-outlined text-sm">cancel</span>CANCEL</button>
+            <button onclick="document.getElementById('static-booking-apr23').remove();toggleBookingMenu('menu-apr23');showToast('הזמנה בוטלה')" class="w-full text-left px-5 py-3 font-label text-[11px] tracking-[0.15em] uppercase text-error/80 hover:bg-error/10 flex items-center gap-3"><span class="material-symbols-outlined text-sm">cancel</span>CANCEL</button>
           </div>
         </div>
       </div>
-      <div class="bg-surface-container-low p-6 flex items-center justify-between border border-transparent hover:border-outline-variant/40 transition-all relative">
+      <div id="static-booking-may7" class="bg-surface-container-low p-6 flex items-center justify-between border border-transparent hover:border-outline-variant/40 transition-all relative">
         <div>
-          <div class="flex items-center gap-2 mb-1"><span class="w-2 h-2 rounded-full bg-outline-variant"></span><span class="font-label text-[9px] font-bold tracking-[0.15em] text-outline uppercase">UPCOMING</span></div>
+          <div class="flex items-center gap-2 mb-1"><span class="w-2 h-2 rounded-full bg-outline-variant"></span><span class="font-label text-[10px] font-bold tracking-[0.15em] text-outline uppercase">UPCOMING</span></div>
           <h3 class="font-headline text-xl font-bold tracking-tight">MAY 7 — 11:00 AM</h3>
           <p class="font-body text-sm text-on-surface-variant mt-1">Royal Cut · Mayfair</p>
         </div>
         <div class="relative">
           <span class="material-symbols-outlined text-outline cursor-pointer hover:text-primary transition-colors" onclick="toggleBookingMenu('menu-may7')">more_vert</span>
           <div id="menu-may7" class="hidden absolute right-0 bottom-8 bg-surface-container-high border border-outline-variant z-50 min-w-[160px] shadow-xl">
-            <button onclick="editBookingHour('MAY 7 — 11:00 AM'); toggleBookingMenu('menu-may7')" class="w-full text-left px-5 py-3 font-label text-[10px] tracking-[0.15em] uppercase text-on-surface hover:bg-surface-container-highest flex items-center gap-3"><span class="material-symbols-outlined text-sm">edit</span><span data-t="editHour">עריכת שעה</span></button>
+            <button onclick="editBookingHour('MAY 7 — 11:00 AM');toggleBookingMenu('menu-may7')" class="w-full text-left px-5 py-3 font-label text-[11px] tracking-[0.15em] uppercase text-on-surface hover:bg-surface-container-highest flex items-center gap-3"><span class="material-symbols-outlined text-sm">edit</span><span data-t="editHour">עריכת שעה</span></button>
             <div class="h-px bg-outline-variant/30"></div>
-            <button onclick="cancelBooking('MAY 7 — 11:00 AM'); toggleBookingMenu('menu-may7')" class="w-full text-left px-5 py-3 font-label text-[10px] tracking-[0.15em] uppercase text-error/80 hover:bg-error/10 flex items-center gap-3"><span class="material-symbols-outlined text-sm">cancel</span>CANCEL</button>
+            <button onclick="document.getElementById('static-booking-may7').remove();toggleBookingMenu('menu-may7');showToast('הזמנה בוטלה')" class="w-full text-left px-5 py-3 font-label text-[11px] tracking-[0.15em] uppercase text-error/80 hover:bg-error/10 flex items-center gap-3"><span class="material-symbols-outlined text-sm">cancel</span>CANCEL</button>
           </div>
         </div>
       </div>
       <div id="dynamic-booking" class="hidden bg-surface-container-highest border-l-4 border-primary-container p-6 flex flex-col gap-2">
-        <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-primary live-dot"></span><span class="font-label text-[9px] font-bold tracking-[0.15em] text-primary uppercase">NEWLY CONFIRMED</span></div>
+        <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-primary live-dot"></span><span class="font-label text-[10px] font-bold tracking-[0.15em] text-primary uppercase">NEWLY CONFIRMED</span></div>
         <h3 class="font-headline text-xl font-bold tracking-tight" id="dynamic-booking-title">—</h3>
         <p class="font-body text-sm text-on-surface-variant" id="dynamic-booking-sub">—</p>
       </div>
@@ -832,7 +841,7 @@
             <span class="font-label text-[11px] font-extrabold tracking-wider text-on-surface-variant uppercase" data-t="clientsToday">לקוחות היום</span>
             <span class="material-symbols-outlined text-primary text-lg">group</span>
           </div>
-          <div class="font-headline text-4xl font-bold tracking-tighter text-on-surface">12</div>
+          <div class="font-headline text-4xl font-bold tracking-tighter text-on-surface" id="stat-clients-today">12</div>
           <div class="mt-2 flex items-end gap-0.5 h-5">
             <div class="flex-1 bg-primary/20 h-2"></div><div class="flex-1 bg-primary/30 h-3"></div><div class="flex-1 bg-primary/20 h-2"></div><div class="flex-1 bg-primary/50 h-4"></div><div class="flex-1 bg-primary h-5"></div>
           </div>
@@ -858,7 +867,7 @@
             <span class="font-label text-[11px] font-extrabold tracking-wider text-on-surface-variant uppercase" data-t="remaining">נותרו</span>
             <span class="material-symbols-outlined text-gray-500 text-lg">pending_actions</span>
           </div>
-          <div class="font-headline text-2xl font-bold tracking-tighter text-on-surface">3</div>
+          <div class="font-headline text-2xl font-bold tracking-tighter text-on-surface" id="stat-remaining">3</div>
           <div class="mt-2 font-label text-[9px] text-on-surface-variant tracking-widest uppercase" data-t="slotsLeft">נותרו תורים היום</div>
         </div>
       </div>
@@ -866,51 +875,52 @@
 
     <!-- Today's Schedule -->
     <section class="mb-10">
-      <h2 class="font-label text-[11px] font-extrabold tracking-[0.2em] uppercase text-on-surface-variant mb-5" data-t="todaySchedule">לוח זמנים היום</h2>
-      <div class="flex flex-col gap-3">
+      <h2 class="font-label text-[12px] font-extrabold tracking-[0.2em] uppercase text-on-surface-variant mb-5" data-t="todaySchedule">לוח זמנים היום</h2>
+      <div class="flex flex-col gap-3" id="barber-live-schedule">
+        <!-- Static demo rows shown until client books -->
         <div class="bg-surface-container-low p-4 flex items-center gap-4 border-l-2 border-outline-variant/40">
-          <div class="text-center w-14 flex-shrink-0">
+          <div class="text-center w-16 flex-shrink-0">
             <p class="font-headline font-bold text-sm text-on-surface-variant">10:00</p>
-            <p class="font-label text-[9px] text-outline" data-t="amLabel">בוקר</p>
+            <p class="font-label text-[10px] text-outline" data-t="amLabel">בוקר</p>
           </div>
           <div class="flex-1">
             <p class="font-body font-semibold text-sm">Alexander Vance</p>
-            <p class="font-label text-[11px] text-outline uppercase tracking-widest"><span data-t="royalCut">תספורת רויאל</span> · <span data-t="min45">45 דק׳</span></p>
+            <p class="font-label text-[12px] text-outline uppercase tracking-widest"><span data-t="royalCut">תספורת רויאל</span> · 30 דק׳</p>
           </div>
-          <span class="font-label text-[9px] text-green-500 font-bold uppercase tracking-wider border border-green-500/30 px-2 py-1" data-t="done">בוצע</span>
+          <span class="font-label text-[10px] text-green-500 font-bold uppercase tracking-wider border border-green-500/30 px-2 py-1" data-t="done">בוצע</span>
         </div>
         <div class="bg-surface-container-low p-4 flex items-center gap-4 border-l-2 border-outline-variant/40">
-          <div class="text-center w-14 flex-shrink-0">
+          <div class="text-center w-16 flex-shrink-0">
             <p class="font-headline font-bold text-sm text-on-surface-variant">11:30</p>
-            <p class="font-label text-[9px] text-outline" data-t="amLabel">בוקר</p>
+            <p class="font-label text-[10px] text-outline" data-t="amLabel">בוקר</p>
           </div>
           <div class="flex-1">
             <p class="font-body font-semibold text-sm">Marcus Reed</p>
-            <p class="font-label text-[11px] text-outline uppercase tracking-widest"><span data-t="beardSculpt">פיסול זקן</span> · <span data-t="min30">30 דק׳</span></p>
+            <p class="font-label text-[12px] text-outline uppercase tracking-widest"><span data-t="beardSculpt">פיסול זקן</span> · 30 דק׳</p>
           </div>
-          <span class="font-label text-[9px] text-green-500 font-bold uppercase tracking-wider border border-green-500/30 px-2 py-1" data-t="done">בוצע</span>
+          <span class="font-label text-[10px] text-green-500 font-bold uppercase tracking-wider border border-green-500/30 px-2 py-1" data-t="done">בוצע</span>
         </div>
         <div class="bg-surface-container-highest p-4 flex items-center gap-4 border-l-4 border-primary">
-          <div class="text-center w-14 flex-shrink-0">
+          <div class="text-center w-16 flex-shrink-0">
             <p class="font-headline font-bold text-base text-primary">14:30</p>
-            <p class="font-label text-[9px] text-primary" data-t="pmLabel">אחה"צ</p>
+            <p class="font-label text-[10px] text-primary" data-t="pmLabel">אחה"צ</p>
           </div>
           <div class="flex-1">
             <p class="font-body font-bold text-sm text-on-surface">James Holloway</p>
-            <p class="font-label text-[9px] text-primary uppercase tracking-widest"><span data-t="specialCut">תספורת מיוחדת</span> · <span data-t="min60">60 דק׳</span></p>
+            <p class="font-label text-[11px] text-primary uppercase tracking-widest"><span data-t="specialCut">תספורת מיוחדת</span> · 30 דק׳</p>
           </div>
-          <span class="font-label text-[9px] text-primary font-bold uppercase tracking-wider border border-primary/50 px-2 py-1" data-t="next">הבא</span>
+          <span class="font-label text-[10px] text-primary font-bold uppercase tracking-wider border border-primary/50 px-2 py-1" data-t="next">הבא</span>
         </div>
         <div class="bg-surface-container-low p-4 flex items-center gap-4 border-l-2 border-outline-variant/20 opacity-50">
-          <div class="text-center w-14 flex-shrink-0">
+          <div class="text-center w-16 flex-shrink-0">
             <p class="font-headline font-bold text-sm text-on-surface-variant">16:00</p>
-            <p class="font-label text-[9px] text-outline" data-t="pmLabel">אחה"צ</p>
+            <p class="font-label text-[10px] text-outline" data-t="pmLabel">אחה"צ</p>
           </div>
           <div class="flex-1">
             <p class="font-body font-semibold text-sm">Thomas Blake</p>
-            <p class="font-label text-[11px] text-outline uppercase tracking-widest"><span data-t="royalCut">תספורת רויאל</span> · <span data-t="min45">45 דק׳</span></p>
+            <p class="font-label text-[12px] text-outline uppercase tracking-widest"><span data-t="royalCut">תספורת רויאל</span> · 30 דק׳</p>
           </div>
-          <span class="font-label text-[9px] text-outline font-bold uppercase tracking-wider">4:00PM</span>
+          <span class="font-label text-[10px] text-outline font-bold uppercase tracking-wider">16:00</span>
         </div>
       </div>
     </section>
@@ -1102,7 +1112,7 @@
           <label class="block font-label text-[12px] font-extrabold tracking-[0.15em] text-outline mb-2" data-t="openingTime">שעת פתיחה</label>
           <div class="flex gap-3">
             <select id="open-hour" class="flex-1 bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-headline text-base text-on-surface focus:border-primary outline-none transition-colors">
-              <option>07:00</option><option>08:00</option><option selected>09:00</option><option>10:00</option><option>11:00</option><option>12:00</option>
+              <option>00:00</option><option>01:00</option><option>02:00</option><option>03:00</option><option>04:00</option><option>05:00</option><option>06:00</option><option>07:00</option><option>08:00</option><option selected>09:00</option><option>10:00</option><option>11:00</option><option>12:00</option><option>13:00</option><option>14:00</option><option>15:00</option><option>16:00</option><option>17:00</option><option>18:00</option><option>19:00</option><option>20:00</option><option>21:00</option><option>22:00</option><option>23:00</option>
             </select>
           </div>
         </div>
@@ -1110,7 +1120,7 @@
           <label class="block font-label text-[12px] font-extrabold tracking-[0.15em] text-outline mb-2" data-t="closingTime">שעת סגירה</label>
           <div class="flex gap-3">
             <select id="close-hour" class="flex-1 bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-headline text-base text-on-surface focus:border-primary outline-none transition-colors">
-              <option>15:00</option><option>16:00</option><option>17:00</option><option selected>18:00</option><option>19:00</option><option>20:00</option>
+              <option>01:00</option><option>02:00</option><option>03:00</option><option>04:00</option><option>05:00</option><option>06:00</option><option>07:00</option><option>08:00</option><option>09:00</option><option>10:00</option><option>11:00</option><option>12:00</option><option>13:00</option><option>14:00</option><option>15:00</option><option>16:00</option><option>17:00</option><option selected>18:00</option><option>19:00</option><option>20:00</option><option>21:00</option><option>22:00</option><option>23:00</option><option>00:00</option>
             </select>
           </div>
         </div>
@@ -1174,13 +1184,13 @@
         <div>
           <label class="block font-label text-[12px] font-extrabold tracking-[0.15em] text-outline mb-2" data-t="openingTime">שעת פתיחה</label>
           <select id="gen-open-hour" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-headline text-base text-on-surface focus:border-primary outline-none transition-colors">
-            <option>06:00</option><option>07:00</option><option>08:00</option><option selected>09:00</option><option>10:00</option><option>11:00</option><option>12:00</option>
+            <option>00:00</option><option>01:00</option><option>02:00</option><option>03:00</option><option>04:00</option><option>05:00</option><option>06:00</option><option>07:00</option><option>08:00</option><option selected>09:00</option><option>10:00</option><option>11:00</option><option>12:00</option><option>13:00</option><option>14:00</option><option>15:00</option><option>16:00</option><option>17:00</option><option>18:00</option><option>19:00</option><option>20:00</option><option>21:00</option><option>22:00</option><option>23:00</option>
           </select>
         </div>
         <div>
           <label class="block font-label text-[12px] font-extrabold tracking-[0.15em] text-outline mb-2" data-t="closingTime">שעת סגירה</label>
           <select id="gen-close-hour" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-headline text-base text-on-surface focus:border-primary outline-none transition-colors">
-            <option>14:00</option><option>15:00</option><option>16:00</option><option>17:00</option><option selected>18:00</option><option>19:00</option><option>20:00</option><option>21:00</option>
+            <option>01:00</option><option>02:00</option><option>03:00</option><option>04:00</option><option>05:00</option><option>06:00</option><option>07:00</option><option>08:00</option><option>09:00</option><option>10:00</option><option>11:00</option><option>12:00</option><option>13:00</option><option>14:00</option><option>15:00</option><option>16:00</option><option>17:00</option><option selected>18:00</option><option>19:00</option><option>20:00</option><option>21:00</option><option>22:00</option><option>23:00</option><option>00:00</option>
           </select>
         </div>
         <button onclick="saveGeneralHours()" class="w-full gold-gradient py-5 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98] transition-transform" data-t="saveHours">
@@ -1203,7 +1213,6 @@
       <p class="font-body text-xs text-on-surface-variant mb-6" data-t="selectNewTime">בחר שעה חדשה לפגישה זו.</p>
       <div class="space-y-4">
         <select id="edit-hour-select" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-headline text-base text-on-surface focus:border-primary outline-none transition-colors">
-          <option>09:00</option><option>10:00</option><option>11:30</option><option>13:00</option><option>14:30</option><option>16:00</option><option>17:30</option>
         </select>
         <button onclick="confirmEditHour()" class="w-full gold-gradient py-5 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98] transition-transform" data-t="confirmNewTime">
           אשר שעה חדשה
@@ -1240,6 +1249,20 @@
             <p class="font-headline font-bold text-lg text-on-surface" id="settings-barber-name-display">JULIAN VANCE</p>
           </div>
           <button onclick="openBarberNameModal()" class="px-4 py-2 border-2 border-primary-container text-primary-container font-label text-[10px] font-extrabold tracking-widest uppercase hover:bg-primary-container hover:text-on-primary-container transition-all active:scale-95"><span data-t="edit">עריכה</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SESSION INTERVAL -->
+    <section class="mb-8">
+      <p class="font-label text-[13px] font-extrabold tracking-[0.2em] uppercase text-outline mb-4">משך תור / Session Interval</p>
+      <div class="bg-surface-container-low border-l-4 border-primary-container p-5">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="font-label text-[10px] uppercase tracking-widest text-outline mb-1">משך כל תור</p>
+            <p class="font-headline font-bold text-lg text-on-surface"><span id="session-interval-display">30</span> דק׳</p>
+          </div>
+          <button onclick="openSessionIntervalModal()" class="px-4 py-2 border-2 border-primary-container text-primary-container font-label text-[11px] font-extrabold tracking-widest uppercase hover:bg-primary-container hover:text-on-primary-container transition-all active:scale-95">עריכה</button>
         </div>
       </div>
     </section>
@@ -1794,7 +1817,8 @@ function buildTimeSlots() {
   label.textContent = `${t('availableSlotsLabel')} — ${dateStr}`;
   const key = `${year}-${month+1}-${day}`;
   const booked = BOOKED_SLOTS[key] || [];
-  ALL_SLOTS.forEach(slot => {
+  const slots = getSlotsForDay(key);
+  slots.forEach(slot => {
     const isBooked = booked.includes(slot);
     const isSelected = selectedTime === slot;
     const div = document.createElement('div');
@@ -1872,11 +1896,36 @@ function confirmBooking() {
   document.getElementById('ticket-service').textContent = svcMap[selectedService] || selectedService;
   document.getElementById('success-msg').textContent = currentLang==='he'?'הפגישה נקבעה. נתראה בקרוב.':currentLang==='ar'?'تم تأكيد الجلسة. نراك قريباً.':'Session secured. See you soon.';
   const svcDisplayMap = {'ROYAL CUT':t('royalCut')||'תספורת מלכותית','BEARD':t('beardSculpt')||'פיסול זקן','SPECIAL':t('specialCut')||'תספורת מיוחדת'};
+
+  // ── Push to shared live bookings ──
+  const bookingId = Date.now();
+  const dayKey = `${year}-${month}-${day}`;
+  liveBookings.push({
+    id: bookingId,
+    name: clientName,
+    phone: clientPhone,
+    date: new Date(year, month, day),
+    time: selectedTime,
+    service: selectedService,
+    serviceLabel: svcDisplayMap[selectedService] || selectedService,
+    dateStr: dateStr,
+    shortDate: new Date(year, month, day).toLocaleDateString('en-GB', {day:'numeric', month:'short'}).toUpperCase(),
+    dayKey,
+    cancelled: false
+  });
+
   showActiveBooking(dateStr, selectedTime, svcDisplayMap[selectedService] || selectedService);
   document.getElementById('confirm-success').classList.add('active');
+
+  // Update my bookings list
+  renderMyBookingsList();
+
+  // ── Refresh barber dashboard schedule ──
+  renderBarberSchedule();
+
   const dyn = document.getElementById('dynamic-booking');
   document.getElementById('dynamic-booking-title').textContent = `${new Date(year, month, day).toLocaleDateString('en-GB', {day:'numeric', month:'short'}).toUpperCase()} — ${selectedTime}`;
-  document.getElementById('dynamic-booking-sub').textContent = `${selectedService} · Mayfair`;
+  document.getElementById('dynamic-booking-sub').textContent = `${svcDisplayMap[selectedService]||selectedService} · Mayfair`;
   dyn.classList.remove('hidden');
 }
 
@@ -1960,6 +2009,12 @@ function openDayPanel(d, month, year, dayKey, isLocked) {
   }
   // Update summary
   buildLockSlotsGrid(dayKey);
+  // Pre-populate open/close selects with this day's current hours
+  const dayHrs = dayHourOverrides[dayKey] || operatingHours;
+  const openSel = document.getElementById('open-hour');
+  const closeSel = document.getElementById('close-hour');
+  if (openSel) openSel.value = dayHrs.open;
+  if (closeSel) closeSel.value = dayHrs.close;
 
   document.getElementById('day-panel').classList.add('active');
 }
@@ -2029,7 +2084,8 @@ function buildEditActiveSlots() {
   const { day, month, year } = activeBooking;
   const key = `${year}-${month+1}-${day}`;
   const booked = BOOKED_SLOTS[key] || [];
-  ALL_SLOTS.forEach(slot => {
+  const slots = getSlotsForDay(key);
+  slots.forEach(slot => {
     // Skip the currently booked slot
     if (slot === activeBooking.time) return;
     const isBooked = booked.includes(slot);
@@ -2085,8 +2141,22 @@ function resetActiveBooking() {
 function cancelActiveBooking() {
   const menu = document.getElementById('ticket-menu');
   if (menu) menu.classList.add('hidden');
-  const msg = currentLang==='he'?'לבטל את ההזמנה?':currentLang==='ar'?'هل تريد إلغاء الحجز؟':'Cancel your booking?';
-  if (confirm(msg)) resetActiveBooking();
+  document.getElementById('cancel-confirm-modal').classList.remove('hidden');
+}
+
+function confirmCancelActiveBooking() {
+  document.getElementById('cancel-confirm-modal').classList.add('hidden');
+  resetActiveBooking();
+  for (let i = liveBookings.length - 1; i >= 0; i--) {
+    if (!liveBookings[i].cancelled) { liveBookings[i].cancelled = true; break; }
+  }
+  renderMyBookingsList();
+  renderBarberSchedule();
+  showToast(currentLang==='he'?'הזמנה בוטלה':currentLang==='ar'?'تم إلغاء الحجز':'Booking cancelled');
+}
+
+function closeCancelConfirmModal() {
+  document.getElementById('cancel-confirm-modal').classList.add('hidden');
 }
 
 // ===== BOOKING MENU (client) =====
@@ -2108,6 +2178,10 @@ let currentEditBooking = null;
 function editBookingHour(label) {
   currentEditBooking = label;
   document.getElementById('edit-hour-booking-label').textContent = label;
+  // Populate the select with current operating hour slots
+  const sel = document.getElementById('edit-hour-select');
+  const slots = generateSlots(operatingHours.open, operatingHours.close);
+  sel.innerHTML = slots.map(s => `<option>${s}</option>`).join('');
   document.getElementById('edit-hour-modal').classList.remove('hidden');
 }
 function closeEditHourModal() { document.getElementById('edit-hour-modal').classList.add('hidden'); }
@@ -2116,13 +2190,128 @@ function confirmEditHour() {
   alert(`Booking rescheduled to ${newTime}`);
   closeEditHourModal();
 }
-function cancelBooking(label) {
-  if (confirm(`Cancel booking: ${label}?`)) {
-    alert('Booking cancelled.');
+function cancelBooking(label, bookingId) {
+  if (bookingId) {
+    const idx = liveBookings.findIndex(b => b.id === bookingId);
+    if (idx !== -1) liveBookings[idx].cancelled = true;
+    renderBarberSchedule();
   }
+  renderMyBookingsList();
+  showToast(currentLang==='en'?'Booking cancelled':currentLang==='ar'?'تم إلغاء الحجز':'הזמנה בוטלה');
 }
 
-// ===== GENERAL SECTION — LOCK FUNCTIONS =====
+// ===== RENDER MY BOOKINGS LIST (client) =====
+function renderMyBookingsList() {
+  const container = document.getElementById('dynamic-bookings-list');
+  if (!container) return;
+  const active = liveBookings.filter(b => !b.cancelled);
+  if (!active.length) {
+    container.innerHTML = '';
+    return;
+  }
+  container.innerHTML = active.map(b => `
+    <div id="bcard-${b.id}" class="bg-surface-container-highest border-l-4 border-primary-container p-6 flex flex-col gap-2">
+      <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-primary live-dot"></span><span class="font-label text-[10px] font-bold tracking-[0.15em] text-primary uppercase">CONFIRMED</span></div>
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="font-headline text-xl font-bold tracking-tight">${b.shortDate} — ${b.time}</h3>
+          <p class="font-body text-sm text-on-surface-variant mt-1">${b.serviceLabel} · Mayfair</p>
+          ${b.name ? `<p class="font-body text-xs text-outline mt-0.5">${b.name}</p>` : ''}
+        </div>
+        <div class="relative">
+          <span class="material-symbols-outlined text-outline cursor-pointer hover:text-primary transition-colors" onclick="toggleBookingMenu('bmenu-${b.id}')">more_vert</span>
+          <div id="bmenu-${b.id}" class="hidden absolute right-0 bottom-8 bg-surface-container-high border border-outline-variant z-50 min-w-[160px] shadow-xl">
+            <button onclick="editBookingHour('${b.shortDate} — ${b.time}');toggleBookingMenu('bmenu-${b.id}')" class="w-full text-left px-5 py-3 font-label text-[11px] tracking-[0.15em] uppercase text-on-surface hover:bg-surface-container-highest flex items-center gap-3"><span class="material-symbols-outlined text-sm">edit</span>עריכת שעה</button>
+            <div class="h-px bg-outline-variant/30"></div>
+            <button onclick="cancelBooking('${b.shortDate} — ${b.time}', ${b.id});toggleBookingMenu('bmenu-${b.id}')" class="w-full text-left px-5 py-3 font-label text-[11px] tracking-[0.15em] uppercase text-error/80 hover:bg-error/10 flex items-center gap-3"><span class="material-symbols-outlined text-sm">cancel</span>CANCEL</button>
+          </div>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+// ===== RENDER BARBER SCHEDULE (barber dashboard) =====
+function renderBarberSchedule() {
+  const container = document.getElementById('barber-live-schedule');
+  if (!container) return;
+  const today = new Date();
+  const todayKey = `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`;
+  const todayBookings = liveBookings.filter(b => !b.cancelled && b.dayKey === todayKey)
+    .sort((a,b) => a.time.localeCompare(b.time));
+
+  // Also get upcoming (not today)
+  const upcoming = liveBookings.filter(b => !b.cancelled && b.dayKey !== todayKey && b.date >= today)
+    .sort((a,b) => a.date - b.date || a.time.localeCompare(b.time));
+
+  const all = [...todayBookings, ...upcoming];
+
+  if (!all.length) {
+    container.innerHTML = `<div class="bg-surface-container-low p-5 text-center"><p class="font-label text-[11px] text-outline uppercase tracking-widest">אין הזמנות חדשות</p></div>`;
+    // Update stats
+    const clientsEl = document.getElementById('stat-clients-today');
+    if (clientsEl) clientsEl.textContent = todayBookings.length + 12; // 12 are demo
+    return;
+  }
+
+  const nowMin = today.getHours() * 60 + today.getMinutes();
+  container.innerHTML = all.map((b, i) => {
+    const [bh, bm] = b.time.split(':').map(Number);
+    const slotMin = bh * 60 + bm;
+    const isDone = b.dayKey === todayKey && slotMin < nowMin;
+    const isNext = !isDone && i === all.findIndex(x => { const [xh,xm]=x.time.split(':').map(Number); return xh*60+xm >= nowMin && x.dayKey === todayKey; });
+    const ampm = bh < 12 ? (currentLang==='he'?'בוקר':'AM') : (currentLang==='he'?'אחה"צ':'PM');
+    const isToday = b.dayKey === todayKey;
+
+    if (isNext) {
+      return `<div class="bg-surface-container-highest p-4 flex items-center gap-4 border-l-4 border-primary">
+        <div class="text-center w-16 flex-shrink-0">
+          <p class="font-headline font-bold text-base text-primary">${b.time}</p>
+          <p class="font-label text-[10px] text-primary">${ampm}</p>
+        </div>
+        <div class="flex-1">
+          <p class="font-body font-bold text-base text-on-surface">${b.name || '—'}</p>
+          <p class="font-label text-[11px] text-primary uppercase tracking-widest">${b.serviceLabel} · ${sessionInterval} דק׳</p>
+          ${!isToday ? `<p class="font-label text-[9px] text-outline mt-0.5">${b.shortDate}</p>` : ''}
+        </div>
+        <span class="font-label text-[10px] text-primary font-bold uppercase tracking-wider border border-primary/50 px-2 py-1">${currentLang==='he'?'הבא':'NEXT'}</span>
+      </div>`;
+    } else if (isDone) {
+      return `<div class="bg-surface-container-low p-4 flex items-center gap-4 border-l-2 border-outline-variant/40">
+        <div class="text-center w-16 flex-shrink-0">
+          <p class="font-headline font-bold text-sm text-on-surface-variant">${b.time}</p>
+          <p class="font-label text-[10px] text-outline">${ampm}</p>
+        </div>
+        <div class="flex-1">
+          <p class="font-body font-semibold text-sm">${b.name || '—'}</p>
+          <p class="font-label text-[11px] text-outline uppercase tracking-widest">${b.serviceLabel} · ${sessionInterval} דק׳</p>
+        </div>
+        <span class="font-label text-[10px] text-green-500 font-bold uppercase tracking-wider border border-green-500/30 px-2 py-1">${currentLang==='he'?'בוצע':'DONE'}</span>
+      </div>`;
+    } else {
+      return `<div class="bg-surface-container-low p-4 flex items-center gap-4 border-l-2 border-outline-variant/20 opacity-80">
+        <div class="text-center w-16 flex-shrink-0">
+          <p class="font-headline font-bold text-sm text-on-surface-variant">${b.time}</p>
+          <p class="font-label text-[10px] text-outline">${ampm}</p>
+        </div>
+        <div class="flex-1">
+          <p class="font-body font-semibold text-sm">${b.name || '—'}</p>
+          <p class="font-label text-[11px] text-outline uppercase tracking-widest">${b.serviceLabel} · ${sessionInterval} דק׳</p>
+          ${!isToday ? `<p class="font-label text-[9px] text-primary mt-0.5">${b.shortDate}</p>` : ''}
+        </div>
+        <span class="font-label text-[10px] text-outline font-bold uppercase">${b.time}</span>
+      </div>`;
+    }
+  }).join('');
+
+  // Update stat counters
+  const clientsEl = document.getElementById('stat-clients-today');
+  if (clientsEl) clientsEl.textContent = todayBookings.length + 12;
+  const remainEl = document.getElementById('stat-remaining');
+  if (remainEl) {
+    const rem = todayBookings.filter(b => { const [bh,bm]=b.time.split(':').map(Number); return bh*60+bm >= nowMin; }).length;
+    remainEl.textContent = rem + 3;
+  }
+}
 let indefiniteLock = false;
 
 function lockToday() {
@@ -2174,14 +2363,121 @@ function applyLockPeriod() {
 }
 
 // ===== GENERAL WORKING HOURS =====
-function openGeneralHoursModal() { document.getElementById('general-hours-modal').classList.remove('hidden'); }
+// Global operating hours state
+let operatingHours = { open: '09:00', close: '18:00' };
+// Per-day overrides: dayKey -> { open, close }
+let dayHourOverrides = {};
+
+function openGeneralHoursModal() {
+  document.getElementById('gen-open-hour').value = operatingHours.open;
+  document.getElementById('gen-close-hour').value = operatingHours.close;
+  document.getElementById('general-hours-modal').classList.remove('hidden');
+}
 function closeGeneralHoursModal() { document.getElementById('general-hours-modal').classList.add('hidden'); }
 function saveGeneralHours() {
   const open = document.getElementById('gen-open-hour').value;
   const close = document.getElementById('gen-close-hour').value;
+  operatingHours = { open, close };
   const txt = document.getElementById('general-hours-text');
   if (txt) txt.textContent = `${open} — ${close}`;
+  // Rebuild time slots so client booking view respects new hours
+  buildTimeSlots();
+  // Rebuild lock-slots grid if day panel is open
+  if (selectedAvDay) buildLockSlotsGrid(selectedAvDay.dayKey);
   closeGeneralHoursModal();
+  showToast(currentLang === 'en' ? 'Hours saved!' : currentLang === 'ar' ? 'تم حفظ الساعات!' : 'שעות נשמרו!');
+}
+
+// ===== SHARED BOOKINGS STATE (connects client ↔ barber) =====
+let liveBookings = []; // { id, name, phone, date, time, service, dateStr, dayKey, cancelled }
+
+// ===== SESSION INTERVAL =====
+let sessionInterval = 30; // minutes
+let pendingInterval = 30;
+
+function openSessionIntervalModal() {
+  pendingInterval = sessionInterval;
+  updateIntervalUI();
+  showModal('session-interval-modal');
+}
+
+function selectInterval(min) {
+  pendingInterval = min;
+  updateIntervalUI();
+}
+
+function updateIntervalUI() {
+  document.querySelectorAll('.interval-opt').forEach(btn => {
+    const val = parseInt(btn.textContent);
+    const isActive = val === pendingInterval;
+    btn.classList.toggle('border-primary', isActive);
+    btn.classList.toggle('text-primary', isActive);
+    btn.classList.toggle('border-outline-variant', !isActive);
+    btn.classList.toggle('text-outline', !isActive);
+  });
+  const lbl = document.getElementById('interval-selected-label');
+  if (lbl) lbl.textContent = `${pendingInterval} דק׳`;
+}
+
+function saveSessionInterval() {
+  sessionInterval = pendingInterval;
+  const disp = document.getElementById('session-interval-display');
+  if (disp) disp.textContent = sessionInterval;
+  hideModal('session-interval-modal');
+  // Rebuild booking slots with new interval
+  buildTimeSlots();
+  showToast(currentLang==='en' ? `Interval set to ${sessionInterval} min` : `משך תור: ${sessionInterval} דק׳`);
+}
+
+// Generate slots using current sessionInterval
+function generateSlots(open, close) {
+  const slots = [];
+  let [h, m] = open.split(':').map(Number);
+  const [ch, cm] = close === '00:00' ? [24, 0] : close.split(':').map(Number);
+  while (h * 60 + m < ch * 60 + cm) {
+    slots.push(`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`);
+    m += sessionInterval;
+    if (m >= 60) { h += Math.floor(m/60); m = m % 60; }
+  }
+  return slots;
+}
+
+// Get effective slots for a given dayKey (respects per-day override)
+function getSlotsForDay(dayKey) {
+  const hrs = dayHourOverrides[dayKey] || operatingHours;
+  return generateSlots(hrs.open, hrs.close);
+}
+
+// ===== SAVE HOURS (day panel) =====
+function saveHours() {
+  if (!selectedAvDay) return;
+  const { dayKey } = selectedAvDay;
+  const open  = document.getElementById('open-hour').value;
+  const close = document.getElementById('close-hour').value;
+  dayHourOverrides[dayKey] = { open, close };
+  // Update panel status label
+  const statusEl = document.getElementById('panel-day-status');
+  if (statusEl) statusEl.textContent = `${open} — ${close}`;
+  // Rebuild slot lock grid with new hours
+  buildLockSlotsGrid(dayKey);
+  // Rebuild client time slots if viewing same day
+  buildTimeSlots();
+  showToast(currentLang === 'en' ? 'Hours saved!' : currentLang === 'ar' ? 'تم حفظ الساعات!' : 'שעות נשמרו!');
+}
+
+// Simple toast notification
+function showToast(msg) {
+  let toast = document.getElementById('app-toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'app-toast';
+    toast.style.cssText = 'position:fixed;bottom:120px;left:50%;transform:translateX(-50%);background:#d4af37;color:#241a00;font-family:"Plus Jakarta Sans",sans-serif;font-size:11px;font-weight:900;letter-spacing:0.15em;text-transform:uppercase;padding:10px 24px;z-index:9999;border-radius:0;pointer-events:none;transition:opacity 0.3s;';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = msg;
+  toast.style.opacity = '1';
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(() => { toast.style.opacity = '0'; }, 2000);
 }
 
 // ===== LOCK SPECIFIC SLOTS (day panel) =====
@@ -2191,7 +2487,8 @@ function buildLockSlotsGrid(dayKey) {
   const grid = document.getElementById('lock-slots-grid');
   grid.innerHTML = '';
   const locked = lockedSlots[dayKey] || new Set();
-  ALL_SLOTS.forEach(slot => {
+  const slots = getSlotsForDay(dayKey);
+  slots.forEach(slot => {
     const isLocked = locked.has(slot);
     const btn = document.createElement('button');
     btn.className = `py-2 px-3 border font-label text-[9px] tracking-widest uppercase transition-all active:scale-95 ${isLocked ? 'border-error/50 bg-error/10 text-error/80' : 'border-outline-variant text-outline hover:border-error/40 hover:text-error/60'}`;
@@ -3149,6 +3446,47 @@ function saveClientProfile() {
           class="w-full py-4 border border-outline-variant text-outline font-label text-sm font-extrabold tracking-widest uppercase hover:border-primary-container hover:text-primary-container transition-all active:scale-[0.98]"
           data-t="cancel">ביטול</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SESSION INTERVAL MODAL ===== -->
+<div id="session-interval-modal" class="hidden fixed inset-0 z-[300] bg-black/60 backdrop-blur-sm flex items-end" onclick="if(event.target===this)hideModal('session-interval-modal')">
+  <div class="w-full bg-[#131313] border-t-4 border-primary px-6 pt-10 pb-12">
+    <div class="max-w-md mx-auto">
+      <h2 class="font-headline text-2xl font-extrabold tracking-tighter mb-1">משך תור</h2>
+      <p class="font-body text-sm text-on-surface-variant mb-6">קבע כמה זמן נמשך כל תור. הגדרה זו תשפיע על חלונות הזמן הפנויים ללקוחות.</p>
+      <div class="space-y-5">
+        <div>
+          <label class="block font-label text-[12px] font-extrabold tracking-[0.15em] text-outline mb-3">משך בדקות</label>
+          <div class="grid grid-cols-3 gap-3" id="interval-option-grid">
+            <button onclick="selectInterval(15)" class="interval-opt py-4 border-2 border-outline-variant text-outline font-headline font-bold text-xl hover:border-primary-container hover:text-primary-container transition-all active:scale-95">15</button>
+            <button onclick="selectInterval(20)" class="interval-opt py-4 border-2 border-outline-variant text-outline font-headline font-bold text-xl hover:border-primary-container hover:text-primary-container transition-all active:scale-95">20</button>
+            <button onclick="selectInterval(30)" class="interval-opt py-4 border-2 border-outline-variant text-outline font-headline font-bold text-xl hover:border-primary-container hover:text-primary-container transition-all active:scale-95 interval-active">30</button>
+            <button onclick="selectInterval(45)" class="interval-opt py-4 border-2 border-outline-variant text-outline font-headline font-bold text-xl hover:border-primary-container hover:text-primary-container transition-all active:scale-95">45</button>
+            <button onclick="selectInterval(60)" class="interval-opt py-4 border-2 border-outline-variant text-outline font-headline font-bold text-xl hover:border-primary-container hover:text-primary-container transition-all active:scale-95">60</button>
+            <button onclick="selectInterval(90)" class="interval-opt py-4 border-2 border-outline-variant text-outline font-headline font-bold text-xl hover:border-primary-container hover:text-primary-container transition-all active:scale-95">90</button>
+          </div>
+          <p class="font-label text-[10px] text-outline uppercase tracking-widest mt-3 text-center">נבחר: <span id="interval-selected-label">30 דק׳</span></p>
+        </div>
+        <button onclick="saveSessionInterval()" class="w-full gold-gradient py-5 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98]">שמור</button>
+        <button onclick="hideModal('session-interval-modal')" class="w-full py-4 border border-outline-variant text-outline font-label text-sm font-extrabold tracking-widest uppercase hover:border-primary-container hover:text-primary-container transition-all active:scale-[0.98]">ביטול</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CANCEL CONFIRM MODAL ===== -->
+<div id="cancel-confirm-modal" class="hidden fixed inset-0 z-[400] bg-black/70 backdrop-blur-sm flex items-center justify-center px-6">
+  <div class="w-full max-w-sm bg-[#131313] border-2 border-error/50 p-8">
+    <div class="flex items-center gap-3 mb-4">
+      <span class="material-symbols-outlined text-error/80 text-2xl">warning</span>
+      <h2 class="font-headline text-xl font-extrabold tracking-tighter text-on-surface">ביטול הזמנה</h2>
+    </div>
+    <p class="font-body text-sm text-on-surface-variant mb-8">האם אתה בטוח שברצונך לבטל את ההזמנה? לא ניתן לבטל פעולה זו.</p>
+    <div class="flex gap-3">
+      <button onclick="closeCancelConfirmModal()" class="flex-1 py-4 border-2 border-outline-variant text-outline font-label text-sm font-extrabold tracking-widest uppercase hover:border-primary-container hover:text-primary-container transition-all active:scale-[0.98]">שמור</button>
+      <button onclick="confirmCancelActiveBooking()" class="flex-1 py-4 bg-error/10 border-2 border-error/50 text-error font-label text-sm font-extrabold tracking-widest uppercase hover:bg-error/20 transition-all active:scale-[0.98]">בטל הזמנה</button>
     </div>
   </div>
 </div>
