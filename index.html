@@ -133,6 +133,7 @@
     unicode-bidi: plaintext;
     text-align: start;
   }
+  html[dir="rtl"] span, html[dir="rtl"] button, html[dir="rtl"] a { unicode-bidi: plaintext; }
   html[dir="rtl"] .text-left  { text-align: right   !important; }
   html[dir="rtl"] .text-center { text-align: center !important; }
   /* Mirror left accent borders to right for RTL card layouts */
@@ -808,12 +809,6 @@
             <div id="cal-time-axis-day" style="width:52px;flex-shrink:0;position:relative;background:#131313;min-height:1680px;"></div>
             <!-- Booking blocks area -->
             <div id="cal-blocks-day" style="flex:1;position:relative;border-left:1px solid rgba(77,70,53,0.3);min-height:1680px;">
-              <!-- Current time line (only visible on today) -->
-              <div id="cal-time-now" style="display:none;position:absolute;left:4px;right:4px;z-index:10;pointer-events:none;">
-                <div style="height:2px;background:#ef4444;position:relative;">
-                  <div style="position:absolute;left:-6px;top:-4px;width:10px;height:10px;background:#ef4444;border-radius:50%;"></div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -1954,29 +1949,6 @@ function calRenderDayView() {
       (height > 38 ? '<p style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:9px;color:#99907c;letter-spacing:0.1em;text-transform:uppercase;margin:2px 0 0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;">' + appt.service + '</p>' : '');
     container.appendChild(blk);
   });
-  calUpdateTimeLine();
-}
-
-function calUpdateTimeLine() {
-  const today   = new Date();
-  const line    = document.getElementById('cal-time-now');
-  const isToday = calCurrentDate.toDateString() === today.toDateString();
-  if (!isToday) { line.style.display = 'none'; return; }
-  const h = today.getHours(), m = today.getMinutes();
-  if (h < CAL_START_H || h >= CAL_END_H) { line.style.display = 'none'; return; }
-  const y      = calMinY(h, m);
-  const nowMin = h * 60 + m;
-  const ds     = calFmtDate(calCurrentDate);
-  const active = calAppts.find(function(a) {
-    if (a.date !== ds) return false;
-    const s = a.startH * 60 + a.startM;
-    return nowMin >= s && nowMin < s + a.duration;
-  });
-  // Line spans only the booking-block column width (not the time axis)
-  // When a block is in progress, left/right match the block padding
-  const lpad = active ? '4px' : '0px';
-  const rpad = active ? '4px' : '0px';
-  line.style.cssText = 'display:block;position:absolute;left:' + lpad + ';right:' + rpad + ';top:' + y + 'px;z-index:10;pointer-events:none;';
 }
 
 function calRenderWeekView() {
@@ -2038,7 +2010,6 @@ function calRender() {
 function calInit() {
   calUpdateHeader();
   calRenderDayView();
-  setInterval(calUpdateTimeLine, 60000);
   setTimeout(function() {
     const t = new Date();
     const s = document.getElementById('cal-day-scroll');
@@ -2251,6 +2222,24 @@ const _LM = {
       // ── Interval options ──────────────────────────────────────────────────
       '15 min': '15 דק\'', '30 min': '30 דק\'',
       '45 min': '45 דק\'', '60 min': '60 דק\'',
+      // ── Added keys ───────────────────────────────────────────────────────
+      'BOOK A SESSION': 'הזמן מפגש',
+      'HISTORY': 'היסטוריה',
+      'UPCOMING SESSIONS': 'מפגשים קרובים',
+      'BOOK NOW': 'הזמן עכשיו',
+      'SUNDAY': 'יום ראשון', 'MONDAY': 'יום שני',
+      'TUESDAY': 'יום שלישי', 'WEDNESDAY': 'יום רביעי',
+      'BY CONFIRMING, YOU AGREE TO OUR': 'באישור המפגש, הנך מסכים ל-',
+      'SOVEREIGN TERMS': 'תנאי הריבונות',
+      'TODAY\'S PERFORMANCE': 'ביצועים היום',
+      'THIS WEEK': 'השבוע',
+      'CLIENTS TODAY': 'לקוחות היום',
+      'REMAINING': 'נותרו',
+      'NEXT CLIENT': 'הלקוח הבא',
+      'PAST': 'עבר', 'LOCKED': 'נעול', 'OPEN': 'פתוח',
+      'LOCKED INDEFINITELY': 'נעול ללא הגבלת זמן',
+      'ADD SERVICE +': 'הוסף שירות +',
+      'ADD UPDATE +': 'הוסף עדכון +',
     }
   },
   ar: {
@@ -2364,6 +2353,24 @@ const _LM = {
       // ── Interval options ──────────────────────────────────────────────────
       '15 min': '١٥ دقيقة', '30 min': '٣٠ دقيقة',
       '45 min': '٤٥ دقيقة', '60 min': '٦٠ دقيقة',
+      // ── Added keys ───────────────────────────────────────────────────────
+      'BOOK A SESSION': 'حجز جلسة',
+      'HISTORY': 'السجل',
+      'UPCOMING SESSIONS': 'الجلسات القادمة',
+      'BOOK NOW': 'احجز الآن',
+      'SUNDAY': 'الأحد', 'MONDAY': 'الإثنين',
+      'TUESDAY': 'الثلاثاء', 'WEDNESDAY': 'الأربعاء',
+      'BY CONFIRMING, YOU AGREE TO OUR': 'بالتأكيد، أنت توافق على',
+      'SOVEREIGN TERMS': 'شروط السيادة',
+      'TODAY\'S PERFORMANCE': 'أداء اليوم',
+      'THIS WEEK': 'هذا الأسبوع',
+      'CLIENTS TODAY': 'العملاء اليوم',
+      'REMAINING': 'المتبقي',
+      'NEXT CLIENT': 'العميل التالي',
+      'PAST': 'الماضي', 'LOCKED': 'مقفل', 'OPEN': 'مفتوح',
+      'LOCKED INDEFINITELY': 'مقفل لأجل غير مسمى',
+      'ADD SERVICE +': 'إضافة خدمة +',
+      'ADD UPDATE +': 'إضافة تحديث +',
     }
   }
 };
@@ -2382,14 +2389,23 @@ function _replaceTextNodes(map) {
 }
 
 // ── Time format utilities ────────────────────────────────────────────────────
-// Convert "H:MM AM/PM" → 24-hour "HH:MM" for RTL locales
+// Convert "H:MM AM/PM" and short "HAM"/"HPM" → 24-hour "HH:MM" for RTL locales
 function _time12to24(text) {
-  return text.replace(/(\d{1,2}):(\d{2})\s*(AM|PM)/gi, function(_, h, m, ap) {
+  // Full format: "9:30 AM" → "09:30"
+  text = text.replace(/(\d{1,2}):(\d{2})\s*(AM|PM)/gi, function(_, h, m, ap) {
     var hr = parseInt(h, 10);
     if (/pm/i.test(ap) && hr !== 12) hr += 12;
     if (/am/i.test(ap) && hr === 12) hr = 0;
     return String(hr).padStart(2, '0') + ':' + m;
   });
+  // Short format: "9AM" / "2PM" (calendar axis labels) → "09:00" / "14:00"
+  text = text.replace(/\b(\d{1,2})(AM|PM)\b/gi, function(_, h, ap) {
+    var hr = parseInt(h, 10);
+    if (/pm/i.test(ap) && hr !== 12) hr += 12;
+    if (/am/i.test(ap) && hr === 12) hr = 0;
+    return String(hr).padStart(2, '0') + ':00';
+  });
+  return text;
 }
 // Convert 24-hour "HH:MM" back to "H:MM AM/PM" for English
 function _time24to12(text) {
