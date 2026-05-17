@@ -104,6 +104,27 @@
   .av-inner .av-lock-icon { display: none; }
   .av-day.av-past { pointer-events: none; opacity: 0.2; }
 
+  /* ===== SETTINGS SCREEN ===== */
+  .settings-row { display:flex;align-items:center;justify-content:space-between;padding:16px 0;border-bottom:1px solid #4d463544; }
+  .settings-row:last-child { border-bottom:none; }
+  .color-swatch { width:28px;height:28px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all 0.15s; }
+  .color-swatch.active { border-color:#f2ca50;transform:scale(1.2); }
+  .color-swatch:hover { transform:scale(1.1); }
+  .photo-manage-grid { display:grid;grid-template-columns:1fr 1fr;gap:10px; }
+  .photo-manage-item { position:relative;aspect-ratio:4/3;overflow:hidden;border:1px solid #4d4635; }
+  .photo-manage-item img { width:100%;height:100%;object-fit:cover; }
+  .photo-remove-btn { position:absolute;top:6px;right:6px;width:26px;height:26px;background:#93000a;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;transition:opacity 0.15s; }
+  .photo-remove-btn:hover { opacity:0.8; }
+  .lang-selector-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:12px; }
+  .lang-card { background:#0e0e0e;border:2px solid #4d4635;padding:16px 8px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:all 0.2s; }
+  .lang-card:active { transform:scale(0.96); }
+  .lang-card.selected { border-color:#f2ca50;background:rgba(242,202,80,0.05); }
+  .lang-card.selected .lang-card-name { color:#f2ca50 !important; }
+  .lang-confirm-btn { width:100%;margin-top:12px;padding:14px 24px;background:linear-gradient(45deg,#f2ca50,#d4af37);color:#241a00;border:2px solid #241a00;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.875rem;font-weight:900;cursor:pointer;transition:transform 0.12s;outline:none; }
+  .lang-confirm-btn.hidden { display:none; }
+  .lang-confirm-btn:active { transform:scale(0.98); }
+  .interval-opt { transition:all 0.15s;cursor:pointer; }
+
   /* ===== BARBER SCHEDULING CALENDAR ===== */
   .cal-view-btn { color: #99907c; background: transparent; }
   .cal-view-active { background: linear-gradient(45deg, #f2ca50, #d4af37) !important; color: #241a00 !important; }
@@ -277,6 +298,79 @@
     <a class="nav-link flex flex-col items-center text-gray-600 hover:text-[#f2ca50] cursor-pointer active:scale-95" onclick="navigateTo('screen-booking')">
       <span class="material-symbols-outlined text-[26px]">add_circle</span>
       <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5">BOOK</span>
+    </a>
+    <a class="nav-link flex flex-col items-center text-gray-600 hover:text-[#f2ca50] cursor-pointer active:scale-95" onclick="openClientSettings()">
+      <span class="material-symbols-outlined text-[26px]">manage_accounts</span>
+      <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5">SETTINGS</span>
+    </a>
+  </nav>
+</div>
+
+<!-- ===== SCREEN: CLIENT SETTINGS ===== -->
+<div class="screen" id="screen-client-settings">
+  <header class="bg-[#131313] flex justify-between items-center w-full px-6 py-5 sticky top-0 z-40 border-b border-outline-variant/20">
+    <button onclick="navigateTo('screen-home')" class="text-[#D4AF37] hover:text-[#f2ca50] transition-colors active:scale-95">
+      <span class="material-symbols-outlined text-2xl">arrow_back</span>
+    </button>
+    <h1 class="text-lg font-bold tracking-tighter text-[#D4AF37] font-headline">SETTINGS</h1>
+    <button onclick="navigateTo('screen-portal')" class="text-[#D4AF37] hover:text-[#f2ca50] transition-colors active:scale-95">
+      <span class="material-symbols-outlined text-2xl">home</span>
+    </button>
+  </header>
+  <main class="flex-1 px-6 py-8 pb-32 overflow-y-auto">
+    <!-- MY PROFILE -->
+    <section class="mb-8">
+      <p class="font-label text-[10px] font-extrabold tracking-[0.2em] uppercase text-outline mb-4">MY PROFILE</p>
+      <div class="bg-surface-container-low border-l-4 border-primary-container p-5 space-y-4">
+        <div>
+          <label class="block font-label text-[10px] font-extrabold tracking-[0.15em] text-outline mb-2">NAME</label>
+          <input id="cp-name" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base text-on-surface focus:border-primary outline-none transition-colors" placeholder="—"/>
+        </div>
+        <div>
+          <label class="block font-label text-[10px] font-extrabold tracking-[0.15em] text-outline mb-2">PHONE</label>
+          <input id="cp-phone" type="tel" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base text-on-surface focus:border-primary outline-none transition-colors" placeholder="—" dir="ltr"/>
+        </div>
+        <div>
+          <label class="block font-label text-[10px] font-extrabold tracking-[0.15em] text-outline mb-2">EMAIL</label>
+          <input id="cp-email" type="email" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base text-on-surface focus:border-primary outline-none transition-colors" placeholder="—" dir="ltr"/>
+        </div>
+        <button onclick="saveClientProfile()" class="w-full gold-gradient py-4 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98] transition-transform">SAVE</button>
+      </div>
+    </section>
+    <!-- LANGUAGE -->
+    <section class="mb-8">
+      <p class="font-label text-[10px] font-extrabold tracking-[0.2em] uppercase text-outline mb-4">APP LANGUAGE</p>
+      <div class="bg-surface-container-low border-l-4 border-primary-container p-5">
+        <div class="lang-selector-grid">
+          <div class="lang-card selected" data-lang="en" onclick="selectLang('en')">
+            <span style="font-size:1.5rem">🇺🇸</span>
+            <span class="lang-card-name font-label text-sm font-bold text-outline">English</span>
+          </div>
+          <div class="lang-card" data-lang="he" onclick="selectLang('he')">
+            <span style="font-size:1.5rem">🇮🇱</span>
+            <span class="lang-card-name font-label text-sm font-bold text-outline">עברית</span>
+          </div>
+          <div class="lang-card" data-lang="ar" onclick="selectLang('ar')">
+            <span style="font-size:1.5rem">🇸🇦</span>
+            <span class="lang-card-name font-label text-sm font-bold text-outline">العربية</span>
+          </div>
+        </div>
+        <button onclick="confirmLang()" class="lang-confirm-btn hidden">Confirm Language</button>
+      </div>
+    </section>
+  </main>
+  <nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-8 pt-3 bg-[#131313]/80 backdrop-blur-xl z-50 border-t-2 border-[#D4AF37]">
+    <a class="nav-link flex flex-col items-center text-gray-600 hover:text-[#f2ca50] cursor-pointer active:scale-95" onclick="navigateTo('screen-home')">
+      <span class="material-symbols-outlined text-[26px]">home_max</span>
+      <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5">HOME</span>
+    </a>
+    <a class="nav-link flex flex-col items-center text-gray-600 hover:text-[#f2ca50] cursor-pointer active:scale-95" onclick="navigateTo('screen-booking')">
+      <span class="material-symbols-outlined text-[26px]">add_circle</span>
+      <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5">BOOK</span>
+    </a>
+    <a class="nav-link flex flex-col items-center text-[#D4AF37] scale-110 cursor-pointer">
+      <span class="material-symbols-outlined text-[26px]" style="font-variation-settings:'FILL' 1">manage_accounts</span>
+      <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5">SETTINGS</span>
     </a>
   </nav>
 </div>
@@ -620,9 +714,8 @@
         </div>
         <!-- View segmented control -->
         <div class="flex bg-surface-container-low p-1 gap-0.5">
-          <button id="cal-btn-day"   onclick="setCalView('day')"   class="flex-1 py-2.5 font-label text-[10px] font-extrabold tracking-[0.12em] uppercase transition-all active:scale-95 cal-view-btn cal-view-active">DAILY</button>
-          <button id="cal-btn-week"  onclick="setCalView('week')"  class="flex-1 py-2.5 font-label text-[10px] font-extrabold tracking-[0.12em] uppercase transition-all active:scale-95 cal-view-btn">WEEKLY</button>
-          <button id="cal-btn-month" onclick="setCalView('month')" class="flex-1 py-2.5 font-label text-[10px] font-extrabold tracking-[0.12em] uppercase transition-all active:scale-95 cal-view-btn">MONTHLY</button>
+          <button id="cal-btn-day"  onclick="setCalView('day')"  class="flex-1 py-2.5 font-label text-[10px] font-extrabold tracking-[0.12em] uppercase transition-all active:scale-95 cal-view-btn cal-view-active">DAILY</button>
+          <button id="cal-btn-week" onclick="setCalView('week')" class="flex-1 py-2.5 font-label text-[10px] font-extrabold tracking-[0.12em] uppercase transition-all active:scale-95 cal-view-btn">WEEKLY</button>
         </div>
       </div>
 
@@ -659,24 +752,23 @@
         </div>
       </div>
 
-      <!-- MONTH VIEW -->
-      <div id="cal-month-view" style="display:none;padding-top:12px;">
-        <div id="cal-month-grid"></div>
-      </div>
-
     </section>
 
   </main>
 
   <!-- Bottom Nav -->
   <nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-8 pt-3 bg-[#131313]/80 backdrop-blur-xl z-50 border-t-2 border-[#D4AF37]">
-    <a class="nav-link flex flex-col items-center text-[#D4AF37] scale-110 cursor-pointer">
-      <span class="material-symbols-outlined text-[26px]" style="font-variation-settings:'FILL' 1">dashboard</span>
+    <a class="nav-link flex flex-col items-center text-[#D4AF37] scale-110 cursor-pointer" onclick="navigateTo('screen-barber');setBarberNav('dashboard')">
+      <span class="material-symbols-outlined text-[26px]" style="font-variation-settings:'FILL' 1" id="bnav-dashboard">dashboard</span>
       <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5">DASHBOARD</span>
     </a>
-    <a class="nav-link flex flex-col items-center text-gray-600 hover:text-[#f2ca50] cursor-pointer active:scale-95" onclick="navigateTo('screen-barber-settings')">
-      <span class="material-symbols-outlined text-[26px]">tune</span>
+    <a class="nav-link flex flex-col items-center text-gray-600 hover:text-[#f2ca50] cursor-pointer active:scale-95" onclick="navigateTo('screen-barber-settings');setBarberNav('schedule')">
+      <span class="material-symbols-outlined text-[26px]" id="bnav-schedule">tune</span>
       <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5">SCHEDULE</span>
+    </a>
+    <a class="nav-link flex flex-col items-center text-gray-600 hover:text-[#f2ca50] cursor-pointer active:scale-95" onclick="navigateTo('screen-barber-app-settings');setBarberNav('settings');buildPhotoManageGrid()">
+      <span class="material-symbols-outlined text-[26px]" id="bnav-settings">settings</span>
+      <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5">SETTINGS</span>
     </a>
   </nav>
 </div>
@@ -776,6 +868,163 @@
       </div>
     </div>
   </main>
+</div>
+
+<!-- ===== SCREEN: BARBER APP SETTINGS ===== -->
+<div class="screen" id="screen-barber-app-settings">
+  <header class="bg-[#131313] flex justify-between items-center w-full px-6 py-5 sticky top-0 z-40 border-b border-outline-variant/20">
+    <button onclick="navigateTo('screen-barber');setBarberNav('dashboard')" class="text-[#D4AF37] hover:text-[#f2ca50] transition-colors active:scale-95">
+      <span class="material-symbols-outlined text-2xl">arrow_back</span>
+    </button>
+    <h1 class="text-lg font-bold tracking-tighter text-[#D4AF37] font-headline">SETTINGS</h1>
+    <button onclick="navigateTo('screen-portal')" class="text-[#D4AF37] hover:text-[#f2ca50] transition-colors active:scale-95">
+      <span class="material-symbols-outlined text-2xl">home</span>
+    </button>
+  </header>
+  <main class="flex-1 px-6 py-8 pb-32 overflow-y-auto">
+    <!-- BARBER NAME -->
+    <section class="mb-8">
+      <p class="font-label text-[10px] font-extrabold tracking-[0.2em] uppercase text-outline mb-4">BARBER NAME</p>
+      <div class="bg-surface-container-low border-l-4 border-primary-container p-5">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="font-label text-[9px] uppercase tracking-widest text-outline mb-1">DISPLAYED NAME</p>
+            <p class="font-headline font-bold text-lg text-on-surface" id="settings-barber-name-display">JULIAN VANCE</p>
+          </div>
+          <button onclick="openBarberNameModal()" class="px-4 py-2 border-2 border-primary-container text-primary-container font-label text-[10px] font-extrabold tracking-widest uppercase hover:bg-primary-container hover:text-on-primary-container transition-all active:scale-95">EDIT</button>
+        </div>
+      </div>
+    </section>
+    <!-- SESSION INTERVAL -->
+    <section class="mb-8">
+      <p class="font-label text-[10px] font-extrabold tracking-[0.2em] uppercase text-outline mb-4">SESSION INTERVAL</p>
+      <div class="bg-surface-container-low border-l-4 border-primary-container p-5">
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="font-label text-[9px] uppercase tracking-widest text-outline mb-1">SLOT DURATION</p>
+            <p class="font-headline font-bold text-lg text-on-surface"><span id="session-interval-display">30</span> min</p>
+          </div>
+          <button onclick="openSessionIntervalModal()" class="px-4 py-2 border-2 border-primary-container text-primary-container font-label text-[10px] font-extrabold tracking-widest uppercase hover:bg-primary-container hover:text-on-primary-container transition-all active:scale-95">EDIT</button>
+        </div>
+      </div>
+    </section>
+    <!-- SERVICES & PRICES -->
+    <section class="mb-8">
+      <p class="font-label text-[10px] font-extrabold tracking-[0.2em] uppercase text-outline mb-4">SERVICES & PRICES</p>
+      <div class="bg-surface-container-low border-l-4 border-primary-container p-5">
+        <div id="services-manage-list" class="flex flex-col gap-2 mb-4"></div>
+        <button onclick="openAddServiceModal()" class="w-full py-3 border-2 border-dashed border-primary-container/60 text-primary-container font-label text-[10px] font-extrabold tracking-widest uppercase hover:border-primary-container hover:bg-primary-container/5 transition-all active:scale-95 flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined text-sm">add</span> ADD SERVICE
+        </button>
+      </div>
+    </section>
+    <!-- SPECIAL DEALS -->
+    <section class="mb-8">
+      <p class="font-label text-[10px] font-extrabold tracking-[0.2em] uppercase text-outline mb-4">SPECIAL DEALS</p>
+      <div class="bg-surface-container-low border-l-4 border-primary-container p-5">
+        <div id="deals-manage-list" class="flex flex-col gap-2 mb-4"></div>
+        <button onclick="openAddDealModal()" class="w-full py-3 border-2 border-dashed border-primary-container/60 text-primary-container font-label text-[10px] font-extrabold tracking-widest uppercase hover:border-primary-container hover:bg-primary-container/5 transition-all active:scale-95 flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined text-sm">local_offer</span> ADD DEAL
+        </button>
+      </div>
+    </section>
+    <!-- PRODUCTS -->
+    <section class="mb-8">
+      <p class="font-label text-[10px] font-extrabold tracking-[0.2em] uppercase text-outline mb-4">SHOP PRODUCTS</p>
+      <div class="bg-surface-container-low border-l-4 border-primary-container p-5">
+        <div id="products-manage-list" class="flex flex-col gap-3 mb-4"></div>
+        <button onclick="openAddProductModal()" class="w-full py-3 border-2 border-dashed border-primary-container/60 text-primary-container font-label text-[10px] font-extrabold tracking-widest uppercase hover:border-primary-container hover:bg-primary-container/5 transition-all active:scale-95 flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined text-sm">add_shopping_cart</span> ADD PRODUCT
+        </button>
+      </div>
+    </section>
+    <!-- NEWS MANAGEMENT -->
+    <section class="mb-8">
+      <p class="font-label text-[10px] font-extrabold tracking-[0.2em] uppercase text-outline mb-4">NEWS & UPDATES</p>
+      <div class="bg-surface-container-low border-l-4 border-primary-container p-5">
+        <div id="news-manage-list" class="flex flex-col gap-2 mb-4"></div>
+        <button onclick="openAddNewsModal()" class="w-full py-3 border-2 border-dashed border-primary-container/60 text-primary-container font-label text-[10px] font-extrabold tracking-widest uppercase hover:border-primary-container hover:bg-primary-container/5 transition-all active:scale-95 flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined text-sm">add</span> ADD UPDATE
+        </button>
+      </div>
+    </section>
+    <!-- SHOP NAME -->
+    <section class="mb-8">
+      <p class="font-label text-[10px] font-extrabold tracking-[0.2em] uppercase text-outline mb-4">SHOP NAME</p>
+      <div class="bg-surface-container-low border-l-4 border-primary-container p-5">
+        <div class="settings-row" style="border:none;padding:0">
+          <div class="flex-1">
+            <p class="font-label text-[9px] uppercase tracking-widest text-outline mb-2">CURRENT NAME</p>
+            <p class="font-headline font-bold text-xl text-primary" id="settings-shop-name-display">SOVEREIGN</p>
+          </div>
+          <button onclick="openShopNameModal()" class="px-4 py-2 border-2 border-primary-container text-primary-container font-label text-[10px] font-extrabold tracking-widest uppercase hover:bg-primary-container hover:text-on-primary-container transition-all active:scale-95">EDIT</button>
+        </div>
+      </div>
+    </section>
+    <!-- THEME COLORS -->
+    <section class="mb-8">
+      <p class="font-label text-[10px] font-extrabold tracking-[0.2em] uppercase text-outline mb-4">THEME COLOR</p>
+      <div class="bg-surface-container-low border-l-4 border-primary-container p-5">
+        <p class="font-label text-[9px] uppercase tracking-widest text-outline mb-4">SELECT ACCENT COLOR</p>
+        <div class="flex gap-4 flex-wrap">
+          <div class="color-swatch active" style="background:#D4AF37" onclick="setThemeColor('#D4AF37','#f2ca50')" title="Gold"></div>
+          <div class="color-swatch" style="background:#e05c5c" onclick="setThemeColor('#e05c5c','#f27070')" title="Crimson"></div>
+          <div class="color-swatch" style="background:#5c8ae0" onclick="setThemeColor('#5c8ae0','#7aa3f2')" title="Royal Blue"></div>
+          <div class="color-swatch" style="background:#5ce0a0" onclick="setThemeColor('#5ce0a0','#7af2b8')" title="Emerald"></div>
+          <div class="color-swatch" style="background:#c05ce0" onclick="setThemeColor('#c05ce0','#d47af2')" title="Violet"></div>
+          <div class="color-swatch" style="background:#e0995c" onclick="setThemeColor('#e0995c','#f2b07a')" title="Copper"></div>
+        </div>
+        <p class="font-label text-[9px] uppercase tracking-widest text-outline mt-4">Active: <span id="color-name">Gold</span></p>
+      </div>
+    </section>
+    <!-- STUDIO PHOTOS -->
+    <section class="mb-8">
+      <p class="font-label text-[10px] font-extrabold tracking-[0.2em] uppercase text-outline mb-4">STUDIO PHOTOS</p>
+      <div class="bg-surface-container-low border-l-4 border-primary-container p-5">
+        <p class="font-label text-[9px] uppercase tracking-widest text-outline mb-4">MANAGE GALLERY · <span id="photo-count">0</span> PHOTOS</p>
+        <div class="photo-manage-grid" id="photo-manage-grid"></div>
+        <label class="mt-4 flex items-center justify-center gap-2 w-full py-4 border-2 border-dashed border-primary-container/50 text-primary-container font-label text-[10px] font-extrabold tracking-[0.15em] uppercase hover:border-primary-container hover:bg-primary-container/5 transition-all cursor-pointer active:scale-[0.98]">
+          <span class="material-symbols-outlined text-sm">add_photo_alternate</span> ADD PHOTO
+          <input type="file" accept="image/*" class="hidden" onchange="handleAddPhoto(event)"/>
+        </label>
+      </div>
+    </section>
+    <!-- LANGUAGE -->
+    <section class="mb-8">
+      <p class="font-label text-[10px] font-extrabold tracking-[0.2em] uppercase text-outline mb-4">LANGUAGE</p>
+      <div class="bg-surface-container-low border-l-4 border-primary-container p-5">
+        <div class="lang-selector-grid">
+          <div class="lang-card selected" data-lang="en" onclick="selectLang('en')">
+            <span style="font-size:1.5rem">🇺🇸</span>
+            <span class="lang-card-name font-label text-sm font-bold text-outline">English</span>
+          </div>
+          <div class="lang-card" data-lang="he" onclick="selectLang('he')">
+            <span style="font-size:1.5rem">🇮🇱</span>
+            <span class="lang-card-name font-label text-sm font-bold text-outline">עברית</span>
+          </div>
+          <div class="lang-card" data-lang="ar" onclick="selectLang('ar')">
+            <span style="font-size:1.5rem">🇸🇦</span>
+            <span class="lang-card-name font-label text-sm font-bold text-outline">العربية</span>
+          </div>
+        </div>
+        <button onclick="confirmLang()" class="lang-confirm-btn hidden">Confirm Language</button>
+      </div>
+    </section>
+  </main>
+  <nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-8 pt-3 bg-[#131313]/80 backdrop-blur-xl z-50 border-t-2 border-[#D4AF37]">
+    <a class="nav-link flex flex-col items-center text-gray-600 hover:text-[#f2ca50] cursor-pointer active:scale-95" onclick="navigateTo('screen-barber');setBarberNav('dashboard')">
+      <span class="material-symbols-outlined text-[26px]">dashboard</span>
+      <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5">DASHBOARD</span>
+    </a>
+    <a class="nav-link flex flex-col items-center text-gray-600 hover:text-[#f2ca50] cursor-pointer active:scale-95" onclick="navigateTo('screen-barber-settings');setBarberNav('schedule')">
+      <span class="material-symbols-outlined text-[26px]">tune</span>
+      <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5">SCHEDULE</span>
+    </a>
+    <a class="nav-link flex flex-col items-center text-[#D4AF37] scale-110 cursor-pointer">
+      <span class="material-symbols-outlined text-[26px]" style="font-variation-settings:'FILL' 1">settings</span>
+      <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5">SETTINGS</span>
+    </a>
+  </nav>
 </div>
 
 <!-- ===== DAY EDIT PANEL (slide-up) ===== -->
@@ -917,6 +1166,111 @@
           CANCEL
         </button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SHOP NAME MODAL ===== -->
+<div id="shop-name-modal" class="hidden fixed inset-0 z-[300] bg-black/60 backdrop-blur-sm flex items-end" onclick="if(event.target===this)closeShopNameModal()">
+  <div class="w-full bg-[#131313] border-t-4 border-primary px-6 pt-10 pb-12">
+    <div class="max-w-md mx-auto">
+      <h2 class="font-headline text-2xl font-extrabold tracking-tighter mb-1">SHOP NAME</h2>
+      <input id="shop-name-input" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-5 py-4 font-headline text-xl tracking-tight focus:border-primary text-on-surface uppercase outline-none transition-all mb-4" placeholder="SOVEREIGN" value="SOVEREIGN"/>
+      <button onclick="saveShopName()" class="w-full gold-gradient py-5 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98] transition-transform mb-3">SAVE</button>
+      <button onclick="closeShopNameModal()" class="w-full py-4 border border-outline-variant text-outline font-label text-sm font-extrabold tracking-[0.15em] uppercase hover:border-primary-container hover:text-primary-container transition-all active:scale-[0.98]">CANCEL</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== BARBER NAME MODAL ===== -->
+<div id="barber-name-modal" class="hidden fixed inset-0 z-[300] bg-black/60 backdrop-blur-sm flex items-end" onclick="if(event.target===this)hideModal('barber-name-modal')">
+  <div class="w-full bg-[#131313] border-t-4 border-primary px-6 pt-10 pb-12">
+    <div class="max-w-md mx-auto">
+      <h2 class="font-headline text-2xl font-extrabold tracking-tighter mb-4">BARBER NAME</h2>
+      <input id="barber-name-input" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-headline text-base text-on-surface focus:border-primary outline-none transition-colors mb-4" placeholder="JULIAN VANCE"/>
+      <button onclick="saveBarberName()" class="w-full gold-gradient py-5 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98] transition-transform mb-3">SAVE</button>
+      <button onclick="hideModal('barber-name-modal')" class="w-full py-4 border border-outline-variant text-outline font-label text-sm font-extrabold tracking-[0.15em] uppercase hover:border-primary-container hover:text-primary-container transition-all active:scale-[0.98]">CANCEL</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SERVICE MODAL ===== -->
+<div id="service-modal" class="hidden fixed inset-0 z-[300] bg-black/60 backdrop-blur-sm flex items-end" onclick="if(event.target===this)hideModal('service-modal')">
+  <div class="w-full bg-[#131313] border-t-4 border-primary px-6 pt-10 pb-12 max-h-[80dvh] overflow-y-auto">
+    <div class="max-w-md mx-auto">
+      <h2 class="font-headline text-2xl font-extrabold tracking-tighter mb-4" id="service-modal-title">ADD SERVICE</h2>
+      <div class="space-y-4">
+        <div><label class="block font-label text-[10px] font-extrabold tracking-[0.15em] text-outline mb-2">SERVICE NAME</label><input id="svc-name" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base text-on-surface focus:border-primary outline-none transition-colors" placeholder="Royal Cut"/></div>
+        <div><label class="block font-label text-[10px] font-extrabold tracking-[0.15em] text-outline mb-2">PRICE</label><input id="svc-price" type="number" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base text-on-surface focus:border-primary outline-none transition-colors" placeholder="0"/></div>
+        <div><label class="block font-label text-[10px] font-extrabold tracking-[0.15em] text-outline mb-2">DURATION (min)</label><input id="svc-duration" type="number" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base text-on-surface focus:border-primary outline-none transition-colors" placeholder="30"/></div>
+        <button onclick="saveServiceModal()" class="w-full gold-gradient py-5 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98] transition-transform">SAVE SERVICE</button>
+        <button onclick="hideModal('service-modal')" class="w-full py-4 border border-outline-variant text-outline font-label text-sm font-extrabold tracking-[0.15em] uppercase hover:border-primary-container hover:text-primary-container transition-all active:scale-[0.98]">CANCEL</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== DEAL MODAL ===== -->
+<div id="deal-modal" class="hidden fixed inset-0 z-[300] bg-black/60 backdrop-blur-sm flex items-end" onclick="if(event.target===this)hideModal('deal-modal')">
+  <div class="w-full bg-[#131313] border-t-4 border-primary px-6 pt-10 pb-12 max-h-[80dvh] overflow-y-auto">
+    <div class="max-w-md mx-auto">
+      <h2 class="font-headline text-2xl font-extrabold tracking-tighter mb-4" id="deal-modal-title">ADD DEAL</h2>
+      <div class="space-y-4">
+        <div><label class="block font-label text-[10px] font-extrabold tracking-[0.15em] text-outline mb-2">DEAL NAME</label><input id="deal-name" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base text-on-surface focus:border-primary outline-none transition-colors" placeholder="Deal name"/></div>
+        <div><label class="block font-label text-[10px] font-extrabold tracking-[0.15em] text-outline mb-2">DESCRIPTION</label><input id="deal-desc" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base text-on-surface focus:border-primary outline-none transition-colors" placeholder="Details"/></div>
+        <div><label class="block font-label text-[10px] font-extrabold tracking-[0.15em] text-outline mb-2">BADGE LABEL</label><input id="deal-badge" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base text-on-surface focus:border-primary outline-none transition-colors" placeholder="e.g. 20% OFF"/></div>
+        <button onclick="saveDealModal()" class="w-full gold-gradient py-5 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98] transition-transform">SAVE DEAL</button>
+        <button onclick="hideModal('deal-modal')" class="w-full py-4 border border-outline-variant text-outline font-label text-sm font-extrabold tracking-[0.15em] uppercase hover:border-primary-container hover:text-primary-container transition-all active:scale-[0.98]">CANCEL</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PRODUCT MODAL ===== -->
+<div id="product-modal" class="hidden fixed inset-0 z-[300] bg-black/60 backdrop-blur-sm flex items-end" onclick="if(event.target===this)hideModal('product-modal')">
+  <div class="w-full bg-[#131313] border-t-4 border-primary px-6 pt-10 pb-12 max-h-[80dvh] overflow-y-auto">
+    <div class="max-w-md mx-auto">
+      <h2 class="font-headline text-2xl font-extrabold tracking-tighter mb-4" id="product-modal-title">ADD PRODUCT</h2>
+      <div class="space-y-4">
+        <div><label class="block font-label text-[10px] font-extrabold tracking-[0.15em] text-outline mb-2">PRODUCT NAME</label><input id="prod-name" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base text-on-surface focus:border-primary outline-none transition-colors" placeholder="Product name"/></div>
+        <div><label class="block font-label text-[10px] font-extrabold tracking-[0.15em] text-outline mb-2">PRICE</label><input id="prod-price" type="number" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base text-on-surface focus:border-primary outline-none transition-colors" placeholder="0"/></div>
+        <div><label class="block font-label text-[10px] font-extrabold tracking-[0.15em] text-outline mb-2">DESCRIPTION</label><input id="prod-desc" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base text-on-surface focus:border-primary outline-none transition-colors" placeholder="Details"/></div>
+        <button onclick="saveProductModal()" class="w-full gold-gradient py-5 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98] transition-transform">SAVE PRODUCT</button>
+        <button onclick="hideModal('product-modal')" class="w-full py-4 border border-outline-variant text-outline font-label text-sm font-extrabold tracking-[0.15em] uppercase hover:border-primary-container hover:text-primary-container transition-all active:scale-[0.98]">CANCEL</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== NEWS MODAL ===== -->
+<div id="news-modal" class="hidden fixed inset-0 z-[300] bg-black/60 backdrop-blur-sm flex items-end" onclick="if(event.target===this)hideModal('news-modal')">
+  <div class="w-full bg-[#131313] border-t-4 border-primary px-6 pt-10 pb-12">
+    <div class="max-w-md mx-auto">
+      <h2 class="font-headline text-2xl font-extrabold tracking-tighter mb-4" id="news-modal-title">ADD UPDATE</h2>
+      <div class="space-y-4">
+        <div><label class="block font-label text-[10px] font-extrabold tracking-[0.15em] text-outline mb-2">TITLE</label><input id="news-title-input" type="text" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base text-on-surface focus:border-primary outline-none transition-colors" placeholder="Title"/></div>
+        <div><label class="block font-label text-[10px] font-extrabold tracking-[0.15em] text-outline mb-2">BODY</label><textarea id="news-body-input" rows="3" class="w-full bg-surface-container-lowest border-2 border-outline-variant px-4 py-3 font-body text-base text-on-surface focus:border-primary outline-none transition-colors resize-none" placeholder="Message"></textarea></div>
+        <button onclick="saveNewsModal()" class="w-full gold-gradient py-5 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98] transition-transform">SAVE UPDATE</button>
+        <button onclick="hideModal('news-modal')" class="w-full py-4 border border-outline-variant text-outline font-label text-sm font-extrabold tracking-[0.15em] uppercase hover:border-primary-container hover:text-primary-container transition-all active:scale-[0.98]">CANCEL</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SESSION INTERVAL MODAL ===== -->
+<div id="session-interval-modal" class="hidden fixed inset-0 z-[300] bg-black/60 backdrop-blur-sm flex items-end" onclick="if(event.target===this)hideModal('session-interval-modal')">
+  <div class="w-full bg-[#131313] border-t-4 border-primary px-6 pt-10 pb-12">
+    <div class="max-w-md mx-auto">
+      <h2 class="font-headline text-2xl font-extrabold tracking-tighter mb-4">SESSION INTERVAL</h2>
+      <div class="flex gap-3 mb-4">
+        <button class="interval-opt flex-1 py-3 border-2 border-primary text-primary font-label text-sm font-extrabold tracking-widest uppercase" onclick="selectInterval(15)">15</button>
+        <button class="interval-opt flex-1 py-3 border-2 border-outline-variant text-outline font-label text-sm font-extrabold tracking-widest uppercase" onclick="selectInterval(30)">30</button>
+        <button class="interval-opt flex-1 py-3 border-2 border-outline-variant text-outline font-label text-sm font-extrabold tracking-widest uppercase" onclick="selectInterval(45)">45</button>
+        <button class="interval-opt flex-1 py-3 border-2 border-outline-variant text-outline font-label text-sm font-extrabold tracking-widest uppercase" onclick="selectInterval(60)">60</button>
+      </div>
+      <p class="font-label text-[9px] uppercase tracking-widest text-outline text-center mb-4">Selected: <span id="interval-selected-label">30 min</span></p>
+      <button onclick="saveSessionInterval()" class="w-full gold-gradient py-5 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98] transition-transform mb-3">CONFIRM</button>
+      <button onclick="hideModal('session-interval-modal')" class="w-full py-4 border border-outline-variant text-outline font-label text-sm font-extrabold tracking-[0.15em] uppercase hover:border-primary-container hover:text-primary-container transition-all active:scale-[0.98]">CANCEL</button>
     </div>
   </div>
 </div>
@@ -1396,7 +1750,7 @@ function calTotalH()   { return (CAL_END_H - CAL_START_H) * 60 * CAL_PX_MIN; }
 
 function setCalView(v) {
   calView = v;
-  ['day','week','month'].forEach(x => {
+  ['day','week'].forEach(x => {
     document.getElementById('cal-'+x+'-view').style.display = (x === v) ? '' : 'none';
     document.getElementById('cal-btn-'+x).classList.toggle('cal-view-active', x === v);
   });
@@ -1406,9 +1760,8 @@ function setCalView(v) {
 
 function calShiftDate(dir) {
   const d = new Date(calCurrentDate);
-  if (calView === 'day')        d.setDate(d.getDate() + dir);
-  else if (calView === 'week')  d.setDate(d.getDate() + dir * 7);
-  else                          d.setMonth(d.getMonth() + dir);
+  if (calView === 'week') d.setDate(d.getDate() + dir * 7);
+  else                    d.setDate(d.getDate() + dir);
   calCurrentDate = d;
   calUpdateHeader();
   calRender();
@@ -1430,16 +1783,14 @@ function calUpdateHeader() {
   const MA  = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
   const MF  = ['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE','JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'];
   let label = '';
-  if (calView === 'day') {
-    label = DA[calCurrentDate.getDay()] + ', ' + MA[calCurrentDate.getMonth()] + ' ' + calCurrentDate.getDate();
-  } else if (calView === 'week') {
+  if (calView === 'week') {
     const ws = new Date(calCurrentDate);
     const wd = ws.getDay();
     ws.setDate(ws.getDate() - (wd === 0 ? 6 : wd - 1));
     const we = new Date(ws); we.setDate(we.getDate() + 6);
     label = MA[ws.getMonth()] + ' ' + ws.getDate() + ' — ' + MA[we.getMonth()] + ' ' + we.getDate();
   } else {
-    label = MF[calCurrentDate.getMonth()] + ' ' + calCurrentDate.getFullYear();
+    label = DA[calCurrentDate.getDay()] + ', ' + MA[calCurrentDate.getMonth()] + ' ' + calCurrentDate.getDate();
   }
   document.getElementById('barber-cal-date-label').textContent = label;
   document.getElementById('barber-cal-today-badge').textContent = (calView === 'day' && isToday) ? 'TODAY' : '';
@@ -1572,51 +1923,10 @@ function calRenderWeekView() {
   }
 }
 
-function calRenderMonthView() {
-  const el = document.getElementById('cal-month-grid');
-  el.innerHTML = '';
-  const y  = calCurrentDate.getFullYear();
-  const mo = calCurrentDate.getMonth();
-  const firstDay = new Date(y, mo, 1).getDay();
-  const days     = new Date(y, mo + 1, 0).getDate();
-  const today    = new Date();
-  const offset   = firstDay === 0 ? 6 : firstDay - 1;
-  // Header row
-  const hRow = document.createElement('div');
-  hRow.style.cssText = 'display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:4px;';
-  ['MON','TUE','WED','THU','FRI','SAT','SUN'].forEach(function(d) {
-    const h = document.createElement('div');
-    h.style.cssText = 'text-align:center;padding:6px 0;';
-    h.innerHTML = '<span style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:9px;font-weight:700;color:#d4af37;letter-spacing:0.1em;">' + d + '</span>';
-    hRow.appendChild(h);
-  });
-  el.appendChild(hRow);
-  // Day grid
-  const grid = document.createElement('div');
-  grid.style.cssText = 'display:grid;grid-template-columns:repeat(7,1fr);gap:2px;';
-  for (let i = 0; i < offset; i++) grid.appendChild(document.createElement('div'));
-  for (let d = 1; d <= days; d++) {
-    const date   = new Date(y, mo, d);
-    const ds     = calFmtDate(date);
-    const isToday= date.toDateString() === today.toDateString();
-    const isPast = date < new Date(today.getFullYear(), today.getMonth(), today.getDate());
-    const cnt    = calAppts.filter(a => a.date === ds).length;
-    const cell   = document.createElement('div');
-    cell.style.cssText = 'cursor:pointer;';
-    cell.onclick = (function(dt){ return function(){ calCurrentDate = dt; setCalView('day'); }; })(new Date(date));
-    const bg  = isToday ? 'background:linear-gradient(45deg,#f2ca50,#d4af37)' : 'background:#1c1b1b';
-    const nc  = isToday ? '#241a00' : (isPast ? '#555' : '#e5e2e1');
-    const dots = (cnt > 0 && !isToday) ? '<div style="display:flex;gap:2px;margin-top:2px;">' + Array.from({length:Math.min(cnt,3)}).map(function(){ return '<div style="width:4px;height:4px;border-radius:50%;background:#f2ca50;"></div>'; }).join('') + '</div>' : '';
-    cell.innerHTML = '<div style="aspect-ratio:1/1;display:flex;flex-direction:column;align-items:center;justify-content:center;' + bg + ';' + (isPast && !isToday ? 'opacity:0.35;' : '') + '"><span style="font-family:\'Epilogue\',sans-serif;font-size:12px;font-weight:800;color:' + nc + ';">' + d + '</span>' + dots + '</div>';
-    grid.appendChild(cell);
-  }
-  el.appendChild(grid);
-}
 
 function calRender() {
-  if      (calView === 'day')   calRenderDayView();
-  else if (calView === 'week')  calRenderWeekView();
-  else                          calRenderMonthView();
+  if (calView === 'week') calRenderWeekView();
+  else                    calRenderDayView();
 }
 
 function calInit() {
@@ -1631,6 +1941,262 @@ function calInit() {
       s.scrollTop = Math.max(0, calMinY(t.getHours(), t.getMinutes()) - 120);
     }
   }, 200);
+}
+
+// ===== SETTINGS STATE =====
+let currentLang = 'en';
+let pendingLang = null;
+let sessionInterval = 30;
+let pendingInterval = 30;
+let studioPhotos = [];
+let services = [];
+let deals = [];
+let products = [];
+let news = [];
+
+function showModal(id) { document.getElementById(id).classList.remove('hidden'); }
+function hideModal(id) { document.getElementById(id).classList.add('hidden'); }
+function sanitize(val, maxLen=200) { if(typeof val!=='string') return ''; return val.replace(/[<>'"&]/g,c=>({'<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;','&':'&amp;'}[c])).trim().slice(0,maxLen); }
+function showToast(msg) {
+  let t = document.getElementById('_toast');
+  if (!t) { t = document.createElement('div'); t.id = '_toast'; t.style.cssText='position:fixed;bottom:100px;left:50%;transform:translateX(-50%);background:#f2ca50;color:#241a00;font-family:"Plus Jakarta Sans",sans-serif;font-size:11px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;padding:10px 20px;z-index:9999;pointer-events:none;transition:opacity 0.3s;'; document.body.appendChild(t); }
+  t.textContent = msg; t.style.opacity = '1';
+  clearTimeout(t._to); t._to = setTimeout(()=>{ t.style.opacity='0'; }, 2000);
+}
+
+// ===== BARBER NAV HIGHLIGHT =====
+function setBarberNav(active) {
+  ['dashboard','schedule','settings'].forEach(k => {
+    const el = document.getElementById('bnav-' + k);
+    if (!el) return;
+    const link = el.closest('a');
+    if (!link) return;
+    if (k === active) {
+      link.classList.remove('text-gray-600');
+      link.classList.add('text-[#D4AF37]','scale-110');
+      el.style.fontVariationSettings = "'FILL' 1";
+    } else {
+      link.classList.remove('text-[#D4AF37]','scale-110');
+      link.classList.add('text-gray-600');
+      el.style.fontVariationSettings = "'FILL' 0";
+    }
+  });
+}
+
+// ===== PHOTO MANAGEMENT =====
+function buildPhotoManageGrid() {
+  const grid = document.getElementById('photo-manage-grid');
+  if (!grid) return;
+  const cnt = document.getElementById('photo-count');
+  if (cnt) cnt.textContent = studioPhotos.length;
+  grid.innerHTML = '';
+  studioPhotos.forEach((src, i) => {
+    const item = document.createElement('div');
+    item.className = 'photo-manage-item';
+    item.innerHTML = '<img src="' + src + '" alt="Studio photo"/><button class="photo-remove-btn" onclick="removePhoto(' + i + ')"><span class="material-symbols-outlined" style="color:#fff;font-size:14px;">close</span></button>';
+    grid.appendChild(item);
+  });
+}
+function removePhoto(index) {
+  studioPhotos.splice(index, 1);
+  buildPhotoManageGrid();
+}
+function handleAddPhoto(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => { studioPhotos.push(e.target.result); buildPhotoManageGrid(); };
+  reader.readAsDataURL(file);
+}
+
+// ===== SHOP NAME =====
+function openShopNameModal() { showModal('shop-name-modal'); }
+function closeShopNameModal() { hideModal('shop-name-modal'); }
+function saveShopName() {
+  const val = sanitize(document.getElementById('shop-name-input').value) || 'SOVEREIGN';
+  const el = document.getElementById('settings-shop-name-display');
+  if (el) el.textContent = val;
+  closeShopNameModal();
+  showToast('Shop name saved');
+}
+
+// ===== THEME COLOR =====
+function setThemeColor(primary, light) {
+  document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  document.documentElement.style.setProperty('--color-primary', light);
+  const colorMap = {'#D4AF37':'Gold','#e05c5c':'Crimson','#5c8ae0':'Royal Blue','#5ce0a0':'Emerald','#c05ce0':'Violet','#e0995c':'Copper'};
+  const nameEl = document.getElementById('color-name');
+  if (nameEl) nameEl.textContent = colorMap[primary] || primary;
+  showToast('Theme updated');
+}
+
+// ===== LANGUAGE =====
+function selectLang(lang) {
+  pendingLang = lang;
+  document.querySelectorAll('.lang-card').forEach(c => c.classList.toggle('selected', c.dataset.lang === lang));
+  document.querySelectorAll('.lang-confirm-btn').forEach(b => { b.classList.remove('hidden'); b.textContent = 'Confirm Language'; });
+}
+function confirmLang() {
+  if (!pendingLang) return;
+  currentLang = pendingLang; pendingLang = null;
+  document.querySelectorAll('.lang-confirm-btn').forEach(b => b.classList.add('hidden'));
+  showToast('Language saved');
+}
+
+// ===== BARBER NAME =====
+function openBarberNameModal() {
+  const cur = document.getElementById('settings-barber-name-display');
+  if (cur) document.getElementById('barber-name-input').value = cur.textContent;
+  showModal('barber-name-modal');
+}
+function saveBarberName() {
+  const val = sanitize(document.getElementById('barber-name-input').value);
+  if (!val) return;
+  const el = document.getElementById('settings-barber-name-display');
+  if (el) el.textContent = val.toUpperCase();
+  hideModal('barber-name-modal');
+  showToast('Name saved');
+}
+
+// ===== SESSION INTERVAL =====
+function openSessionIntervalModal() {
+  pendingInterval = sessionInterval;
+  updateIntervalUI();
+  showModal('session-interval-modal');
+}
+function selectInterval(min) { pendingInterval = min; updateIntervalUI(); }
+function updateIntervalUI() {
+  document.querySelectorAll('.interval-opt').forEach(btn => {
+    const val = parseInt(btn.textContent);
+    const isActive = val === pendingInterval;
+    btn.classList.toggle('border-primary', isActive);
+    btn.classList.toggle('text-primary', isActive);
+    btn.classList.toggle('border-outline-variant', !isActive);
+    btn.classList.toggle('text-outline', !isActive);
+  });
+  const lbl = document.getElementById('interval-selected-label');
+  if (lbl) lbl.textContent = pendingInterval + ' min';
+}
+function saveSessionInterval() {
+  sessionInterval = pendingInterval;
+  const disp = document.getElementById('session-interval-display');
+  if (disp) disp.textContent = sessionInterval;
+  hideModal('session-interval-modal');
+  showToast('Interval set to ' + sessionInterval + ' min');
+}
+
+// ===== SERVICES =====
+function renderServicesManage() {
+  const el = document.getElementById('services-manage-list');
+  if (!el) return;
+  el.innerHTML = services.length ? '' : '<p class="font-body text-xs text-on-surface-variant opacity-60">No services yet.</p>';
+  services.forEach((s, i) => {
+    const row = document.createElement('div');
+    row.className = 'flex items-center justify-between py-2 border-b border-outline-variant/20';
+    row.innerHTML = '<div><p class="font-body font-semibold text-sm">' + sanitize(s.name) + '</p><p class="font-label text-[9px] text-outline uppercase tracking-widest">' + s.price + ' · ' + s.duration + ' min</p></div><button onclick="deleteService(' + i + ')" class="text-error/60 hover:text-error transition-colors"><span class="material-symbols-outlined text-sm">delete</span></button>';
+    el.appendChild(row);
+  });
+}
+let _svcEditIdx = null;
+function openAddServiceModal() { _svcEditIdx = null; document.getElementById('service-modal-title').textContent = 'ADD SERVICE'; ['svc-name','svc-price','svc-duration'].forEach(id => document.getElementById(id).value = ''); showModal('service-modal'); }
+function openEditServiceModal(i) { _svcEditIdx = i; const s = services[i]; document.getElementById('service-modal-title').textContent = 'EDIT SERVICE'; document.getElementById('svc-name').value = s.name; document.getElementById('svc-price').value = s.price; document.getElementById('svc-duration').value = s.duration; showModal('service-modal'); }
+function saveServiceModal() {
+  const name = sanitize(document.getElementById('svc-name').value);
+  const price = parseFloat(document.getElementById('svc-price').value) || 0;
+  const duration = parseInt(document.getElementById('svc-duration').value) || 30;
+  if (!name) return;
+  if (_svcEditIdx !== null) services[_svcEditIdx] = {name, price, duration};
+  else services.push({name, price, duration});
+  hideModal('service-modal');
+  renderServicesManage();
+}
+function deleteService(i) { if(confirm('Delete this service?')){services.splice(i,1);renderServicesManage();} }
+
+// ===== DEALS =====
+function renderDealsManage() {
+  const el = document.getElementById('deals-manage-list');
+  if (!el) return;
+  el.innerHTML = deals.length ? '' : '<p class="font-body text-xs text-on-surface-variant opacity-60">No deals yet.</p>';
+  deals.forEach((d, i) => {
+    const row = document.createElement('div');
+    row.className = 'flex items-center justify-between py-2 border-b border-outline-variant/20';
+    row.innerHTML = '<div><p class="font-body font-semibold text-sm">' + sanitize(d.name) + '</p><p class="font-label text-[9px] text-outline uppercase tracking-widest">' + sanitize(d.badge) + '</p></div><button onclick="deleteDeal(' + i + ')" class="text-error/60 hover:text-error transition-colors"><span class="material-symbols-outlined text-sm">delete</span></button>';
+    el.appendChild(row);
+  });
+}
+let _dealEditIdx = null;
+function openAddDealModal() { _dealEditIdx = null; document.getElementById('deal-modal-title').textContent = 'ADD DEAL'; ['deal-name','deal-desc','deal-badge'].forEach(id => document.getElementById(id).value = ''); showModal('deal-modal'); }
+function saveDealModal() {
+  const name = sanitize(document.getElementById('deal-name').value);
+  const desc = sanitize(document.getElementById('deal-desc').value);
+  const badge = sanitize(document.getElementById('deal-badge').value);
+  if (!name) return;
+  if (_dealEditIdx !== null) deals[_dealEditIdx] = {name, desc, badge};
+  else deals.push({name, desc, badge});
+  hideModal('deal-modal');
+  renderDealsManage();
+}
+function deleteDeal(i) { if(confirm('Delete this deal?')){deals.splice(i,1);renderDealsManage();} }
+
+// ===== PRODUCTS =====
+function renderProductsManage() {
+  const el = document.getElementById('products-manage-list');
+  if (!el) return;
+  el.innerHTML = products.length ? '' : '<p class="font-body text-xs text-on-surface-variant opacity-60">No products yet.</p>';
+  products.forEach((p, i) => {
+    const row = document.createElement('div');
+    row.className = 'flex items-center justify-between py-2 border-b border-outline-variant/20';
+    row.innerHTML = '<div><p class="font-body font-semibold text-sm">' + sanitize(p.name) + '</p><p class="font-label text-[9px] text-outline uppercase tracking-widest">' + p.price + '</p></div><button onclick="deleteProduct(' + i + ')" class="text-error/60 hover:text-error transition-colors"><span class="material-symbols-outlined text-sm">delete</span></button>';
+    el.appendChild(row);
+  });
+}
+let _prodEditIdx = null;
+function openAddProductModal() { _prodEditIdx = null; document.getElementById('product-modal-title').textContent = 'ADD PRODUCT'; ['prod-name','prod-price','prod-desc'].forEach(id => document.getElementById(id).value = ''); showModal('product-modal'); }
+function saveProductModal() {
+  const name = sanitize(document.getElementById('prod-name').value);
+  const price = parseFloat(document.getElementById('prod-price').value) || 0;
+  const desc = sanitize(document.getElementById('prod-desc').value);
+  if (!name) return;
+  if (_prodEditIdx !== null) products[_prodEditIdx] = {name, price, desc};
+  else products.push({name, price, desc});
+  hideModal('product-modal');
+  renderProductsManage();
+}
+function deleteProduct(i) { if(confirm('Delete this product?')){products.splice(i,1);renderProductsManage();} }
+
+// ===== NEWS =====
+function renderNewsManage() {
+  const el = document.getElementById('news-manage-list');
+  if (!el) return;
+  el.innerHTML = news.length ? '' : '<p class="font-body text-xs text-on-surface-variant opacity-60">No updates yet.</p>';
+  news.forEach((n, i) => {
+    const row = document.createElement('div');
+    row.className = 'flex items-center justify-between py-2 border-b border-outline-variant/20';
+    row.innerHTML = '<div><p class="font-body font-semibold text-sm">' + sanitize(n.title) + '</p><p class="font-label text-[9px] text-outline uppercase tracking-widest">' + sanitize(n.body).slice(0,40) + '</p></div><button onclick="deleteNews(' + i + ')" class="text-error/60 hover:text-error transition-colors"><span class="material-symbols-outlined text-sm">delete</span></button>';
+    el.appendChild(row);
+  });
+}
+let _newsEditIdx = null;
+function openAddNewsModal() { _newsEditIdx = null; document.getElementById('news-modal-title').textContent = 'ADD UPDATE'; ['news-title-input','news-body-input'].forEach(id => document.getElementById(id).value = ''); showModal('news-modal'); }
+function saveNewsModal() {
+  const title = sanitize(document.getElementById('news-title-input').value);
+  const body = sanitize(document.getElementById('news-body-input').value);
+  if (!title) return;
+  if (_newsEditIdx !== null) news[_newsEditIdx] = {title, body};
+  else news.push({title, body});
+  hideModal('news-modal');
+  renderNewsManage();
+}
+function deleteNews(i) { if(confirm('Delete this update?')){news.splice(i,1);renderNewsManage();} }
+
+// ===== CLIENT SETTINGS =====
+function openClientSettings() { navigateTo('screen-client-settings'); }
+function saveClientProfile() {
+  const name = sanitize(document.getElementById('cp-name').value);
+  const phone = sanitize(document.getElementById('cp-phone').value);
+  const email = sanitize(document.getElementById('cp-email').value);
+  showToast('Profile saved');
 }
 
 // ===== INIT =====
