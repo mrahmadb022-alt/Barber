@@ -1413,6 +1413,17 @@ function confirmBooking() {
   document.getElementById('dynamic-booking-title').textContent = `${new Date(year, month, day).toLocaleDateString('en-GB', {day:'numeric', month:'short'}).toUpperCase()} — ${selectedTime}`;
   document.getElementById('dynamic-booking-sub').textContent = `${selectedService} · Mayfair`;
   dyn.classList.remove('hidden');
+
+  // Push booking into barber calendar
+  const [timePart, meridiem] = selectedTime.split(' ');
+  const [rawH, rawM] = timePart.split(':').map(Number);
+  const startH = (meridiem === 'PM' && rawH !== 12) ? rawH + 12 : (meridiem === 'AM' && rawH === 12 ? 0 : rawH);
+  const svcMap = { 'ROYAL CUT': { name:'Royal Cut', duration:45 }, 'BEARD': { name:'Beard Sculpt', duration:30 }, 'SPECIAL': { name:'Special Cut', duration:60 } };
+  const svc = svcMap[selectedService] || { name: selectedService, duration: 45 };
+  const clientName = (document.getElementById('inp-name').value.trim() || 'Client').toUpperCase();
+  const apptDate = calFmtDate(new Date(year, month, day));
+  calAppts.push({ id: Date.now(), client: clientName, service: svc.name, date: apptDate, startH, startM: rawM, duration: svc.duration, status: 'upcoming' });
+  if (calFmtDate(calCurrentDate) === apptDate) calRenderDayView();
 }
 
 function backToHome() {
@@ -1729,7 +1740,7 @@ const CAL_START_H = 8;
 const CAL_END_H = 22;
 const CAL_PX_MIN = 2; // px per minute
 
-const calAppts = [
+let calAppts = [
   { id:1, client:'Alexander Vance', service:'Royal Cut',    date:'2026-05-17', startH:9,  startM:0,  duration:45, status:'done'     },
   { id:2, client:'Marcus Reed',     service:'Beard Sculpt', date:'2026-05-17', startH:10, startM:30, duration:30, status:'done'     },
   { id:3, client:'James Holloway',  service:'Special Cut',  date:'2026-05-17', startH:14, startM:0,  duration:60, status:'upcoming' },
@@ -2032,16 +2043,211 @@ function setThemeColor(primary, light) {
 }
 
 // ===== LANGUAGE =====
+// ===== LANGUAGE TRANSLATION ENGINE =====
+const _LM = {
+  he: {
+    dir: 'rtl',
+    t: {
+      // Portal
+      'Elite Grooming — Select Your Role': 'גרומינג אליט — בחר תפקיד',
+      'ENTER AS': 'כניסה כ',
+      'CLIENT': 'לקוח',
+      'BARBER': 'ספר',
+      'Book sessions, manage appointments': 'קביעת תורים, ניהול פגישות',
+      'Dashboard, schedule & availability': 'לוח בקרה, לוח זמנים וזמינות',
+      // Client home
+      'WELCOME BACK': 'ברוך שובך',
+      'Hello,': 'שלום,',
+      'ACTIVE BOOKING': 'הזמנה פעילה',
+      'NEXT SESSION': 'הפגישה הבאה',
+      'TIME': 'שעה',
+      'SERVICE': 'שירות',
+      'ROYAL CUT': 'תספורת רויאל',
+      'BOOK YOUR NEXT SESSION': 'קבע את הפגישה הבאה',
+      'NEWS FROM YOUR BARBER': 'עדכונים מהספר',
+      // Nav
+      'HOME': 'בית',
+      'BOOK': 'הזמנה',
+      'SETTINGS': 'הגדרות',
+      'DASHBOARD': 'לוח בקרה',
+      'SCHEDULE': 'לוח זמנים',
+      // Ticket menu
+      'EDIT HOUR': 'עריכת שעה',
+      'CANCEL BOOKING': 'ביטול הזמנה',
+      // Booking screen
+      'SELECT YOUR SESSION': 'בחר פגישה',
+      'AVAILABLE SLOTS': 'זמנים פנויים',
+      'Current Selection': 'בחירה נוכחית',
+      'No date selected': 'לא נבחר תאריך',
+      'Select a date and time above': 'בחר תאריך ושעה',
+      'PROCEED TO BOOKING': 'המשך להזמנה',
+      // Calendar day headers
+      'MON': 'ב׳', 'TUE': 'ג׳', 'WED': 'ד׳',
+      'THU': 'ה׳', 'FRI': 'ו׳', 'SAT': 'ש׳', 'SUN': 'א׳',
+      // Booking modal
+      'COMPLETE BOOKING': 'השלם הזמנה',
+      'FULL NAME': 'שם מלא',
+      'PHONE NUMBER': 'מספר טלפון',
+      'SERVICE TYPE': 'סוג שירות',
+      'BEARD': 'זקן',
+      'SPECIAL': 'מיוחד',
+      'CONFIRM BOOKING': 'אשר הזמנה',
+      // Confirmation screen
+      'CONFIRMED': 'אושר',
+      'YOUR SESSION': 'הפגישה שלך',
+      'BACK TO HOME': 'חזרה לדף הבית',
+      // Edit active booking
+      'EDIT BOOKING': 'עריכת הזמנה',
+      'RESCHEDULING': 'קביעה מחדש',
+      'Select a new time slot for this booking.': 'בחר שעה חדשה',
+      'New Selection': 'בחירה חדשה',
+      'Select a time slot above': 'בחר שעה למעלה',
+      'CONFIRM NEW TIME': 'אשר שעה חדשה',
+      // My bookings
+      'MY BOOKINGS': 'ההזמנות שלי',
+      'FUTURE BOOKINGS': 'הזמנות עתידות',
+      'CONFIRMED': 'אושר',
+      'UPCOMING': 'קרוב',
+      'RESCHEDULE': 'קבע מחדש',
+      'CANCEL': 'ביטול',
+      // Client settings
+      'MY PROFILE': 'הפרופיל שלי',
+      'NAME': 'שם',
+      'PHONE': 'טלפון',
+      'EMAIL': 'אימייל',
+      'SAVE': 'שמור',
+      'APP LANGUAGE': 'שפת אפליקציה',
+      'Confirm Language': 'אשר שפה',
+      // Barber dashboard
+      'DAILY': 'יומי',
+      'WEEKLY': 'שבועי',
+      'TODAY': 'היום',
+    }
+  },
+  ar: {
+    dir: 'rtl',
+    t: {
+      // Portal
+      'Elite Grooming — Select Your Role': 'تجميل النخبة — اختر دورك',
+      'ENTER AS': 'دخول كـ',
+      'CLIENT': 'عميل',
+      'BARBER': 'حلاق',
+      'Book sessions, manage appointments': 'حجز المواعيد وإدارتها',
+      'Dashboard, schedule & availability': 'لوحة التحكم والجدول الزمني',
+      // Client home
+      'WELCOME BACK': 'مرحباً بعودتك',
+      'Hello,': 'أهلاً،',
+      'ACTIVE BOOKING': 'الحجز الحالي',
+      'NEXT SESSION': 'الجلسة القادمة',
+      'TIME': 'الوقت',
+      'SERVICE': 'الخدمة',
+      'ROYAL CUT': 'قصة رويال',
+      'BOOK YOUR NEXT SESSION': 'احجز جلستك القادمة',
+      'NEWS FROM YOUR BARBER': 'أخبار من حلاقك',
+      // Nav
+      'HOME': 'الرئيسية',
+      'BOOK': 'حجز',
+      'SETTINGS': 'الإعدادات',
+      'DASHBOARD': 'لوحة التحكم',
+      'SCHEDULE': 'الجدول',
+      // Ticket menu
+      'EDIT HOUR': 'تعديل الوقت',
+      'CANCEL BOOKING': 'إلغاء الحجز',
+      // Booking screen
+      'SELECT YOUR SESSION': 'اختر جلستك',
+      'AVAILABLE SLOTS': 'المواعيد المتاحة',
+      'Current Selection': 'اختيارك الحالي',
+      'No date selected': 'لم يتم اختيار تاريخ',
+      'Select a date and time above': 'اختر تاريخاً وموعداً',
+      'PROCEED TO BOOKING': 'المتابعة للحجز',
+      // Calendar day headers
+      'MON': 'إث', 'TUE': 'ثل', 'WED': 'أر',
+      'THU': 'خم', 'FRI': 'جم', 'SAT': 'سب', 'SUN': 'أح',
+      // Booking modal
+      'COMPLETE BOOKING': 'إتمام الحجز',
+      'FULL NAME': 'الاسم الكامل',
+      'PHONE NUMBER': 'رقم الهاتف',
+      'SERVICE TYPE': 'نوع الخدمة',
+      'BEARD': 'لحية',
+      'SPECIAL': 'خاص',
+      'CONFIRM BOOKING': 'تأكيد الحجز',
+      // Confirmation
+      'CONFIRMED': 'تم التأكيد',
+      'YOUR SESSION': 'جلستك',
+      'BACK TO HOME': 'العودة للرئيسية',
+      // Edit active booking
+      'EDIT BOOKING': 'تعديل الحجز',
+      'RESCHEDULING': 'إعادة جدولة',
+      'Select a new time slot for this booking.': 'اختر موعداً جديداً',
+      'New Selection': 'اختيار جديد',
+      'Select a time slot above': 'اختر وقتاً من أعلاه',
+      'CONFIRM NEW TIME': 'تأكيد الوقت الجديد',
+      // My bookings
+      'MY BOOKINGS': 'حجوزاتي',
+      'FUTURE BOOKINGS': 'الحجوزات القادمة',
+      'UPCOMING': 'قادم',
+      'RESCHEDULE': 'إعادة جدولة',
+      'CANCEL': 'إلغاء',
+      // Client settings
+      'MY PROFILE': 'ملفي الشخصي',
+      'NAME': 'الاسم',
+      'PHONE': 'الهاتف',
+      'EMAIL': 'البريد الإلكتروني',
+      'SAVE': 'حفظ',
+      'APP LANGUAGE': 'لغة التطبيق',
+      'Confirm Language': 'تأكيد اللغة',
+      // Barber
+      'DAILY': 'يومي',
+      'WEEKLY': 'أسبوعي',
+      'TODAY': 'اليوم',
+    }
+  }
+};
+
+function _replaceTextNodes(map) {
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  const nodes = [];
+  let n;
+  while ((n = walker.nextNode())) nodes.push(n);
+  nodes.forEach(function(node) {
+    const trimmed = node.textContent.trim();
+    if (Object.prototype.hasOwnProperty.call(map, trimmed)) {
+      node.textContent = node.textContent.replace(trimmed, map[trimmed]);
+    }
+  });
+}
+
+function applyLanguage(lang) {
+  // Reverse current language back to English first
+  if (currentLang !== 'en' && _LM[currentLang]) {
+    const rev = {};
+    Object.entries(_LM[currentLang].t).forEach(function(e) { rev[e[1]] = e[0]; });
+    _replaceTextNodes(rev);
+  }
+  // Apply target language
+  if (lang !== 'en' && _LM[lang]) {
+    _replaceTextNodes(_LM[lang].t);
+  }
+  const dir = (_LM[lang] || { dir: 'ltr' }).dir;
+  document.documentElement.dir = dir;
+  document.documentElement.lang = lang;
+  currentLang = lang;
+}
+
 function selectLang(lang) {
   pendingLang = lang;
-  document.querySelectorAll('.lang-card').forEach(c => c.classList.toggle('selected', c.dataset.lang === lang));
-  document.querySelectorAll('.lang-confirm-btn').forEach(b => { b.classList.remove('hidden'); b.textContent = 'Confirm Language'; });
+  document.querySelectorAll('.lang-card').forEach(function(c) { c.classList.toggle('selected', c.dataset.lang === lang); });
+  const label = lang === 'he' ? 'אשר שפה' : lang === 'ar' ? 'تأكيد اللغة' : 'Confirm Language';
+  document.querySelectorAll('.lang-confirm-btn').forEach(function(b) { b.classList.remove('hidden'); b.textContent = label; });
 }
+
 function confirmLang() {
   if (!pendingLang) return;
-  currentLang = pendingLang; pendingLang = null;
-  document.querySelectorAll('.lang-confirm-btn').forEach(b => b.classList.add('hidden'));
-  showToast('Language saved');
+  applyLanguage(pendingLang);
+  pendingLang = null;
+  document.querySelectorAll('.lang-confirm-btn').forEach(function(b) { b.classList.add('hidden'); });
+  localStorage.setItem('app_lang', currentLang);
+  showToast(currentLang === 'he' ? 'שפה נשמרה' : currentLang === 'ar' ? 'تم حفظ اللغة' : 'Language saved');
 }
 
 // ===== BARBER NAME =====
@@ -2196,10 +2402,25 @@ function saveClientProfile() {
   const name = sanitize(document.getElementById('cp-name').value);
   const phone = sanitize(document.getElementById('cp-phone').value);
   const email = sanitize(document.getElementById('cp-email').value);
+  localStorage.setItem('cp_name', name);
+  localStorage.setItem('cp_phone', phone);
+  localStorage.setItem('cp_email', email);
   showToast('Profile saved');
 }
 
 // ===== INIT =====
+(function loadAppLanguage() {
+  const saved = localStorage.getItem('app_lang');
+  if (saved && saved !== 'en') applyLanguage(saved);
+})();
+(function loadClientProfile() {
+  const name  = localStorage.getItem('cp_name');
+  const phone = localStorage.getItem('cp_phone');
+  const email = localStorage.getItem('cp_email');
+  if (name)  document.getElementById('cp-name').value  = name;
+  if (phone) document.getElementById('cp-phone').value = phone;
+  if (email) document.getElementById('cp-email').value = email;
+})();
 buildCalendar();
 buildTimeSlots();
 buildAvCalendar();
