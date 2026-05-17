@@ -141,6 +141,38 @@
   html[dir="rtl"] .border-l   { border-left-width: 0 !important; border-right-width: 1px; }
   /* Flip space-x-* padding direction */
   html[dir="rtl"] .space-x-4 > * + * { margin-left: 0; margin-right: 1rem; }
+  /* Three-dots dropdown menus: flip anchor side in RTL so they don't overlap text */
+  html[dir="rtl"] #ticket-menu,
+  html[dir="rtl"] #menu-apr23,
+  html[dir="rtl"] #menu-may7    { right: auto; left: 0; }
+  /* Three-dots button wrapper position */
+  html[dir="rtl"] .absolute.top-3.right-3 { right: auto; left: 0.75rem; }
+  html[dir="rtl"] .absolute.top-3.right-3 > #ticket-menu { left: 0; right: auto; }
+  /* Overflow-menu items use text-left; already flipped by .text-left rule above.
+     Also ensure flex icon+label rows inside menus don't overlap. */
+  html[dir="rtl"] [id^="menu-"] button,
+  html[dir="rtl"] #ticket-menu button { flex-direction: row-reverse; }
+
+  /* ===== MOBILE RESPONSIVENESS ===== */
+  /* Prevent long translated strings from causing horizontal scroll or overflow */
+  .screen { overflow-x: hidden; }
+  .screen main, .screen header { overflow-x: hidden; max-width: 100vw; }
+  p, h1, h2, h3, h4, label, button, a, span.font-label {
+    overflow-wrap: break-word;
+    word-break: break-word;
+    max-width: 100%;
+  }
+  /* Flex children that hold text must not grow beyond their container */
+  .flex-1 { min-width: 0; }
+  /* Nav labels truncate gracefully on very small screens */
+  .nav-link span:last-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 4rem;
+  }
+  /* Stat cards and badge containers: keep text centred and clipped */
+  .bg-surface-container-high { word-break: break-word; overflow-wrap: break-word; }
 
   /* ===== BARBER SCHEDULING CALENDAR ===== */
   .cal-view-btn { color: #99907c; background: transparent; }
@@ -454,7 +486,7 @@
     <button onclick="openBookingModal()" id="confirm-cta" class="w-full gold-gradient py-4 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98] transition-transform opacity-40 pointer-events-none mb-3" disabled>
       PROCEED TO BOOKING
     </button>
-    <div class="flex justify-around items-center">
+    <div class="flex justify-around items-center mt-2">
       <a class="nav-link flex flex-col items-center text-gray-600 hover:text-[#f2ca50] cursor-pointer active:scale-95" onclick="navigateTo('screen-home')">
         <span class="material-symbols-outlined text-[26px]">home_max</span>
         <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5">HOME</span>
@@ -462,6 +494,10 @@
       <a class="nav-link flex flex-col items-center text-[#D4AF37] scale-110 cursor-pointer">
         <span class="material-symbols-outlined text-[26px]" style="font-variation-settings:'FILL' 1">add_circle</span>
         <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5">BOOK</span>
+      </a>
+      <a class="nav-link flex flex-col items-center text-gray-600 hover:text-[#f2ca50] cursor-pointer active:scale-95" onclick="openClientSettings()">
+        <span class="material-symbols-outlined text-[26px]">manage_accounts</span>
+        <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5">SETTINGS</span>
       </a>
     </div>
   </div>
@@ -498,10 +534,24 @@
     </div>
   </main>
 
-  <div class="fixed bottom-0 left-0 w-full bg-[#131313]/90 backdrop-blur-xl border-t-2 border-[#D4AF37] px-6 pt-4 pb-8 z-40">
-    <button onclick="confirmActiveEdit()" id="edit-active-cta" class="w-full gold-gradient py-5 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98] transition-transform opacity-40 pointer-events-none" disabled>
+  <div class="fixed bottom-0 left-0 w-full bg-[#131313]/90 backdrop-blur-xl border-t-2 border-[#D4AF37] px-6 pt-3 pb-8 z-40">
+    <button onclick="confirmActiveEdit()" id="edit-active-cta" class="w-full gold-gradient py-4 font-label text-sm font-black tracking-[0.2em] text-on-primary-fixed border-2 border-on-primary-fixed active:scale-[0.98] transition-transform opacity-40 pointer-events-none mb-3" disabled>
       CONFIRM NEW TIME
     </button>
+    <div class="flex justify-around items-center">
+      <a class="nav-link flex flex-col items-center text-gray-600 hover:text-[#f2ca50] cursor-pointer active:scale-95" onclick="navigateTo('screen-home')">
+        <span class="material-symbols-outlined text-[26px]">home_max</span>
+        <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5">HOME</span>
+      </a>
+      <a class="nav-link flex flex-col items-center text-gray-600 hover:text-[#f2ca50] cursor-pointer active:scale-95" onclick="navigateTo('screen-booking')">
+        <span class="material-symbols-outlined text-[26px]">add_circle</span>
+        <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5">BOOK</span>
+      </a>
+      <a class="nav-link flex flex-col items-center text-gray-600 hover:text-[#f2ca50] cursor-pointer active:scale-95" onclick="openClientSettings()">
+        <span class="material-symbols-outlined text-[26px]">manage_accounts</span>
+        <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5">SETTINGS</span>
+      </a>
+    </div>
   </div>
 </div>
 
@@ -646,6 +696,20 @@
       + BOOK ANOTHER SESSION
     </button>
   </main>
+  <nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-8 pt-3 bg-[#131313]/80 backdrop-blur-xl z-50 border-t-2 border-[#D4AF37]">
+    <a class="nav-link flex flex-col items-center text-gray-600 hover:text-[#f2ca50] cursor-pointer active:scale-95" onclick="navigateTo('screen-home')">
+      <span class="material-symbols-outlined text-[26px]">home_max</span>
+      <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5">HOME</span>
+    </a>
+    <a class="nav-link flex flex-col items-center text-gray-600 hover:text-[#f2ca50] cursor-pointer active:scale-95" onclick="navigateTo('screen-booking')">
+      <span class="material-symbols-outlined text-[26px]">add_circle</span>
+      <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5">BOOK</span>
+    </a>
+    <a class="nav-link flex flex-col items-center text-gray-600 hover:text-[#f2ca50] cursor-pointer active:scale-95" onclick="openClientSettings()">
+      <span class="material-symbols-outlined text-[26px]">manage_accounts</span>
+      <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5">SETTINGS</span>
+    </a>
+  </nav>
 </div>
 
 <!-- ===== SCREEN: BARBER DASHBOARD ===== -->
@@ -885,6 +949,20 @@
       </div>
     </div>
   </main>
+  <nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-8 pt-3 bg-[#131313]/80 backdrop-blur-xl z-50 border-t-2 border-[#D4AF37]">
+    <a class="nav-link flex flex-col items-center text-gray-600 hover:text-[#f2ca50] cursor-pointer active:scale-95" onclick="navigateTo('screen-barber');setBarberNav('dashboard')">
+      <span class="material-symbols-outlined text-[26px]">dashboard</span>
+      <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5">DASHBOARD</span>
+    </a>
+    <a class="nav-link flex flex-col items-center text-[#D4AF37] scale-110 cursor-pointer">
+      <span class="material-symbols-outlined text-[26px]" style="font-variation-settings:'FILL' 1">tune</span>
+      <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5">SCHEDULE</span>
+    </a>
+    <a class="nav-link flex flex-col items-center text-gray-600 hover:text-[#f2ca50] cursor-pointer active:scale-95" onclick="navigateTo('screen-barber-app-settings');setBarberNav('settings');buildPhotoManageGrid()">
+      <span class="material-symbols-outlined text-[26px]">settings</span>
+      <span class="font-label text-[9px] font-bold tracking-[0.1em] uppercase mt-0.5">SETTINGS</span>
+    </a>
+  </nav>
 </div>
 
 <!-- ===== SCREEN: BARBER APP SETTINGS ===== -->
@@ -2550,6 +2628,10 @@ buildCalendar();
 buildTimeSlots();
 buildAvCalendar();
 calInit();
+renderServicesManage();
+renderDealsManage();
+renderProductsManage();
+renderNewsManage();
 </script>
 </body>
 </html>
