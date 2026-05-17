@@ -125,6 +125,23 @@
   .lang-confirm-btn:active { transform:scale(0.98); }
   .interval-opt { transition:all 0.15s;cursor:pointer; }
 
+  /* ===== RTL LAYOUT SUPPORT ===== */
+  /* Fix punctuation alignment for bidirectional text */
+  html[dir="rtl"] p,
+  html[dir="rtl"] h1, html[dir="rtl"] h2, html[dir="rtl"] h3, html[dir="rtl"] h4,
+  html[dir="rtl"] label, html[dir="rtl"] .font-label, html[dir="rtl"] .font-body {
+    unicode-bidi: plaintext;
+    text-align: start;
+  }
+  html[dir="rtl"] .text-left  { text-align: right   !important; }
+  html[dir="rtl"] .text-center { text-align: center !important; }
+  /* Mirror left accent borders to right for RTL card layouts */
+  html[dir="rtl"] .border-l-4 { border-left-width: 0 !important; border-right-width: 4px; }
+  html[dir="rtl"] .border-l-2 { border-left-width: 0 !important; border-right-width: 2px; }
+  html[dir="rtl"] .border-l   { border-left-width: 0 !important; border-right-width: 1px; }
+  /* Flip space-x-* padding direction */
+  html[dir="rtl"] .space-x-4 > * + * { margin-left: 0; margin-right: 1rem; }
+
   /* ===== BARBER SCHEDULING CALENDAR ===== */
   .cal-view-btn { color: #99907c; background: transparent; }
   .cal-view-active { background: linear-gradient(45deg, #f2ca50, #d4af37) !important; color: #241a00 !important; }
@@ -2048,158 +2065,227 @@ const _LM = {
   he: {
     dir: 'rtl',
     t: {
-      // Portal
+      // ── Portal ──────────────────────────────────────────────────────────
       'Elite Grooming — Select Your Role': 'גרומינג אליט — בחר תפקיד',
-      'ENTER AS': 'כניסה כ',
-      'CLIENT': 'לקוח',
-      'BARBER': 'ספר',
+      'ENTER AS': 'כניסה כ', 'CLIENT': 'לקוח', 'BARBER': 'ספר',
       'Book sessions, manage appointments': 'קביעת תורים, ניהול פגישות',
       'Dashboard, schedule & availability': 'לוח בקרה, לוח זמנים וזמינות',
-      // Client home
-      'WELCOME BACK': 'ברוך שובך',
-      'Hello,': 'שלום,',
-      'ACTIVE BOOKING': 'הזמנה פעילה',
-      'NEXT SESSION': 'הפגישה הבאה',
-      'TIME': 'שעה',
-      'SERVICE': 'שירות',
-      'ROYAL CUT': 'תספורת רויאל',
+      // ── Client home ──────────────────────────────────────────────────────
+      'WELCOME BACK': 'ברוך שובך', 'Hello,': 'שלום,',
+      'ACTIVE BOOKING': 'הזמנה פעילה', 'NEXT SESSION': 'הפגישה הבאה',
+      'TIME': 'שעה', 'SERVICE': 'שירות', 'ROYAL CUT': 'תספורת רויאל',
       'BOOK YOUR NEXT SESSION': 'קבע את הפגישה הבאה',
       'NEWS FROM YOUR BARBER': 'עדכונים מהספר',
-      // Nav
-      'HOME': 'בית',
-      'BOOK': 'הזמנה',
-      'SETTINGS': 'הגדרות',
-      'DASHBOARD': 'לוח בקרה',
-      'SCHEDULE': 'לוח זמנים',
-      // Ticket menu
-      'EDIT HOUR': 'עריכת שעה',
-      'CANCEL BOOKING': 'ביטול הזמנה',
-      // Booking screen
+      'WEDNESDAY, APR 9': 'יום רביעי, 9 באפר\'',
+      'New weekend hours starting April 12': 'שעות סוף שבוע חדשות מ-12 באפריל',
+      'Saturday sessions now available from 09:00 AM to 3:00 PM. Book your spot before it fills up.':
+        'מפגשי שבת זמינים כעת. הזמינו את מקומכם לפני שיתמלא.',
+      'By confirming, you agree to our': 'באישורך, הנך מסכים ל-',
+      'Sovereign Terms': 'תנאי ריבונות',
+      // ── Nav ──────────────────────────────────────────────────────────────
+      'HOME': 'בית', 'BOOK': 'הזמנה', 'SETTINGS': 'הגדרות',
+      'DASHBOARD': 'לוח בקרה', 'SCHEDULE': 'לוח זמנים',
+      // ── Ticket menu ───────────────────────────────────────────────────────
+      'EDIT HOUR': 'עריכת שעה', 'CANCEL BOOKING': 'ביטול הזמנה',
+      // ── Booking screen ───────────────────────────────────────────────────
       'SELECT YOUR SESSION': 'בחר פגישה',
       'AVAILABLE SLOTS': 'זמנים פנויים',
       'Current Selection': 'בחירה נוכחית',
       'No date selected': 'לא נבחר תאריך',
       'Select a date and time above': 'בחר תאריך ושעה',
       'PROCEED TO BOOKING': 'המשך להזמנה',
-      // Calendar day headers
+      'SELECT': 'בחר', 'SELECTED': 'נבחר', 'BOOKED': 'תפוס',
+      // ── Calendar headers ─────────────────────────────────────────────────
       'MON': 'ב׳', 'TUE': 'ג׳', 'WED': 'ד׳',
       'THU': 'ה׳', 'FRI': 'ו׳', 'SAT': 'ש׳', 'SUN': 'א׳',
-      // Booking modal
-      'COMPLETE BOOKING': 'השלם הזמנה',
-      'FULL NAME': 'שם מלא',
-      'PHONE NUMBER': 'מספר טלפון',
-      'SERVICE TYPE': 'סוג שירות',
-      'BEARD': 'זקן',
-      'SPECIAL': 'מיוחד',
-      'CONFIRM BOOKING': 'אשר הזמנה',
-      // Confirmation screen
-      'CONFIRMED': 'אושר',
-      'YOUR SESSION': 'הפגישה שלך',
+      'JANUARY': 'ינואר', 'FEBRUARY': 'פברואר', 'MARCH': 'מרץ',
+      'APRIL': 'אפריל', 'MAY': 'מאי', 'JUNE': 'יוני',
+      'JULY': 'יולי', 'AUGUST': 'אוגוסט', 'SEPTEMBER': 'ספטמבר',
+      'OCTOBER': 'אוקטובר', 'NOVEMBER': 'נובמבר', 'DECEMBER': 'דצמבר',
+      // ── Booking modal ────────────────────────────────────────────────────
+      'COMPLETE BOOKING': 'השלם הזמנה', 'FULL NAME': 'שם מלא',
+      'PHONE NUMBER': 'מספר טלפון', 'SERVICE TYPE': 'סוג שירות',
+      'BEARD': 'זקן', 'SPECIAL': 'מיוחד', 'CONFIRM BOOKING': 'אשר הזמנה',
+      // ── Confirmation ─────────────────────────────────────────────────────
+      'CONFIRMED': 'אושר', 'YOUR SESSION': 'הפגישה שלך',
       'BACK TO HOME': 'חזרה לדף הבית',
-      // Edit active booking
-      'EDIT BOOKING': 'עריכת הזמנה',
-      'RESCHEDULING': 'קביעה מחדש',
-      'Select a new time slot for this booking.': 'בחר שעה חדשה',
+      // ── Edit active booking ───────────────────────────────────────────────
+      'EDIT BOOKING': 'עריכת הזמנה', 'RESCHEDULING': 'קביעה מחדש',
+      'Select a new time slot for this booking.': 'בחר שעה חדשה להזמנה זו',
       'New Selection': 'בחירה חדשה',
       'Select a time slot above': 'בחר שעה למעלה',
       'CONFIRM NEW TIME': 'אשר שעה חדשה',
-      // My bookings
-      'MY BOOKINGS': 'ההזמנות שלי',
-      'FUTURE BOOKINGS': 'הזמנות עתידות',
-      'CONFIRMED': 'אושר',
-      'UPCOMING': 'קרוב',
-      'RESCHEDULE': 'קבע מחדש',
+      // ── My bookings ───────────────────────────────────────────────────────
+      'MY BOOKINGS': 'ההזמנות שלי', 'FUTURE BOOKINGS': 'הזמנות עתידות',
+      'UPCOMING': 'קרוב', 'RESCHEDULE': 'קבע מחדש', 'CANCEL': 'ביטול',
+      // ── Client settings ───────────────────────────────────────────────────
+      'MY PROFILE': 'הפרופיל שלי', 'NAME': 'שם', 'PHONE': 'טלפון',
+      'EMAIL': 'אימייל', 'SAVE': 'שמור',
+      'APP LANGUAGE': 'שפת אפליקציה', 'Confirm Language': 'אשר שפה',
+      'LANGUAGE': 'שפה',
+      // ── Barber dashboard stats ────────────────────────────────────────────
+      'LIVE STATUS': 'סטטוס חי',
+      'Today\'s Performance': 'ביצועים היום',
+      'Clients Today': 'לקוחות היום',
+      'This Week': 'השבוע',
+      '+5 vs last week': 'לעומת שבוע שעבר +5',
+      'Next Client': 'הלקוח הבא',
+      'In 45 minutes': 'בעוד 45 דקות',
+      'Remaining': 'נותרו',
+      'Today\'s slots left': 'משבצות נותרות היום',
+      // ── Barber availability ───────────────────────────────────────────────
+      'MANAGE AVAILABILITY': 'ניהול זמינות',
+      'Tap a day to edit hours or lock it': 'לחץ על יום לעריכת שעות או נעילה',
+      'Open': 'פתוח', 'Locked': 'נעול', 'Past': 'עבר',
+      'GENERAL': 'כללי',
+      'LOCK AVAILABILITY': 'נעילת זמינות',
+      'LOCK TODAY ONLY': 'נעילה להיום בלבד',
+      'LOCK FOR A PERIOD': 'נעילה לתקופה',
+      'LOCK UNTIL I UNLOCK': 'נעילה עד לביטול',
+      'DEFAULT WORKING HOURS': 'שעות עבודה ברירת מחדל',
+      'These hours apply to all upcoming days unless overridden per day.':
+        'שעות אלו חלות על כל הימים הבאים אלא אם כן שונו.',
+      'SET WORKING HOURS': 'הגדר שעות עבודה',
+      'Current: 09:00 AM — 06:00 PM': 'נוכחי: 09:00 — 18:00',
+      // ── Lock period modal ────────────────────────────────────────────────
+      'LOCK A PERIOD': 'נעילת תקופה',
+      'Choose a date range to block all bookings.': 'בחר טווח תאריכים לחסימת הזמנות.',
+      'FROM': 'מ-', 'TO': 'עד-', 'LOCK PERIOD': 'נעל תקופה',
+      'Locked indefinitely': 'נעול ללא הגבלת זמן', 'UNLOCK': 'שחרר נעילה',
       'CANCEL': 'ביטול',
-      // Client settings
-      'MY PROFILE': 'הפרופיל שלי',
-      'NAME': 'שם',
-      'PHONE': 'טלפון',
-      'EMAIL': 'אימייל',
-      'SAVE': 'שמור',
-      'APP LANGUAGE': 'שפת אפליקציה',
-      'Confirm Language': 'אשר שפה',
-      // Barber dashboard
-      'DAILY': 'יומי',
-      'WEEKLY': 'שבועי',
-      'TODAY': 'היום',
+      // ── Barber app settings ───────────────────────────────────────────────
+      'DISPLAYED NAME': 'שם תצוגה',
+      'SESSION INTERVAL': 'מרווח מפגשים',
+      'SLOT DURATION': 'משך המשבצת',
+      'EDIT': 'ערוך',
+      'SERVICES & PRICES': 'שירותים ומחירים', 'ADD SERVICE': 'הוסף שירות',
+      'SPECIAL DEALS': 'מבצעים מיוחדים', 'ADD DEAL': 'הוסף מבצע',
+      'SHOP PRODUCTS': 'מוצרי החנות', 'ADD PRODUCT': 'הוסף מוצר',
+      'NEWS & UPDATES': 'חדשות ועדכונים', 'ADD UPDATE': 'הוסף עדכון',
+      'SHOP NAME': 'שם החנות', 'CURRENT NAME': 'שם נוכחי',
+      'THEME COLOR': 'צבע עיצוב', 'SELECT ACCENT COLOR': 'בחר צבע דגש',
+      'Active:': 'פעיל:', 'Gold': 'זהב',
+      'STUDIO PHOTOS': 'תמונות הסטודיו',
+      'MANAGE GALLERY ·': 'ניהול גלריה ·', 'PHOTOS': 'תמונות',
+      'ADD PHOTO': 'הוסף תמונה',
+      // ── Barber calendar UI ────────────────────────────────────────────────
+      'DAILY': 'יומי', 'WEEKLY': 'שבועי', 'TODAY': 'היום',
+      // ── Interval options ──────────────────────────────────────────────────
+      '15 min': '15 דק\'', '30 min': '30 דק\'',
+      '45 min': '45 דק\'', '60 min': '60 דק\'',
     }
   },
   ar: {
     dir: 'rtl',
     t: {
-      // Portal
+      // ── Portal ──────────────────────────────────────────────────────────
       'Elite Grooming — Select Your Role': 'تجميل النخبة — اختر دورك',
-      'ENTER AS': 'دخول كـ',
-      'CLIENT': 'عميل',
-      'BARBER': 'حلاق',
+      'ENTER AS': 'دخول كـ', 'CLIENT': 'عميل', 'BARBER': 'حلاق',
       'Book sessions, manage appointments': 'حجز المواعيد وإدارتها',
       'Dashboard, schedule & availability': 'لوحة التحكم والجدول الزمني',
-      // Client home
-      'WELCOME BACK': 'مرحباً بعودتك',
-      'Hello,': 'أهلاً،',
-      'ACTIVE BOOKING': 'الحجز الحالي',
-      'NEXT SESSION': 'الجلسة القادمة',
-      'TIME': 'الوقت',
-      'SERVICE': 'الخدمة',
-      'ROYAL CUT': 'قصة رويال',
+      // ── Client home ──────────────────────────────────────────────────────
+      'WELCOME BACK': 'مرحباً بعودتك', 'Hello,': 'أهلاً،',
+      'ACTIVE BOOKING': 'الحجز الحالي', 'NEXT SESSION': 'الجلسة القادمة',
+      'TIME': 'الوقت', 'SERVICE': 'الخدمة', 'ROYAL CUT': 'قصة رويال',
       'BOOK YOUR NEXT SESSION': 'احجز جلستك القادمة',
       'NEWS FROM YOUR BARBER': 'أخبار من حلاقك',
-      // Nav
-      'HOME': 'الرئيسية',
-      'BOOK': 'حجز',
-      'SETTINGS': 'الإعدادات',
-      'DASHBOARD': 'لوحة التحكم',
-      'SCHEDULE': 'الجدول',
-      // Ticket menu
-      'EDIT HOUR': 'تعديل الوقت',
-      'CANCEL BOOKING': 'إلغاء الحجز',
-      // Booking screen
+      'WEDNESDAY, APR 9': 'الأربعاء، 9 أبريل',
+      'New weekend hours starting April 12': 'ساعات عمل جديدة لنهاية الأسبوع من 12 أبريل',
+      'Saturday sessions now available from 09:00 AM to 3:00 PM. Book your spot before it fills up.':
+        'جلسات يوم السبت متاحة الآن. احجز مكانك قبل النفاد.',
+      'By confirming, you agree to our': 'بالتأكيد، أنت توافق على',
+      'Sovereign Terms': 'شروط السيادة',
+      // ── Nav ──────────────────────────────────────────────────────────────
+      'HOME': 'الرئيسية', 'BOOK': 'حجز', 'SETTINGS': 'الإعدادات',
+      'DASHBOARD': 'لوحة التحكم', 'SCHEDULE': 'الجدول',
+      // ── Ticket menu ───────────────────────────────────────────────────────
+      'EDIT HOUR': 'تعديل الوقت', 'CANCEL BOOKING': 'إلغاء الحجز',
+      // ── Booking screen ───────────────────────────────────────────────────
       'SELECT YOUR SESSION': 'اختر جلستك',
       'AVAILABLE SLOTS': 'المواعيد المتاحة',
       'Current Selection': 'اختيارك الحالي',
       'No date selected': 'لم يتم اختيار تاريخ',
       'Select a date and time above': 'اختر تاريخاً وموعداً',
       'PROCEED TO BOOKING': 'المتابعة للحجز',
-      // Calendar day headers
+      'SELECT': 'اختر', 'SELECTED': 'تم الاختيار', 'BOOKED': 'محجوز',
+      // ── Calendar headers ─────────────────────────────────────────────────
       'MON': 'إث', 'TUE': 'ثل', 'WED': 'أر',
       'THU': 'خم', 'FRI': 'جم', 'SAT': 'سب', 'SUN': 'أح',
-      // Booking modal
-      'COMPLETE BOOKING': 'إتمام الحجز',
-      'FULL NAME': 'الاسم الكامل',
-      'PHONE NUMBER': 'رقم الهاتف',
-      'SERVICE TYPE': 'نوع الخدمة',
-      'BEARD': 'لحية',
-      'SPECIAL': 'خاص',
-      'CONFIRM BOOKING': 'تأكيد الحجز',
-      // Confirmation
-      'CONFIRMED': 'تم التأكيد',
-      'YOUR SESSION': 'جلستك',
+      'JANUARY': 'يناير', 'FEBRUARY': 'فبراير', 'MARCH': 'مارس',
+      'APRIL': 'أبريل', 'MAY': 'مايو', 'JUNE': 'يونيو',
+      'JULY': 'يوليو', 'AUGUST': 'أغسطس', 'SEPTEMBER': 'سبتمبر',
+      'OCTOBER': 'أكتوبر', 'NOVEMBER': 'نوفمبر', 'DECEMBER': 'ديسمبر',
+      // ── Booking modal ────────────────────────────────────────────────────
+      'COMPLETE BOOKING': 'إتمام الحجز', 'FULL NAME': 'الاسم الكامل',
+      'PHONE NUMBER': 'رقم الهاتف', 'SERVICE TYPE': 'نوع الخدمة',
+      'BEARD': 'لحية', 'SPECIAL': 'خاص', 'CONFIRM BOOKING': 'تأكيد الحجز',
+      // ── Confirmation ─────────────────────────────────────────────────────
+      'CONFIRMED': 'تم التأكيد', 'YOUR SESSION': 'جلستك',
       'BACK TO HOME': 'العودة للرئيسية',
-      // Edit active booking
-      'EDIT BOOKING': 'تعديل الحجز',
-      'RESCHEDULING': 'إعادة جدولة',
-      'Select a new time slot for this booking.': 'اختر موعداً جديداً',
+      // ── Edit active booking ───────────────────────────────────────────────
+      'EDIT BOOKING': 'تعديل الحجز', 'RESCHEDULING': 'إعادة جدولة',
+      'Select a new time slot for this booking.': 'اختر موعداً جديداً لهذا الحجز',
       'New Selection': 'اختيار جديد',
       'Select a time slot above': 'اختر وقتاً من أعلاه',
       'CONFIRM NEW TIME': 'تأكيد الوقت الجديد',
-      // My bookings
-      'MY BOOKINGS': 'حجوزاتي',
-      'FUTURE BOOKINGS': 'الحجوزات القادمة',
-      'UPCOMING': 'قادم',
-      'RESCHEDULE': 'إعادة جدولة',
+      // ── My bookings ───────────────────────────────────────────────────────
+      'MY BOOKINGS': 'حجوزاتي', 'FUTURE BOOKINGS': 'الحجوزات القادمة',
+      'UPCOMING': 'قادم', 'RESCHEDULE': 'إعادة جدولة', 'CANCEL': 'إلغاء',
+      // ── Client settings ───────────────────────────────────────────────────
+      'MY PROFILE': 'ملفي الشخصي', 'NAME': 'الاسم', 'PHONE': 'الهاتف',
+      'EMAIL': 'البريد الإلكتروني', 'SAVE': 'حفظ',
+      'APP LANGUAGE': 'لغة التطبيق', 'Confirm Language': 'تأكيد اللغة',
+      'LANGUAGE': 'اللغة',
+      // ── Barber dashboard stats ────────────────────────────────────────────
+      'LIVE STATUS': 'الحالة المباشرة',
+      'Today\'s Performance': 'أداء اليوم',
+      'Clients Today': 'العملاء اليوم',
+      'This Week': 'هذا الأسبوع',
+      '+5 vs last week': 'مقارنة بالأسبوع الماضي +5',
+      'Next Client': 'العميل التالي',
+      'In 45 minutes': 'خلال 45 دقيقة',
+      'Remaining': 'المتبقي',
+      'Today\'s slots left': 'الفترات المتبقية اليوم',
+      // ── Barber availability ───────────────────────────────────────────────
+      'MANAGE AVAILABILITY': 'إدارة المواعيد المتاحة',
+      'Tap a day to edit hours or lock it': 'اضغط على يوم لتعديل الساعات أو قفله',
+      'Open': 'مفتوح', 'Locked': 'مقفل', 'Past': 'الماضي',
+      'GENERAL': 'عام',
+      'LOCK AVAILABILITY': 'قفل المواعيد المتاحة',
+      'LOCK TODAY ONLY': 'قفل اليوم فقط',
+      'LOCK FOR A PERIOD': 'قفل لفترة زمنية',
+      'LOCK UNTIL I UNLOCK': 'قفل حتى أقوم بالإلغاء',
+      'DEFAULT WORKING HOURS': 'ساعات العمل الافتراضية',
+      'These hours apply to all upcoming days unless overridden per day.':
+        'تنطبق هذه الساعات على جميع الأيام القادمة ما لم يتم تعديلها.',
+      'SET WORKING HOURS': 'تحديد ساعات العمل',
+      'Current: 09:00 AM — 06:00 PM': 'الحالي: 09:00 — 18:00',
+      // ── Lock period modal ────────────────────────────────────────────────
+      'LOCK A PERIOD': 'قفل فترة زمنية',
+      'Choose a date range to block all bookings.': 'اختر نطاقاً زمنياً لحظر الحجوزات.',
+      'FROM': 'من', 'TO': 'إلى', 'LOCK PERIOD': 'قفل الفترة',
+      'Locked indefinitely': 'مقفل لأجل غير مسمى', 'UNLOCK': 'إلغاء القفل',
       'CANCEL': 'إلغاء',
-      // Client settings
-      'MY PROFILE': 'ملفي الشخصي',
-      'NAME': 'الاسم',
-      'PHONE': 'الهاتف',
-      'EMAIL': 'البريد الإلكتروني',
-      'SAVE': 'حفظ',
-      'APP LANGUAGE': 'لغة التطبيق',
-      'Confirm Language': 'تأكيد اللغة',
-      // Barber
-      'DAILY': 'يومي',
-      'WEEKLY': 'أسبوعي',
-      'TODAY': 'اليوم',
+      // ── Barber app settings ───────────────────────────────────────────────
+      'DISPLAYED NAME': 'الاسم المعروض',
+      'SESSION INTERVAL': 'الفترة الفاصلة بين الجلسات',
+      'SLOT DURATION': 'مدة الفترة',
+      'EDIT': 'تعديل',
+      'SERVICES & PRICES': 'الخدمات والأسعار', 'ADD SERVICE': 'إضافة خدمة',
+      'SPECIAL DEALS': 'العروض الخاصة', 'ADD DEAL': 'إضافة عرض',
+      'SHOP PRODUCTS': 'منتجات المتجر', 'ADD PRODUCT': 'إضافة منتج',
+      'NEWS & UPDATES': 'الأخبار والتحديثات', 'ADD UPDATE': 'إضافة تحديث',
+      'SHOP NAME': 'اسم المتجر', 'CURRENT NAME': 'الاسم الحالي',
+      'THEME COLOR': 'لون المظهر', 'SELECT ACCENT COLOR': 'اختر لون الإبراز',
+      'Active:': 'الفعّال:', 'Gold': 'ذهبي',
+      'STUDIO PHOTOS': 'صور الاستوديو',
+      'MANAGE GALLERY ·': 'إدارة المعرض ·', 'PHOTOS': 'صور',
+      'ADD PHOTO': 'إضافة صورة',
+      // ── Barber calendar UI ────────────────────────────────────────────────
+      'DAILY': 'يومي', 'WEEKLY': 'أسبوعي', 'TODAY': 'اليوم',
+      // ── Interval options ──────────────────────────────────────────────────
+      '15 min': '١٥ دقيقة', '30 min': '٣٠ دقيقة',
+      '45 min': '٤٥ دقيقة', '60 min': '٦٠ دقيقة',
     }
   }
 };
@@ -2217,18 +2303,57 @@ function _replaceTextNodes(map) {
   });
 }
 
+// ── Time format utilities ────────────────────────────────────────────────────
+// Convert "H:MM AM/PM" → 24-hour "HH:MM" for RTL locales
+function _time12to24(text) {
+  return text.replace(/(\d{1,2}):(\d{2})\s*(AM|PM)/gi, function(_, h, m, ap) {
+    var hr = parseInt(h, 10);
+    if (/pm/i.test(ap) && hr !== 12) hr += 12;
+    if (/am/i.test(ap) && hr === 12) hr = 0;
+    return String(hr).padStart(2, '0') + ':' + m;
+  });
+}
+// Convert 24-hour "HH:MM" back to "H:MM AM/PM" for English
+function _time24to12(text) {
+  return text.replace(/\b([01]\d|2[0-3]):([0-5]\d)\b/g, function(_, h, m) {
+    var hr = parseInt(h, 10);
+    var ap = hr >= 12 ? 'PM' : 'AM';
+    hr = hr % 12 || 12;
+    return hr + ':' + m + ' ' + ap;
+  });
+}
+function _convertTimeNodes(converter) {
+  var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  var nodes = [];
+  var n;
+  while ((n = walker.nextNode())) nodes.push(n);
+  nodes.forEach(function(node) {
+    var converted = converter(node.textContent);
+    if (converted !== node.textContent) node.textContent = converted;
+  });
+}
+
 function applyLanguage(lang) {
-  // Reverse current language back to English first
-  if (currentLang !== 'en' && _LM[currentLang]) {
-    const rev = {};
-    Object.entries(_LM[currentLang].t).forEach(function(e) { rev[e[1]] = e[0]; });
-    _replaceTextNodes(rev);
+  // ① Reverse current language back to English
+  if (currentLang !== 'en') {
+    if (_LM[currentLang]) {
+      var rev = {};
+      Object.entries(_LM[currentLang].t).forEach(function(e) { rev[e[1]] = e[0]; });
+      _replaceTextNodes(rev);
+    }
+    // Restore 12-hour format when reverting to English
+    _convertTimeNodes(_time24to12);
   }
-  // Apply target language
+  // ② Apply target language strings
   if (lang !== 'en' && _LM[lang]) {
     _replaceTextNodes(_LM[lang].t);
   }
-  const dir = (_LM[lang] || { dir: 'ltr' }).dir;
+  // ③ Convert AM/PM → 24h for RTL locales; strip ambiguous meridiem markers
+  if (lang !== 'en') {
+    _convertTimeNodes(_time12to24);
+  }
+  // ④ Set document direction and lang attribute
+  var dir = (_LM[lang] || { dir: 'ltr' }).dir;
   document.documentElement.dir = dir;
   document.documentElement.lang = lang;
   currentLang = lang;
