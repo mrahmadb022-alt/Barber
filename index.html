@@ -153,6 +153,13 @@
      Also ensure flex icon+label rows inside menus don't overlap. */
   html[dir="rtl"] [id^="menu-"] button,
   html[dir="rtl"] #ticket-menu button { flex-direction: row-reverse; }
+  html[dir="rtl"] .text-center { text-align: center !important; }
+  html[dir="rtl"] button { text-align: center; justify-content: center; align-items: center; }
+  html[dir="rtl"] .announcement-card, html[dir="rtl"] .news-card { text-align: right; }
+  /* Flip calendar navigation arrow icons in RTL so prev/next match reading direction */
+  html[dir="rtl"] [onclick^="shiftMonth"] .material-symbols-outlined,
+  html[dir="rtl"] [onclick^="avShiftMonth"] .material-symbols-outlined,
+  html[dir="rtl"] [onclick^="calShiftDate"] .material-symbols-outlined { transform: scaleX(-1); display: inline-block; }
 
   /* ===== MOBILE RESPONSIVENESS ===== */
   /* Prevent long translated strings from causing horizontal scroll or overflow */
@@ -577,9 +584,9 @@
         <div>
           <label class="block font-label text-[10px] font-extrabold tracking-[0.2em] text-outline mb-3">SERVICE TYPE</label>
           <div class="flex gap-3">
-            <button onclick="selectService(this,'ROYAL CUT')" class="service-btn selected flex-1 py-4 border-2 border-primary-container text-primary font-label text-xs font-black tracking-[0.08em] transition-all" data-val="ROYAL CUT">ROYAL CUT</button>
-            <button onclick="selectService(this,'BEARD')" class="service-btn flex-1 py-4 border-2 border-outline-variant text-outline font-label text-xs font-black tracking-[0.08em] hover:border-primary/50 transition-all" data-val="BEARD">BEARD</button>
-            <button onclick="selectService(this,'SPECIAL')" class="service-btn flex-1 py-4 border-2 border-outline-variant text-outline font-label text-xs font-black tracking-[0.08em] hover:border-primary/50 transition-all" data-val="SPECIAL">SPECIAL</button>
+            <button onclick="selectService(this,'ROYAL CUT')" class="service-btn selected flex-1 py-4 border-2 border-primary-container text-primary font-label text-xs font-black tracking-[0.08em] transition-all" data-val="ROYAL CUT" style="display:flex;justify-content:center;align-items:center;text-align:center;">ROYAL CUT</button>
+            <button onclick="selectService(this,'BEARD')" class="service-btn flex-1 py-4 border-2 border-outline-variant text-outline font-label text-xs font-black tracking-[0.08em] hover:border-primary/50 transition-all" data-val="BEARD" style="display:flex;justify-content:center;align-items:center;text-align:center;">BEARD</button>
+            <button onclick="selectService(this,'SPECIAL')" class="service-btn flex-1 py-4 border-2 border-outline-variant text-outline font-label text-xs font-black tracking-[0.08em] hover:border-primary/50 transition-all" data-val="SPECIAL" style="display:flex;justify-content:center;align-items:center;text-align:center;">SPECIAL</button>
           </div>
         </div>
         <div class="pt-2">
@@ -621,7 +628,7 @@
         </div>
       </div>
     </div>
-    <button onclick="backToHome()" class="mt-10 w-full border-2 border-primary-container text-primary-container font-label text-sm font-extrabold tracking-[0.15em] py-5 hover:bg-primary-container hover:text-on-primary-container transition-all active:scale-[0.98]">
+    <button onclick="backToHome()" class="mt-10 w-full border-2 border-primary-container text-primary-container font-label text-sm font-extrabold tracking-[0.15em] py-5 hover:bg-primary-container hover:text-on-primary-container transition-all active:scale-[0.98]" style="display:flex;justify-content:center;align-items:center;width:100%;text-align:center;">
       BACK TO HOME
     </button>
   </div>
@@ -2162,7 +2169,7 @@ const _LM = {
       'EDIT BOOKING': 'עריכת הזמנה', 'RESCHEDULING': 'קביעה מחדש',
       'Select a new time slot for this booking.': 'בחר שעה חדשה להזמנה זו',
       'New Selection': 'בחירה חדשה',
-      'Select a time slot above': 'בחר שעה למעלה',
+      'Select a time slot above': 'בחרו משבצת זמן למעלה',
       'CONFIRM NEW TIME': 'אשר שעה חדשה',
       // ── My bookings ───────────────────────────────────────────────────────
       'MY BOOKINGS': 'ההזמנות שלי', 'FUTURE BOOKINGS': 'הזמנות עתידות',
@@ -2240,6 +2247,12 @@ const _LM = {
       'LOCKED INDEFINITELY': 'נעול ללא הגבלת זמן',
       'ADD SERVICE +': 'הוסף שירות +',
       'ADD UPDATE +': 'הוסף עדכון +',
+      'ANNOUNCEMENT': 'הודעה',
+      'NOTICE': 'התראה',
+      'UPDATE': 'עדכון',
+      'New service: The Royal Package': 'שירות חדש: חבילת המלכותית',
+      'Session secured. See you soon.': 'הפגישה שוריינה. נתראה בקרוב.',
+      'AVAILABLE SLOTS — SELECT A DATE FIRST': 'משבצות פנויות — יש לבחור תאריך תחילה',
     }
   },
   ar: {
@@ -2253,7 +2266,7 @@ const _LM = {
       // ── Client home ──────────────────────────────────────────────────────
       'WELCOME BACK': 'مرحباً بعودتك', 'Hello,': 'أهلاً،',
       'ACTIVE BOOKING': 'الحجز الحالي', 'NEXT SESSION': 'الجلسة القادمة',
-      'TIME': 'الوقت', 'SERVICE': 'الخدمة', 'ROYAL CUT': 'قصة رويال',
+      'TIME': 'الوقت', 'SERVICE': 'الخدمة', 'ROYAL CUT': 'قصة ملكية',
       'BOOK YOUR NEXT SESSION': 'احجز جلستك القادمة',
       'NEWS FROM YOUR BARBER': 'أخبار من حلاقك',
       'WEDNESDAY, APR 9': 'الأربعاء، 9 أبريل',
@@ -2293,7 +2306,7 @@ const _LM = {
       'EDIT BOOKING': 'تعديل الحجز', 'RESCHEDULING': 'إعادة جدولة',
       'Select a new time slot for this booking.': 'اختر موعداً جديداً لهذا الحجز',
       'New Selection': 'اختيار جديد',
-      'Select a time slot above': 'اختر وقتاً من أعلاه',
+      'Select a time slot above': 'اختر فترة زمنية من أعلاه',
       'CONFIRM NEW TIME': 'تأكيد الوقت الجديد',
       // ── My bookings ───────────────────────────────────────────────────────
       'MY BOOKINGS': 'حجوزاتي', 'FUTURE BOOKINGS': 'الحجوزات القادمة',
@@ -2371,6 +2384,12 @@ const _LM = {
       'LOCKED INDEFINITELY': 'مقفل لأجل غير مسمى',
       'ADD SERVICE +': 'إضافة خدمة +',
       'ADD UPDATE +': 'إضافة تحديث +',
+      'ANNOUNCEMENT': 'إعلان',
+      'NOTICE': 'تنويه',
+      'UPDATE': 'تحديث',
+      'New service: The Royal Package': 'خدمة جديدة: الباقة الملكية',
+      'Session secured. See you soon.': 'تم تأكيد الجلسة. نراك قريباً.',
+      'AVAILABLE SLOTS — SELECT A DATE FIRST': 'الفترات المتاحة — يرجى اختيار تاريخ أولاً',
     }
   }
 };
