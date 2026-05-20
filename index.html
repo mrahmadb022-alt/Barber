@@ -188,14 +188,16 @@ button:disabled{opacity:.25;cursor:not-allowed}
 .bk-mi:hover{background:var(--s4)}
 .bk-mi.danger{color:var(--red)}
 
-/* ── Studio gallery (client home) ── */
-.studio-hscroll{display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px;scrollbar-width:none}
-.studio-hscroll::-webkit-scrollbar{display:none}
-.studio-hscroll-item{flex-shrink:0;width:150px;height:150px;background:var(--s3);border:1px solid var(--border);overflow:hidden}
-.studio-hscroll-item img{width:100%;height:100%;object-fit:cover;display:block}
+/* ── Studio carousel (client home) ── */
+.studio-carousel-wrap{overflow:hidden;position:relative;padding:0 0 20px}
+.studio-carousel-track{display:flex;gap:10px;width:max-content;will-change:transform;direction:ltr}
+@keyframes studio-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.studio-carousel-track.playing{animation:studio-scroll linear infinite}
+.studio-carousel-item{flex-shrink:0;width:220px;height:220px;background:var(--s3);border:1px solid var(--border);overflow:hidden}
+.studio-carousel-item img{width:100%;height:100%;object-fit:cover;display:block}
 
 /* ── Shop logo ── */
-.logo-preview{width:80px;height:80px;background:var(--s3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:24px;overflow:hidden;margin-bottom:8px;flex-shrink:0}
+.logo-preview{width:140px;height:140px;background:var(--s3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:36px;overflow:hidden;margin:0 auto 12px}
 .logo-preview img{width:100%;height:100%;object-fit:contain;display:block}
 
 /* ── Studio photos ── */
@@ -231,8 +233,8 @@ button:disabled{opacity:.25;cursor:not-allowed}
   <div class="scroll">
     <div style="min-height:100svh;display:flex;flex-direction:column;padding:0 0 44px">
       <div style="padding:58px 20px 0">
-        <div id="role-logo-wrap" style="display:none;margin-bottom:18px;animation:up .4s .08s both;opacity:0">
-          <img id="role-logo-img" alt="" style="max-height:64px;max-width:180px;object-fit:contain;display:block">
+        <div id="role-logo-wrap" style="display:none;flex-direction:column;align-items:center;margin-bottom:24px;animation:up .4s .08s both;opacity:0">
+          <img id="role-logo-img" alt="" style="max-height:130px;max-width:260px;object-fit:contain;display:block">
         </div>
         <p class="label" style="margin-bottom:14px;animation:up .4s .1s both;opacity:0">Est. 2024</p>
         <div id="intro-word" style="margin-bottom:8px;font-family:'Syne',sans-serif;font-weight:800;letter-spacing:-.03em;line-height:.9;font-size:clamp(54px,14vw,86px)"></div>
@@ -264,16 +266,21 @@ button:disabled{opacity:.25;cursor:not-allowed}
 
 <!-- ════════ CLIENT HOME ════════ -->
 <div id="s-client-home" class="screen hidden">
-  <div style="display:flex;align-items:center;justify-content:space-between;padding:52px 20px 0;flex-shrink:0">
-    <div>
-      <div id="ch-logo-wrap" style="display:none;margin-bottom:6px">
-        <img id="ch-logo-img" alt="" style="max-height:36px;max-width:110px;object-fit:contain;display:block">
+  <!-- Hero header with bg photo support -->
+  <div id="ch-hero" style="position:relative;flex-shrink:0;overflow:hidden">
+    <div id="ch-hero-bg" style="position:absolute;inset:0;background:var(--bg);overflow:hidden">
+      <img id="ch-hero-bg-img" alt="" style="width:100%;height:100%;object-fit:cover;display:none">
+    </div>
+    <div id="ch-hero-overlay" style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45) 0%,rgba(0,0,0,.8) 100%);display:none"></div>
+    <div style="position:relative;z-index:2;padding:58px 20px 28px;display:flex;flex-direction:column;align-items:center;text-align:center">
+      <div id="ch-logo-wrap" style="display:none;margin-bottom:14px">
+        <img id="ch-logo-img" alt="" style="max-height:100px;max-width:220px;object-fit:contain;display:block">
       </div>
-      <p id="ch-shop-name-lbl" class="label" style="display:none;margin-bottom:2px;font-family:'Syne',sans-serif;font-size:16px;font-weight:800;letter-spacing:-.02em;color:var(--text)"></p>
+      <p id="ch-shop-name-lbl" style="display:none;font-family:'Syne',sans-serif;font-size:22px;font-weight:800;letter-spacing:-.02em;color:var(--text);margin-bottom:6px"></p>
       <p class="label" data-i18n="home.welcome">Welcome back</p>
       <p class="title" id="ch-greeting" style="margin-top:2px">Guest</p>
     </div>
-    <button class="btn-icon" onclick="go('s-client-settings')">
+    <button class="btn-icon" onclick="go('s-client-settings')" style="position:absolute;top:50px;right:20px;z-index:10">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--text2)" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
     </button>
   </div>
@@ -292,7 +299,9 @@ button:disabled{opacity:.25;cursor:not-allowed}
     <div id="ch-news-feed" style="padding:0 20px 8px"></div>
     <div id="ch-studio-section" style="display:none">
       <span class="sec" data-i18n="home.studio_section">Our Studio</span>
-      <div id="ch-studio-gallery" class="studio-hscroll" style="padding:0 20px 16px"></div>
+      <div class="studio-carousel-wrap">
+        <div id="ch-studio-gallery" class="studio-carousel-track"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -492,11 +501,20 @@ button:disabled{opacity:.25;cursor:not-allowed}
       <div style="padding:52px 20px 44px">
         <p class="title" style="margin-bottom:24px" data-i18n="bsettings.title">Shop Settings</p>
         <p class="label" style="margin-bottom:10px" data-i18n="bsettings.shop_logo">Shop Logo</p>
-        <div style="display:flex;align-items:flex-end;gap:14px;margin-bottom:22px">
+        <div style="display:flex;flex-direction:column;align-items:center;margin-bottom:14px">
           <div class="logo-preview" id="bs-logo-preview">+</div>
-          <div style="flex:1">
-            <p style="font-size:12px;color:var(--text2);margin-bottom:8px" data-i18n="bsettings.logo_hint">Shown on the client portal &amp; home screen</p>
-            <label class="file-label" style="margin:0"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span id="bs-logo-btn-lbl" data-i18n="bsettings.upload_logo">Upload Logo</span><input type="file" accept="image/*" onchange="addShopLogo(event)" style="display:none"></label>
+          <p style="font-size:11px;color:var(--text2);margin-bottom:10px;text-align:center" data-i18n="bsettings.logo_hint">Shown on the client portal &amp; home screen</p>
+          <label class="file-label" style="margin:0;width:100%"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span id="bs-logo-btn-lbl" data-i18n="bsettings.upload_logo">Upload Logo</span><input type="file" accept="image/*" onchange="addShopLogo(event)" style="display:none"></label>
+        </div>
+        <div class="div" style="margin-bottom:22px"></div>
+        <p class="label" style="margin-bottom:10px" data-i18n="bsettings.bg_photo">Background Photo</p>
+        <div style="margin-bottom:22px">
+          <div id="bs-bg-preview" style="width:100%;height:130px;background:var(--s3);border:1px solid var(--border);overflow:hidden;margin-bottom:8px;display:flex;align-items:center;justify-content:center;color:var(--text3);position:relative">
+            <p id="bs-bg-empty-lbl" style="font-size:11px;color:var(--text3)" data-i18n="bsettings.bg_no_photo">No background set</p>
+          </div>
+          <div style="display:flex;gap:8px">
+            <label class="file-label" style="flex:1;margin:0"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span id="bs-bg-btn-lbl" data-i18n="bsettings.upload_bg">Upload Background</span><input type="file" accept="image/*" onchange="addBgPhoto(event)" style="display:none"></label>
+            <button id="bs-bg-remove-btn" onclick="removeBgPhoto()" class="btn-danger" style="display:none;flex-shrink:0;padding:8px 14px;font-size:10px" data-i18n="bsettings.remove_bg">Remove</button>
           </div>
         </div>
         <div class="div" style="margin-bottom:22px"></div>
@@ -754,6 +772,9 @@ const LANG={
     'bsettings.title':'Shop Settings',
     'bsettings.shop_logo':'Shop Logo','bsettings.upload_logo':'Upload Logo',
     'bsettings.change_logo':'Change Logo','bsettings.logo_hint':'Shown on the client portal & home screen',
+    'bsettings.bg_photo':'Background Photo','bsettings.upload_bg':'Upload Background',
+    'bsettings.change_bg':'Change Background','bsettings.remove_bg':'Remove',
+    'bsettings.bg_no_photo':'No background set',
     'bsettings.identity':'Identity',
     'bsettings.shopname':'Shop Name','bsettings.barbername':'Barber Name',
     'bsettings.hours':'Working Hours','bsettings.open':'Opens','bsettings.close':'Closes',
@@ -827,6 +848,9 @@ const LANG={
     'bsettings.title':'הגדרות מספרה',
     'bsettings.shop_logo':'לוגו המספרה','bsettings.upload_logo':'העלה לוגו',
     'bsettings.change_logo':'שנה לוגו','bsettings.logo_hint':'מוצג בפורטל הלקוח ובמסך הבית',
+    'bsettings.bg_photo':'תמונת רקע','bsettings.upload_bg':'העלה רקע',
+    'bsettings.change_bg':'שנה רקע','bsettings.remove_bg':'הסר',
+    'bsettings.bg_no_photo':'לא הוגדרה תמונת רקע',
     'bsettings.identity':'זהות',
     'bsettings.shopname':'שם המספרה','bsettings.barbername':'שם הספר',
     'bsettings.hours':'שעות עבודה','bsettings.open':'פתיחה','bsettings.close':'סגירה',
@@ -900,6 +924,9 @@ const LANG={
     'bsettings.title':'إعدادات المحل',
     'bsettings.shop_logo':'شعار المحل','bsettings.upload_logo':'رفع شعار',
     'bsettings.change_logo':'تغيير الشعار','bsettings.logo_hint':'يظهر في بوابة العميل وشاشة الرئيسية',
+    'bsettings.bg_photo':'صورة الخلفية','bsettings.upload_bg':'رفع الخلفية',
+    'bsettings.change_bg':'تغيير الخلفية','bsettings.remove_bg':'إزالة',
+    'bsettings.bg_no_photo':'لا توجد صورة خلفية',
     'bsettings.identity':'الهوية',
     'bsettings.shopname':'اسم الصالون','bsettings.barbername':'اسم الحلاق',
     'bsettings.hours':'ساعات العمل','bsettings.open':'الفتح','bsettings.close':'الإغلاق',
@@ -952,7 +979,7 @@ const S={
     {id:4,name:'Kids Cut',price:40,dur:20},
   ],
   lockedDays:{},lockedPeriods:[],
-  shopLogo:null,
+  shopLogo:null,bgPhoto:null,
   studioPhotos:[],team:[],pendingTeamPhoto:null,
   news:[],
   cancelId:null,dayPanelDate:null,
@@ -1020,7 +1047,7 @@ function applyLang(lang){
   document.querySelectorAll('[data-i18n]').forEach(el=>{el.textContent=T(el.getAttribute('data-i18n'))});
   updateLangCards();
   if(S.role==='client'){renderClientHome();buildBookCal();buildSlotList();buildBarberPicker();}
-  else if(S.role==='barber'){renderBarberDash();buildBarberCal();renderSvcList();renderLockedPeriods();renderStudioPhotos();renderTeamMembers();renderNewsBarber();renderShopLogo();}
+  else if(S.role==='barber'){renderBarberDash();buildBarberCal();renderSvcList();renderLockedPeriods();renderStudioPhotos();renderTeamMembers();renderNewsBarber();renderShopLogo();renderBgPhoto();}
 }
 function updateLangCards(){
   ['cl-en','cl-he','cl-ar','bl-en','bl-he','bl-ar'].forEach(id=>{
@@ -1040,7 +1067,7 @@ function animateIntro(){
 // ─── CLIENT HOME ─────────────────────────────────────────────
 function renderClientHome(){
   const g=document.getElementById('ch-greeting');if(g)g.textContent=san(S.clientProfile.name||'Guest',40);
-  renderNextAppt();renderClientList();renderNewsFeed();renderClientStudioGallery();
+  renderShopLogo();renderBgPhoto();renderNextAppt();renderClientList();renderNewsFeed();renderClientStudioGallery();
 }
 
 function renderNextAppt(){
@@ -1123,19 +1150,29 @@ function renderNewsFeed(){
   });
 }
 
-// ─── CLIENT STUDIO GALLERY ───────────────────────────────────
+// ─── CLIENT STUDIO GALLERY (auto-scroll carousel) ────────────
 function renderClientStudioGallery(){
   const section=document.getElementById('ch-studio-section');
-  const el=document.getElementById('ch-studio-gallery');
-  if(!section||!el)return;
-  while(el.firstChild)el.removeChild(el.firstChild);
+  const track=document.getElementById('ch-studio-gallery');
+  if(!section||!track)return;
+  track.classList.remove('playing');
+  while(track.firstChild)track.removeChild(track.firstChild);
   if(!S.studioPhotos.length){section.style.display='none';return;}
   section.style.display='';
-  S.studioPhotos.forEach(photo=>{
-    const item=document.createElement('div');item.className='studio-hscroll-item';
-    const img=document.createElement('img');img.alt='';img.src=photo.src;
-    item.appendChild(img);el.appendChild(item);
+  // Build 2 identical sets for seamless infinite loop (translateX -50%)
+  [0,1].forEach(()=>{
+    S.studioPhotos.forEach(photo=>{
+      const item=document.createElement('div');item.className='studio-carousel-item';
+      const img=document.createElement('img');img.alt='';img.src=photo.src;
+      item.appendChild(img);track.appendChild(item);
+    });
   });
+  // Duration: ~3.5s per photo so it's slow and visible
+  const dur=S.studioPhotos.length*3.5;
+  track.style.animationDuration=dur+'s';
+  // Restart animation cleanly
+  void track.offsetWidth;
+  track.classList.add('playing');
 }
 
 // ─── SHOP LOGO ───────────────────────────────────────────────
@@ -1155,14 +1192,14 @@ function renderShopLogo(){
     const btnLbl=document.getElementById('bs-logo-btn-lbl');
     if(btnLbl)btnLbl.textContent=T(S.shopLogo?'bsettings.change_logo':'bsettings.upload_logo');
   }
-  // Role selection portal
+  // Role selection portal — large, centered
   const roleWrap=document.getElementById('role-logo-wrap');
   const roleImg=document.getElementById('role-logo-img');
   if(roleWrap&&roleImg){
-    if(S.shopLogo){roleImg.src=S.shopLogo;roleWrap.style.display='block';}
+    if(S.shopLogo){roleImg.src=S.shopLogo;roleWrap.style.display='flex';}
     else{roleWrap.style.display='none';}
   }
-  // Client home header
+  // Client home hero — centered logo or shop name
   const chWrap=document.getElementById('ch-logo-wrap');
   const chImg=document.getElementById('ch-logo-img');
   const chName=document.getElementById('ch-shop-name-lbl');
@@ -1174,6 +1211,43 @@ function renderShopLogo(){
       chWrap.style.display='none';
       if(chName){chName.textContent=san(S.shopName,50);chName.style.display='block';}
     }
+  }
+}
+
+// ─── BACKGROUND PHOTO ────────────────────────────────────────
+function addBgPhoto(event){
+  const file=event.target.files&&event.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{S.bgPhoto=e.target.result;renderBgPhoto();toast('toast.saved');};
+  reader.readAsDataURL(file);event.target.value='';
+}
+function removeBgPhoto(){S.bgPhoto=null;renderBgPhoto();toast('toast.saved');}
+function renderBgPhoto(){
+  // Barber settings preview
+  const preview=document.getElementById('bs-bg-preview');
+  const emptyLbl=document.getElementById('bs-bg-empty-lbl');
+  const removeBtn=document.getElementById('bs-bg-remove-btn');
+  const btnLbl=document.getElementById('bs-bg-btn-lbl');
+  if(preview){
+    // Remove old img if present (keep the empty label)
+    const oldImg=preview.querySelector('img');if(oldImg)oldImg.remove();
+    if(S.bgPhoto){
+      const img=document.createElement('img');img.alt='';img.src=S.bgPhoto;
+      img.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block';
+      preview.appendChild(img);
+      if(emptyLbl)emptyLbl.style.display='none';
+    } else {
+      if(emptyLbl)emptyLbl.style.display='';
+    }
+    if(removeBtn)removeBtn.style.display=S.bgPhoto?'':'none';
+    if(btnLbl)btnLbl.textContent=T(S.bgPhoto?'bsettings.change_bg':'bsettings.upload_bg');
+  }
+  // Client home hero
+  const bgImg=document.getElementById('ch-hero-bg-img');
+  const overlay=document.getElementById('ch-hero-overlay');
+  if(bgImg){
+    if(S.bgPhoto){bgImg.src=S.bgPhoto;bgImg.style.display='block';if(overlay)overlay.style.display='';}
+    else{bgImg.src='';bgImg.style.display='none';if(overlay)overlay.style.display='none';}
   }
 }
 
@@ -1550,7 +1624,7 @@ function bTab(tab){
 function loadBarberSettings(){
   const sn=document.getElementById('bs-shop'),bn=document.getElementById('bs-barber'),op=document.getElementById('bs-open'),cl=document.getElementById('bs-close');
   if(sn)sn.value=S.shopName;if(bn)bn.value=S.barberName;if(op)op.value=S.workHours.open;if(cl)cl.value=S.workHours.close;
-  buildDurBtns();renderSvcList();renderStudioPhotos();renderTeamMembers();renderNewsBarber();updateLangCards();renderShopLogo();
+  buildDurBtns();renderSvcList();renderStudioPhotos();renderTeamMembers();renderNewsBarber();updateLangCards();renderShopLogo();renderBgPhoto();
 }
 function saveBarberIdentity(){
   const sn=document.getElementById('bs-shop'),bn=document.getElementById('bs-barber');
@@ -1666,7 +1740,7 @@ function addTilt(el){
 
 // ─── INIT ─────────────────────────────────────────────────────
 function init(){
-  applyLang(S.lang);animateIntro();renderShopLogo();
+  applyLang(S.lang);animateIntro();renderShopLogo();renderBgPhoto();
   document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
   const role=document.getElementById('s-role');if(role)role.classList.remove('hidden');
   // Close menus on outside click
