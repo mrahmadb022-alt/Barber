@@ -190,10 +190,8 @@ button:disabled{opacity:.25;cursor:not-allowed}
 
 /* ── Studio carousel (client home) ── */
 .studio-carousel-wrap{overflow:hidden;position:relative;padding:0 0 20px}
-.studio-carousel-track{display:flex;gap:0;width:max-content;will-change:transform;direction:ltr}
-@keyframes studio-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-.studio-carousel-track.playing{animation:studio-scroll linear infinite}
-/* margin-right instead of gap — each item carries its own spacing so -50% is pixel-perfect */
+.studio-carousel-track{display:flex;gap:0;will-change:transform;direction:ltr}
+/* margin-right carried by each item; exact pixel shift injected via JS keyframe */
 .studio-carousel-item{flex-shrink:0;width:220px;height:220px;background:var(--s3);border:1px solid var(--border);overflow:hidden;margin-right:10px}
 .studio-carousel-item img{width:100%;height:100%;object-fit:cover;display:block}
 
@@ -452,16 +450,22 @@ button:disabled{opacity:.25;cursor:not-allowed}
 
     <!-- DASHBOARD -->
     <div id="bt-dash">
-      <div class="phero" style="padding:52px 20px 20px;flex-shrink:0">
-        <p class="label" style="margin-bottom:4px;color:var(--text3)" id="b-date-lbl"></p>
-        <div style="display:flex;align-items:flex-end;justify-content:space-between">
-          <div>
-            <p class="hero" style="font-size:34px" id="b-shopname-lbl">SOVEREIGN</p>
-            <p style="font-size:13px;color:var(--text2);margin-top:3px" id="b-barber-lbl">Barber</p>
-          </div>
-          <div style="display:flex;align-items:center;gap:6px">
-            <div class="blink" style="width:6px;height:6px;border-radius:50%;background:var(--accent)"></div>
-            <span class="label" style="color:var(--accent)" data-i18n="dash.live">Live</span>
+      <div style="position:relative;overflow:hidden;flex-shrink:0">
+        <div id="b-hero-bg" style="position:absolute;inset:0;background:var(--bg);overflow:hidden">
+          <img id="b-hero-bg-img" alt="" style="width:100%;height:100%;object-fit:cover;display:none">
+        </div>
+        <div id="b-hero-overlay" style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45) 0%,rgba(0,0,0,.78) 100%);display:none"></div>
+        <div class="phero" style="position:relative;z-index:2;padding:52px 20px 20px">
+          <p class="label" style="margin-bottom:4px;color:var(--text3)" id="b-date-lbl"></p>
+          <div style="display:flex;align-items:flex-end;justify-content:space-between">
+            <div>
+              <p class="hero" style="font-size:34px" id="b-shopname-lbl">SOVEREIGN</p>
+              <p style="font-size:13px;color:var(--text2);margin-top:3px" id="b-barber-lbl">Barber</p>
+            </div>
+            <div style="display:flex;align-items:center;gap:6px">
+              <div class="blink" style="width:6px;height:6px;border-radius:50%;background:var(--accent)"></div>
+              <span class="label" style="color:var(--accent)" data-i18n="dash.live">Live</span>
+            </div>
           </div>
         </div>
       </div>
@@ -1181,24 +1185,31 @@ function renderClientStudioGallery(){
   const section=document.getElementById('ch-studio-section');
   const track=document.getElementById('ch-studio-gallery');
   if(!section||!track)return;
-  track.classList.remove('playing');
+  // Fully stop any running animation before rebuilding
+  track.style.animation='none';
+  track.style.transform='translateX(0)';
   while(track.firstChild)track.removeChild(track.firstChild);
   if(!S.studioPhotos.length){section.style.display='none';return;}
   section.style.display='';
-  // Build 2 identical sets for seamless infinite loop (translateX -50%)
-  [0,1].forEach(()=>{
+  const ITEM_W=220,GAP=10,STEP=ITEM_W+GAP; // 230px per slot
+  const N=S.studioPhotos.length;
+  // Build exactly 2 identical sets; shift = N*STEP px = one full set width
+  for(let set=0;set<2;set++){
     S.studioPhotos.forEach(photo=>{
       const item=document.createElement('div');item.className='studio-carousel-item';
       const img=document.createElement('img');img.alt='';img.src=photo.src;
       item.appendChild(img);track.appendChild(item);
     });
-  });
-  // Duration: ~3.5s per photo so it's slow and visible
-  const dur=S.studioPhotos.length*3.5;
-  track.style.animationDuration=dur+'s';
-  // Restart animation cleanly
+  }
+  // Inject pixel-exact keyframe — avoids any max-content / -50% ambiguity
+  const shiftPx=N*STEP;
+  let ks=document.getElementById('carousel-ks');
+  if(!ks){ks=document.createElement('style');ks.id='carousel-ks';document.head.appendChild(ks);}
+  ks.textContent=`@keyframes studio-scroll-dyn{from{transform:translateX(0)}to{transform:translateX(-${shiftPx}px)}}`;
+  // Force reflow so the cleared animation is fully committed before restart
   void track.offsetWidth;
-  track.classList.add('playing');
+  const dur=Math.max(N*3,4);
+  track.style.animation=`studio-scroll-dyn ${dur}s linear infinite`;
 }
 
 // ─── OPEN / CLOSED STATUS ────────────────────────────────────
@@ -1289,6 +1300,13 @@ function renderBgPhoto(){
   if(bgImg){
     if(S.bgPhoto){bgImg.src=S.bgPhoto;bgImg.style.display='block';if(overlay)overlay.style.display='';}
     else{bgImg.src='';bgImg.style.display='none';if(overlay)overlay.style.display='none';}
+  }
+  // Barber dashboard hero
+  const bBgImg=document.getElementById('b-hero-bg-img');
+  const bOverlay=document.getElementById('b-hero-overlay');
+  if(bBgImg){
+    if(S.bgPhoto){bBgImg.src=S.bgPhoto;bBgImg.style.display='block';if(bOverlay)bOverlay.style.display='';}
+    else{bBgImg.src='';bBgImg.style.display='none';if(bOverlay)bOverlay.style.display='none';}
   }
 }
 
@@ -1521,18 +1539,6 @@ function saveClientProfile(){
 // ─── BARBER DASHBOARD ────────────────────────────────────────
 function renderBarberPreview(){
   const el=document.getElementById('b-preview');if(!el)return;while(el.firstChild)el.removeChild(el.firstChild);
-  // Background photo thumbnail
-  const bgWrap=document.createElement('div');bgWrap.style.cssText='margin-bottom:16px';
-  const bgLbl=document.createElement('p');bgLbl.className='label';bgLbl.style.marginBottom='8px';bgLbl.textContent=T('dash.preview_bg');
-  bgWrap.appendChild(bgLbl);
-  if(S.bgPhoto){
-    const thumb=document.createElement('div');thumb.style.cssText='width:100%;height:90px;overflow:hidden;border:1px solid var(--border);position:relative';
-    const img=document.createElement('img');img.alt='';img.src=S.bgPhoto;img.style.cssText='width:100%;height:100%;object-fit:cover;display:block';
-    thumb.appendChild(img);bgWrap.appendChild(thumb);
-  } else {
-    const p=document.createElement('p');p.style.cssText='font-size:12px;color:var(--text3)';p.textContent=T('dash.preview_no_bg');bgWrap.appendChild(p);
-  }
-  el.appendChild(bgWrap);
   // Studio photos strip
   const photosWrap=document.createElement('div');photosWrap.style.cssText='margin-bottom:16px';
   const photosLbl=document.createElement('p');photosLbl.className='label';photosLbl.style.marginBottom='8px';photosLbl.textContent=T('dash.preview_photos');
@@ -1572,7 +1578,7 @@ function renderBarberDash(){
   if(sn)sn.textContent=san(S.shopName,50);if(bn)bn.textContent=san(S.barberName,50);
   const dl=document.getElementById('b-date-lbl');
   if(dl){try{dl.textContent=new Date().toLocaleDateString(locale(),{weekday:'long',month:'long',day:'numeric'});}catch{dl.textContent=TODAY;}}
-  buildDashStats();buildQueue();renderBarberPreview();
+  buildDashStats();buildQueue();renderBgPhoto();renderBarberPreview();
 }
 
 function buildDashStats(){
