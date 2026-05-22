@@ -190,10 +190,11 @@ button:disabled{opacity:.25;cursor:not-allowed}
 
 /* ── Studio carousel (client home) ── */
 .studio-carousel-wrap{overflow:hidden;position:relative;padding:0 0 20px}
-.studio-carousel-track{display:flex;gap:10px;width:max-content;will-change:transform;direction:ltr}
+.studio-carousel-track{display:flex;gap:0;width:max-content;will-change:transform;direction:ltr}
 @keyframes studio-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 .studio-carousel-track.playing{animation:studio-scroll linear infinite}
-.studio-carousel-item{flex-shrink:0;width:220px;height:220px;background:var(--s3);border:1px solid var(--border);overflow:hidden}
+/* margin-right instead of gap — each item carries its own spacing so -50% is pixel-perfect */
+.studio-carousel-item{flex-shrink:0;width:220px;height:220px;background:var(--s3);border:1px solid var(--border);overflow:hidden;margin-right:10px}
 .studio-carousel-item img{width:100%;height:100%;object-fit:cover;display:block}
 
 /* ── Shop logo ── */
@@ -274,11 +275,12 @@ button:disabled{opacity:.25;cursor:not-allowed}
     <div id="ch-hero-overlay" style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45) 0%,rgba(0,0,0,.8) 100%);display:none"></div>
     <div style="position:relative;z-index:2;padding:58px 20px 28px;display:flex;flex-direction:column;align-items:center;text-align:center">
       <div id="ch-logo-wrap" style="display:none;margin-bottom:14px">
-        <img id="ch-logo-img" alt="" style="max-height:100px;max-width:220px;object-fit:contain;display:block">
+        <img id="ch-logo-img" alt="" style="width:100px;height:100px;object-fit:cover;display:block">
       </div>
       <p id="ch-shop-name-lbl" style="display:none;font-family:'Syne',sans-serif;font-size:22px;font-weight:800;letter-spacing:-.02em;color:var(--text);margin-bottom:6px"></p>
       <p class="label" data-i18n="home.welcome">Welcome back</p>
       <p class="title" id="ch-greeting" style="margin-top:2px">Guest</p>
+      <div id="ch-status" style="margin-top:10px;display:flex;align-items:center;justify-content:center;gap:5px"></div>
     </div>
     <button class="btn-icon" onclick="go('s-client-settings')" style="position:absolute;top:50px;right:20px;z-index:10">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--text2)" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
@@ -468,6 +470,9 @@ button:disabled{opacity:.25;cursor:not-allowed}
       <div class="div"></div>
       <span class="sec" data-i18n="dash.todays_queue">Today's Queue</span>
       <div id="b-queue" style="padding:0 20px;display:flex;flex-direction:column;gap:6px;padding-bottom:20px"></div>
+      <div class="div"></div>
+      <span class="sec" data-i18n="dash.preview_title">What Clients See</span>
+      <div id="b-preview" style="padding:0 20px 28px"></div>
     </div>
 
     <!-- CALENDAR -->
@@ -734,6 +739,7 @@ const LANG={
     'home.cancel_booking':'Cancel','home.no_bookings':'No bookings yet.',
     'home.upcoming':'Upcoming','home.past':'Completed','home.news':'News & Updates',
     'home.no_news':'No announcements yet.','home.studio_section':'Our Studio',
+    'home.open':'Open','home.closed':'Closed',
     'book.barber_title':'Choose a Barber','book.pick_barber':'Choose Your Barber',
     'book.any_barber':'Any Available Barber','book.any_barber_desc':'No preference — first available',
     'book.date_title':'Pick a Date','book.time_title':'Pick a Time',
@@ -758,6 +764,10 @@ const LANG={
     'edit.confirm':'Confirm Change','edit.no_slots':'No available slots for this day',
     'dash.live':'Live','dash.todays_queue':"Today's Queue",'dash.no_appts':'No appointments today.',
     'dash.clients':'Clients Today','dash.remaining':'Available Slots','dash.next':'Next Client',
+    'dash.preview_title':'What Clients See','dash.preview_bg':'Background Photo',
+    'dash.preview_photos':'Studio Photos','dash.preview_news':'Latest Announcements',
+    'dash.preview_no_bg':'No background photo set.','dash.preview_no_photos':'No studio photos yet.',
+    'dash.preview_no_news':'No announcements published yet.',
     'barber.nav.dash':'Dashboard','barber.nav.cal':'Calendar','barber.nav.settings':'Settings',
     'cal.controls':'Quick Controls','cal.lock_today':'Lock Today',
     'cal.lock_period':'Lock a Period…','cal.lock_period_title':'Lock a Period',
@@ -810,6 +820,7 @@ const LANG={
     'home.cancel_booking':'בטל','home.no_bookings':'אין הזמנות עדיין.',
     'home.upcoming':'קרוב','home.past':'הושלם','home.news':'חדשות ועדכונים',
     'home.no_news':'אין הודעות עדיין.','home.studio_section':'הסטודיו שלנו',
+    'home.open':'פתוח','home.closed':'סגור',
     'book.barber_title':'בחר ספר','book.pick_barber':'בחר את הספר שלך',
     'book.any_barber':'כל ספר זמין','book.any_barber_desc':'ללא העדפה — הזמין הראשון',
     'book.date_title':'בחר תאריך','book.time_title':'בחר שעה',
@@ -834,6 +845,10 @@ const LANG={
     'edit.confirm':'אשר שינוי','edit.no_slots':'אין תורים פנויים ביום זה',
     'dash.live':'פעיל','dash.todays_queue':'תורים היום','dash.no_appts':'אין תורים היום.',
     'dash.clients':'לקוחות היום','dash.remaining':'תורים פנויים','dash.next':'הלקוח הבא',
+    'dash.preview_title':'מה רואים הלקוחות','dash.preview_bg':'תמונת רקע',
+    'dash.preview_photos':'תמונות סטודיו','dash.preview_news':'הודעות אחרונות',
+    'dash.preview_no_bg':'לא הוגדרה תמונת רקע.','dash.preview_no_photos':'עדיין לא הועלו תמונות.',
+    'dash.preview_no_news':'עדיין לא פורסמו הודעות.',
     'barber.nav.dash':'לוח בקרה','barber.nav.cal':'יומן','barber.nav.settings':'הגדרות',
     'cal.controls':'פקדים מהירים','cal.lock_today':'נעל היום',
     'cal.lock_period':'נעל תקופה…','cal.lock_period_title':'נעל תקופה',
@@ -886,6 +901,7 @@ const LANG={
     'home.cancel_booking':'إلغاء','home.no_bookings':'لا توجد حجوزات بعد.',
     'home.upcoming':'قادم','home.past':'مكتمل','home.news':'أخبار وتحديثات',
     'home.no_news':'لا توجد إعلانات بعد.','home.studio_section':'استوديونا',
+    'home.open':'مفتوح','home.closed':'مغلق',
     'book.barber_title':'اختر الحلاق','book.pick_barber':'اختر حلاقك',
     'book.any_barber':'أي حلاق متاح','book.any_barber_desc':'بلا تفضيل — الأول المتاح',
     'book.date_title':'اختر التاريخ','book.time_title':'اختر الوقت',
@@ -910,6 +926,10 @@ const LANG={
     'edit.confirm':'تأكيد التغيير','edit.no_slots':'لا تتوفر أوقات في هذا اليوم',
     'dash.live':'مباشر','dash.todays_queue':'طابور اليوم','dash.no_appts':'لا توجد مواعيد اليوم.',
     'dash.clients':'عملاء اليوم','dash.remaining':'أوقات متاحة','dash.next':'العميل التالي',
+    'dash.preview_title':'ما يراه العملاء','dash.preview_bg':'صورة الخلفية',
+    'dash.preview_photos':'صور الاستوديو','dash.preview_news':'آخر الإعلانات',
+    'dash.preview_no_bg':'لا توجد صورة خلفية.','dash.preview_no_photos':'لا توجد صور بعد.',
+    'dash.preview_no_news':'لم يتم نشر أي إعلانات بعد.',
     'barber.nav.dash':'لوحة التحكم','barber.nav.cal':'التقويم','barber.nav.settings':'الإعدادات',
     'cal.controls':'تحكم سريع','cal.lock_today':'قفل اليوم',
     'cal.lock_period':'قفل فترة…','cal.lock_period_title':'قفل فترة',
@@ -1047,7 +1067,7 @@ function applyLang(lang){
   document.querySelectorAll('[data-i18n]').forEach(el=>{el.textContent=T(el.getAttribute('data-i18n'))});
   updateLangCards();
   if(S.role==='client'){renderClientHome();buildBookCal();buildSlotList();buildBarberPicker();}
-  else if(S.role==='barber'){renderBarberDash();buildBarberCal();renderSvcList();renderLockedPeriods();renderStudioPhotos();renderTeamMembers();renderNewsBarber();renderShopLogo();renderBgPhoto();}
+  else if(S.role==='barber'){renderBarberDash();buildBarberCal();renderSvcList();renderLockedPeriods();renderStudioPhotos();renderTeamMembers();renderNewsBarber();renderShopLogo();renderBgPhoto();renderBarberPreview();}
 }
 function updateLangCards(){
   ['cl-en','cl-he','cl-ar','bl-en','bl-he','bl-ar'].forEach(id=>{
@@ -1067,7 +1087,7 @@ function animateIntro(){
 // ─── CLIENT HOME ─────────────────────────────────────────────
 function renderClientHome(){
   const g=document.getElementById('ch-greeting');if(g)g.textContent=san(S.clientProfile.name||'Guest',40);
-  renderShopLogo();renderBgPhoto();renderNextAppt();renderClientList();renderNewsFeed();renderClientStudioGallery();
+  renderShopLogo();renderBgPhoto();renderShopStatus();renderNextAppt();renderClientList();renderNewsFeed();renderClientStudioGallery();
 }
 
 function renderNextAppt(){
@@ -1139,14 +1159,20 @@ function renderClientList(){
 }
 
 // ─── NEWS FEED (client) ──────────────────────────────────────
+function fmtNewsDate(ts){
+  if(!ts)return'';
+  try{return new Date(ts).toLocaleDateString(locale(),{day:'numeric',month:'long',year:'numeric'});}
+  catch{return'';}
+}
 function renderNewsFeed(){
   const el=document.getElementById('ch-news-feed');if(!el)return;while(el.firstChild)el.removeChild(el.firstChild);
   if(!S.news.length){const p=document.createElement('p');p.style.cssText='font-size:13px;color:var(--text3);padding-bottom:8px';p.textContent=T('home.no_news');el.appendChild(p);return;}
   S.news.forEach((n,i)=>{
     const item=document.createElement('div');item.className='news-feed-item';item.style.animation=`up .4s ${i*.06}s both`;
     const title=document.createElement('p');title.style.cssText='font-size:13px;font-weight:700;margin-bottom:4px';title.textContent=san(n.title,80);
-    const body=document.createElement('p');body.style.cssText='font-size:12px;color:var(--text2);line-height:1.6';body.textContent=san(n.body,400);
-    item.appendChild(title);item.appendChild(body);el.appendChild(item);
+    const body=document.createElement('p');body.style.cssText='font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:6px';body.textContent=san(n.body,400);
+    const date=document.createElement('p');date.style.cssText='font-size:10px;color:var(--text3);font-family:\'Space Mono\',monospace;font-weight:600;letter-spacing:.04em';date.textContent=fmtNewsDate(n.ts);
+    item.appendChild(title);item.appendChild(body);item.appendChild(date);el.appendChild(item);
   });
 }
 
@@ -1173,6 +1199,21 @@ function renderClientStudioGallery(){
   // Restart animation cleanly
   void track.offsetWidth;
   track.classList.add('playing');
+}
+
+// ─── OPEN / CLOSED STATUS ────────────────────────────────────
+function renderShopStatus(){
+  const el=document.getElementById('ch-status');if(!el)return;
+  while(el.firstChild)el.removeChild(el.firstChild);
+  const now=new Date();const nowMin=now.getHours()*60+now.getMinutes();
+  const openMin=timeToMin(S.workHours.open),closeMin=timeToMin(S.workHours.close);
+  const isOpen=nowMin>=openMin&&nowMin<closeMin;
+  const dot=document.createElement('div');
+  dot.style.cssText=`width:7px;height:7px;border-radius:50%;flex-shrink:0;background:${isOpen?'#22c55e':'#ef4444'}`;
+  const lbl=document.createElement('span');lbl.className='label';
+  lbl.style.color=isOpen?'#22c55e':'var(--red)';
+  lbl.textContent=T(isOpen?'home.open':'home.closed');
+  el.appendChild(dot);el.appendChild(lbl);
 }
 
 // ─── SHOP LOGO ───────────────────────────────────────────────
@@ -1218,10 +1259,10 @@ function renderShopLogo(){
 function addBgPhoto(event){
   const file=event.target.files&&event.target.files[0];if(!file)return;
   const reader=new FileReader();
-  reader.onload=e=>{S.bgPhoto=e.target.result;renderBgPhoto();toast('toast.saved');};
+  reader.onload=e=>{S.bgPhoto=e.target.result;renderBgPhoto();renderBarberPreview();toast('toast.saved');};
   reader.readAsDataURL(file);event.target.value='';
 }
-function removeBgPhoto(){S.bgPhoto=null;renderBgPhoto();toast('toast.saved');}
+function removeBgPhoto(){S.bgPhoto=null;renderBgPhoto();renderBarberPreview();toast('toast.saved');}
 function renderBgPhoto(){
   // Barber settings preview
   const preview=document.getElementById('bs-bg-preview');
@@ -1478,12 +1519,60 @@ function saveClientProfile(){
 }
 
 // ─── BARBER DASHBOARD ────────────────────────────────────────
+function renderBarberPreview(){
+  const el=document.getElementById('b-preview');if(!el)return;while(el.firstChild)el.removeChild(el.firstChild);
+  // Background photo thumbnail
+  const bgWrap=document.createElement('div');bgWrap.style.cssText='margin-bottom:16px';
+  const bgLbl=document.createElement('p');bgLbl.className='label';bgLbl.style.marginBottom='8px';bgLbl.textContent=T('dash.preview_bg');
+  bgWrap.appendChild(bgLbl);
+  if(S.bgPhoto){
+    const thumb=document.createElement('div');thumb.style.cssText='width:100%;height:90px;overflow:hidden;border:1px solid var(--border);position:relative';
+    const img=document.createElement('img');img.alt='';img.src=S.bgPhoto;img.style.cssText='width:100%;height:100%;object-fit:cover;display:block';
+    thumb.appendChild(img);bgWrap.appendChild(thumb);
+  } else {
+    const p=document.createElement('p');p.style.cssText='font-size:12px;color:var(--text3)';p.textContent=T('dash.preview_no_bg');bgWrap.appendChild(p);
+  }
+  el.appendChild(bgWrap);
+  // Studio photos strip
+  const photosWrap=document.createElement('div');photosWrap.style.cssText='margin-bottom:16px';
+  const photosLbl=document.createElement('p');photosLbl.className='label';photosLbl.style.marginBottom='8px';photosLbl.textContent=T('dash.preview_photos');
+  photosWrap.appendChild(photosLbl);
+  if(S.studioPhotos.length){
+    const strip=document.createElement('div');strip.style.cssText='display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px';
+    S.studioPhotos.forEach(photo=>{
+      const thumb=document.createElement('div');thumb.style.cssText='flex-shrink:0;width:68px;height:68px;overflow:hidden;border:1px solid var(--border)';
+      const img=document.createElement('img');img.alt='';img.src=photo.src;img.style.cssText='width:100%;height:100%;object-fit:cover;display:block';
+      thumb.appendChild(img);strip.appendChild(thumb);
+    });
+    photosWrap.appendChild(strip);
+  } else {
+    const p=document.createElement('p');p.style.cssText='font-size:12px;color:var(--text3)';p.textContent=T('dash.preview_no_photos');photosWrap.appendChild(p);
+  }
+  el.appendChild(photosWrap);
+  // News items
+  const newsWrap=document.createElement('div');
+  const newsLbl=document.createElement('p');newsLbl.className='label';newsLbl.style.marginBottom='8px';newsLbl.textContent=T('dash.preview_news');
+  newsWrap.appendChild(newsLbl);
+  if(S.news.length){
+    S.news.slice(0,3).forEach(n=>{
+      const item=document.createElement('div');item.style.cssText='padding:10px 12px;background:var(--s2);border:1px solid var(--border);margin-bottom:6px;border-left:3px solid var(--accent)';
+      const title=document.createElement('p');title.style.cssText='font-size:12px;font-weight:700;margin-bottom:3px';title.textContent=san(n.title,80);
+      const body=document.createElement('p');body.style.cssText='font-size:11px;color:var(--text2);line-height:1.5;margin-bottom:4px';body.textContent=san(n.body,200);
+      const date=document.createElement('p');date.style.cssText='font-size:10px;color:var(--text3);font-family:\'Space Mono\',monospace';date.textContent=fmtNewsDate(n.ts);
+      item.appendChild(title);item.appendChild(body);item.appendChild(date);newsWrap.appendChild(item);
+    });
+  } else {
+    const p=document.createElement('p');p.style.cssText='font-size:12px;color:var(--text3)';p.textContent=T('dash.preview_no_news');newsWrap.appendChild(p);
+  }
+  el.appendChild(newsWrap);
+}
+
 function renderBarberDash(){
   const sn=document.getElementById('b-shopname-lbl'),bn=document.getElementById('b-barber-lbl');
   if(sn)sn.textContent=san(S.shopName,50);if(bn)bn.textContent=san(S.barberName,50);
   const dl=document.getElementById('b-date-lbl');
   if(dl){try{dl.textContent=new Date().toLocaleDateString(locale(),{weekday:'long',month:'long',day:'numeric'});}catch{dl.textContent=TODAY;}}
-  buildDashStats();buildQueue();
+  buildDashStats();buildQueue();renderBarberPreview();
 }
 
 function buildDashStats(){
@@ -1624,7 +1713,7 @@ function bTab(tab){
 function loadBarberSettings(){
   const sn=document.getElementById('bs-shop'),bn=document.getElementById('bs-barber'),op=document.getElementById('bs-open'),cl=document.getElementById('bs-close');
   if(sn)sn.value=S.shopName;if(bn)bn.value=S.barberName;if(op)op.value=S.workHours.open;if(cl)cl.value=S.workHours.close;
-  buildDurBtns();renderSvcList();renderStudioPhotos();renderTeamMembers();renderNewsBarber();updateLangCards();renderShopLogo();renderBgPhoto();
+  buildDurBtns();renderSvcList();renderStudioPhotos();renderTeamMembers();renderNewsBarber();updateLangCards();renderShopLogo();renderBgPhoto();renderBarberPreview();
 }
 function saveBarberIdentity(){
   const sn=document.getElementById('bs-shop'),bn=document.getElementById('bs-barber');
@@ -1662,10 +1751,21 @@ function addService(){
 
 // ─── STUDIO PHOTOS ───────────────────────────────────────────
 function addStudioPhoto(event){
-  Array.from(event.target.files||[]).forEach(file=>{const reader=new FileReader();reader.onload=e=>{S.studioPhotos.push({id:Date.now()+Math.random(),src:e.target.result});renderStudioPhotos();renderClientStudioGallery();toast('toast.photo_added');};reader.readAsDataURL(file);});
+  Array.from(event.target.files||[]).forEach(file=>{
+    const reader=new FileReader();
+    reader.onload=e=>{
+      S.studioPhotos.push({id:Date.now()+Math.random(),src:e.target.result});
+      renderStudioPhotos();renderClientStudioGallery();renderBgPhoto();renderBarberPreview();
+      toast('toast.photo_added');
+    };
+    reader.readAsDataURL(file);
+  });
   event.target.value='';
 }
-function removeStudioPhoto(id){S.studioPhotos=S.studioPhotos.filter(p=>p.id!==id);renderStudioPhotos();renderClientStudioGallery();}
+function removeStudioPhoto(id){
+  S.studioPhotos=S.studioPhotos.filter(p=>p.id!==id);
+  renderStudioPhotos();renderClientStudioGallery();renderBgPhoto();renderBarberPreview();
+}
 function renderStudioPhotos(){
   const el=document.getElementById('studio-grid');if(!el)return;while(el.firstChild)el.removeChild(el.firstChild);
   if(!S.studioPhotos.length){const p=document.createElement('p');p.style.cssText='font-size:12px;color:var(--text3);margin-bottom:8px;grid-column:1/-1';p.textContent=T('bsettings.no_photos');el.appendChild(p);return;}
@@ -1713,9 +1813,9 @@ function publishNews(){
   const title=san(ti?ti.value.trim():'',80);if(!title){if(ti){ti.style.borderColor='var(--red)';ti.focus();}return;}
   if(ti)ti.style.borderColor='';
   S.news.unshift({id:Date.now(),title,body:san(bi?bi.value.trim():'',400),ts:Date.now()});
-  if(ti)ti.value='';if(bi)bi.value='';renderNewsBarber();toast('toast.news_published');
+  if(ti)ti.value='';if(bi)bi.value='';renderNewsBarber();renderBarberPreview();toast('toast.news_published');
 }
-function deleteNews(id){S.news=S.news.filter(n=>n.id!==id);renderNewsBarber();toast('toast.news_deleted')}
+function deleteNews(id){S.news=S.news.filter(n=>n.id!==id);renderNewsBarber();renderBarberPreview();toast('toast.news_deleted')}
 function renderNewsBarber(){
   const el=document.getElementById('b-news-list');if(!el)return;while(el.firstChild)el.removeChild(el.firstChild);
   if(!S.news.length){const p=document.createElement('p');p.style.cssText='font-size:12px;color:var(--text3);margin-bottom:8px';p.textContent=T('bsettings.no_news');el.appendChild(p);return;}
@@ -1726,8 +1826,9 @@ function renderNewsBarber(){
     const del=document.createElement('button');del.style.cssText='background:var(--rD);border:1px solid rgba(239,68,68,.2);color:var(--red);padding:3px 8px;font-size:9px;letter-spacing:.08em;text-transform:uppercase;font-family:\'Space Grotesk\',sans-serif;font-weight:700;cursor:pointer;flex-shrink:0';
     del.textContent=T('news.delete');del.onclick=()=>deleteNews(n.id);
     top.appendChild(title);top.appendChild(del);
-    const body=document.createElement('p');body.style.cssText='font-size:12px;color:var(--text2);line-height:1.55';body.textContent=san(n.body,400);
-    item.appendChild(top);item.appendChild(body);el.appendChild(item);
+    const body=document.createElement('p');body.style.cssText='font-size:12px;color:var(--text2);line-height:1.55;margin-bottom:4px';body.textContent=san(n.body,400);
+    const date=document.createElement('p');date.style.cssText='font-size:10px;color:var(--text3);font-family:\'Space Mono\',monospace;font-weight:600;letter-spacing:.04em';date.textContent=fmtNewsDate(n.ts);
+    item.appendChild(top);item.appendChild(body);item.appendChild(date);el.appendChild(item);
   });
 }
 
