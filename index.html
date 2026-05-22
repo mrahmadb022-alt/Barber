@@ -223,6 +223,17 @@ button:disabled{opacity:.25;cursor:not-allowed}
 /* ── Locked period row ── */
 .period-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--s2)}
 .period-row:last-child{border-bottom:none}
+
+/* ── Weekly appointments calendar ── */
+.wcal-inner{display:flex;position:relative}
+.wcal-gutter{width:46px;flex-shrink:0;position:relative}
+.wcal-col{flex:1;position:relative;border-left:1px solid var(--border);min-width:0}
+.wcal-col.wcal-today{background:rgba(212,175,55,.04)}
+.wcal-row-line{position:absolute;left:0;right:0;border-bottom:1px solid var(--s2)}
+.wcal-appt{position:absolute;left:2px;right:2px;background:linear-gradient(160deg,rgba(212,175,55,.28),rgba(242,202,80,.14));border-left:2px solid var(--accent);overflow:hidden;padding:3px 5px;box-sizing:border-box}
+.wcal-appt-name{font-size:9px;font-weight:700;color:var(--accent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.04em;text-transform:uppercase;line-height:1.3}
+.wcal-appt-svc{font-size:8px;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px;line-height:1.3}
+.wcal-time-lbl{position:absolute;left:0;right:0;display:flex;align-items:flex-start;justify-content:flex-end;padding:3px 6px 0 0;font-size:9px;font-weight:600;letter-spacing:.04em;color:var(--text3);font-family:'Space Mono',monospace;line-height:1}
 </style>
 </head>
 <body>
@@ -455,7 +466,7 @@ button:disabled{opacity:.25;cursor:not-allowed}
           <img id="b-hero-bg-img" alt="" style="width:100%;height:100%;object-fit:cover;display:none">
         </div>
         <div id="b-hero-overlay" style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45) 0%,rgba(0,0,0,.78) 100%);display:none"></div>
-        <div class="phero" style="position:relative;z-index:2;padding:52px 20px 20px">
+        <div class="phero" style="position:relative;z-index:2;padding:62px 16px 90px">
           <p class="label" style="margin-bottom:4px;color:var(--text3)" id="b-date-lbl"></p>
           <div style="display:flex;align-items:flex-end;justify-content:space-between">
             <div>
@@ -475,6 +486,21 @@ button:disabled{opacity:.25;cursor:not-allowed}
       <span class="sec" data-i18n="dash.todays_queue">Today's Queue</span>
       <div id="b-queue" style="padding:0 20px;display:flex;flex-direction:column;gap:6px;padding-bottom:20px"></div>
       <div class="div"></div>
+      <!-- ── Weekly Appointments Calendar ── -->
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px 8px">
+        <button onclick="weekCalNav(-1)" class="btn-icon" style="width:34px;height:34px">‹</button>
+        <span id="week-cal-lbl" class="mono" style="font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text2)"></span>
+        <button onclick="weekCalNav(1)" class="btn-icon" style="width:34px;height:34px">›</button>
+      </div>
+      <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+        <div style="min-width:360px">
+          <div style="display:flex;padding-left:46px;border-bottom:1px solid var(--border)" id="week-cal-hdrs"></div>
+          <div style="overflow-y:auto;max-height:380px;-webkit-overflow-scrolling:touch">
+            <div class="wcal-inner" id="week-cal-inner"></div>
+          </div>
+        </div>
+      </div>
+      <div class="div" style="margin-top:0"></div>
       <span class="sec" data-i18n="dash.preview_title">What Clients See</span>
       <div id="b-preview" style="padding:0 20px 28px"></div>
     </div>
@@ -1015,6 +1041,8 @@ const S={
   // edit booking
   editBkId:null,editDate:null,editTime:null,
   editCalM:new Date().getMonth(),editCalY:new Date().getFullYear(),
+  // weekly calendar
+  weekOffset:0,
 };
 
 // ─── UTILITIES ───────────────────────────────────────────────
@@ -1071,7 +1099,7 @@ function applyLang(lang){
   document.querySelectorAll('[data-i18n]').forEach(el=>{el.textContent=T(el.getAttribute('data-i18n'))});
   updateLangCards();
   if(S.role==='client'){renderClientHome();buildBookCal();buildSlotList();buildBarberPicker();}
-  else if(S.role==='barber'){renderBarberDash();buildBarberCal();renderSvcList();renderLockedPeriods();renderStudioPhotos();renderTeamMembers();renderNewsBarber();renderShopLogo();renderBgPhoto();renderBarberPreview();}
+  else if(S.role==='barber'){renderBarberDash();buildWeekCal();buildBarberCal();renderSvcList();renderLockedPeriods();renderStudioPhotos();renderTeamMembers();renderNewsBarber();renderShopLogo();renderBgPhoto();renderBarberPreview();}
 }
 function updateLangCards(){
   ['cl-en','cl-he','cl-ar','bl-en','bl-he','bl-ar'].forEach(id=>{
@@ -1573,12 +1601,103 @@ function renderBarberPreview(){
   el.appendChild(newsWrap);
 }
 
+// ─── WEEKLY CALENDAR ─────────────────────────────────────────
+function weekCalNav(dir){S.weekOffset+=dir;buildWeekCal();}
+
+function buildWeekCal(){
+  const hdrEl=document.getElementById('week-cal-hdrs');
+  const inner=document.getElementById('week-cal-inner');
+  const lblEl=document.getElementById('week-cal-lbl');
+  if(!hdrEl||!inner)return;
+  while(hdrEl.firstChild)hdrEl.removeChild(hdrEl.firstChild);
+  while(inner.firstChild)inner.removeChild(inner.firstChild);
+
+  // Build array of 7 Date objects for this week (Sun → Sat)
+  const base=new Date();base.setHours(0,0,0,0);
+  base.setDate(base.getDate()-base.getDay()+S.weekOffset*7);
+  const days=[];
+  for(let i=0;i<7;i++){const d=new Date(base);d.setDate(base.getDate()+i);days.push(d);}
+
+  // Week range label
+  const fmtD=d=>d.toLocaleDateString(locale(),{month:'short',day:'numeric'});
+  if(lblEl)lblEl.textContent=`${fmtD(days[0])} – ${fmtD(days[6])} ${days[6].getFullYear()}`;
+
+  // Day header columns (Sun–Sat)
+  const DAY_KEYS=['day.sun','day.mon','day.tue','day.wed','day.thu','day.fri','day.sat'];
+  days.forEach((d,i)=>{
+    const ds=dStr(d),isToday=ds===TODAY;
+    const col=document.createElement('div');
+    col.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 0;gap:3px';
+    const nameEl=document.createElement('p');
+    nameEl.style.cssText='font-size:8px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text2)';
+    nameEl.textContent=T(DAY_KEYS[i]).slice(0,3);
+    const numEl=document.createElement('div');
+    numEl.style.cssText=isToday
+      ?'width:22px;height:22px;border-radius:50%;background:var(--accent);color:#000;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;font-family:\'Space Mono\',monospace'
+      :'font-size:12px;font-weight:700;color:var(--text);font-family:\'Space Mono\',monospace';
+    numEl.textContent=d.getDate();
+    col.appendChild(nameEl);col.appendChild(numEl);hdrEl.appendChild(col);
+  });
+
+  // Time grid
+  const openMin=timeToMin(S.workHours.open);
+  const closeMin=timeToMin(S.workHours.close);
+  const SLOT_H=44; // px per 30-minute row
+  const slots=[];
+  for(let m=openMin;m<closeMin;m+=30)slots.push(m);
+  const totalH=slots.length*SLOT_H;
+
+  // Set height on inner so the flex layout fills correctly
+  inner.style.height=totalH+'px';
+
+  // Time gutter
+  const gutter=document.createElement('div');gutter.className='wcal-gutter';gutter.style.height=totalH+'px';
+  slots.forEach((m,i)=>{
+    const lbl=document.createElement('div');lbl.className='wcal-time-lbl';
+    lbl.style.top=(i*SLOT_H)+'px';lbl.style.height=SLOT_H+'px';
+    lbl.textContent=minToTime(m);
+    gutter.appendChild(lbl);
+  });
+  inner.appendChild(gutter);
+
+  // Day columns
+  days.forEach((d,di)=>{
+    const ds=dStr(d),isToday=ds===TODAY;
+    const col=document.createElement('div');col.className='wcal-col'+(isToday?' wcal-today':'');
+    col.style.height=totalH+'px';
+
+    // Horizontal row-lines
+    slots.forEach((m,i)=>{
+      const line=document.createElement('div');line.className='wcal-row-line';
+      line.style.top=(i*SLOT_H)+'px';line.style.height=SLOT_H+'px';
+      col.appendChild(line);
+    });
+
+    // Appointment blocks
+    S.allBks.filter(b=>b.date===ds).forEach(bk=>{
+      const bkMin=timeToMin(bk.time);
+      if(bkMin<openMin||bkMin>=closeMin)return;
+      const svc=S.services.find(s=>s.name===bk.service);
+      const durMin=svc?svc.dur:S.sessionDur;
+      const topPx=(bkMin-openMin)/30*SLOT_H;
+      const hPx=Math.max(Math.round(durMin/30*SLOT_H)-2,SLOT_H*0.75);
+      const block=document.createElement('div');block.className='wcal-appt';
+      block.style.top=topPx+'px';block.style.height=hPx+'px';
+      const nm=document.createElement('p');nm.className='wcal-appt-name';nm.textContent=san(bk.client,22);
+      const sv=document.createElement('p');sv.className='wcal-appt-svc';sv.textContent=san(bk.service,28);
+      block.appendChild(nm);block.appendChild(sv);col.appendChild(block);
+    });
+
+    inner.appendChild(col);
+  });
+}
+
 function renderBarberDash(){
   const sn=document.getElementById('b-shopname-lbl'),bn=document.getElementById('b-barber-lbl');
   if(sn)sn.textContent=san(S.shopName,50);if(bn)bn.textContent=san(S.barberName,50);
   const dl=document.getElementById('b-date-lbl');
   if(dl){try{dl.textContent=new Date().toLocaleDateString(locale(),{weekday:'long',month:'long',day:'numeric'});}catch{dl.textContent=TODAY;}}
-  buildDashStats();buildQueue();renderBgPhoto();renderBarberPreview();
+  buildDashStats();buildQueue();renderBgPhoto();buildWeekCal();renderBarberPreview();
 }
 
 function buildDashStats(){
