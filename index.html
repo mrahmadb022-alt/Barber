@@ -491,59 +491,17 @@ button:hover:not(:disabled) svg,.back:hover svg{transform:scale(1.14)}
 }
 @keyframes secUnderline{from{width:0;opacity:0}to{width:50px;opacity:1}}
 
-/* ══ TOKEN VOUCHER COMPONENT ══
-   .tok            card shell — gold gradient, rounded, overflow:visible
-   .tok::before/after  22px circles at left/right vertical centre;
-                   background:var(--bg) creates the concave bite illusion
-   .tok-body       flex:1 content area, dark text on gold
-   .tok-divider    optional dashed vertical separator
-   .tok-stub       optional fixed-width right stub
-══════════════════════════════════════════════════════════════════ */
-.tok{
-  position:relative;
-  display:flex;align-items:stretch;
-  border-radius:10px;
-  background:linear-gradient(45deg,#f2ca50,#d4af37);
-  box-shadow:0 16px 48px rgba(212,175,55,.2);
-  overflow:visible;
-  width:100%;box-sizing:border-box;
-  animation:ticketFlip .4s cubic-bezier(.16,1,.3,1) both;
-  transition:transform .2s ease,box-shadow .2s ease;
+/* ══ APPOINTMENT CARD ══ */
+.appt-card{
+  border-radius:12px;background:#1c1c1c;
+  border:1px solid var(--accent);
+  box-shadow:0 0 0 1px rgba(212,175,55,.06),0 8px 32px rgba(0,0,0,.6),0 0 30px rgba(212,175,55,.08);
+  overflow:hidden;
+  transition:transform .25s ease,box-shadow .25s ease;
 }
-/* Concave semi-circular notches — circles with page-bg colour overlay the card edges */
-.tok::before,.tok::after{
-  content:'';
-  position:absolute;
-  width:22px;height:22px;border-radius:50%;
-  background:var(--bg,#0a0a0a);
-  top:50%;transform:translateY(-50%);
-  z-index:2;pointer-events:none;
-}
-.tok::before{left:-11px}
-.tok::after{right:-11px}
-.tok-body{
-  flex:1;min-width:0;
-  padding:22px 48px 22px 22px;
-  color:#241a00;
-}
-[dir=rtl] .tok-body{padding:22px 22px 22px 48px}
-.tok-divider{
-  width:1px;flex-shrink:0;align-self:stretch;margin:12px 0;
-  background:repeating-linear-gradient(
-    to bottom,
-    rgba(36,26,0,.25) 0,rgba(36,26,0,.25) 4px,
-    transparent 4px,transparent 8px);
-}
-.tok-stub{
-  width:56px;flex-shrink:0;
-  padding:22px 8px;
-  display:flex;align-items:center;justify-content:center;
-  color:#241a00;
-}
-
-@keyframes ticketFlip{
-  from{opacity:0;transform:perspective(700px) rotateX(8deg) translateY(10px)}
-  to{opacity:1;transform:perspective(700px) rotateX(0deg) translateY(0px)}
+.appt-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 0 0 1px rgba(212,175,55,.22),0 12px 40px rgba(0,0,0,.72),0 0 50px rgba(212,175,55,.14);
 }
 </style>
 </head>
@@ -1453,59 +1411,56 @@ function renderNextAppt(){
   const bk=upcoming[0];
   const isRTL=(S.lang==='he'||S.lang==='ar');
 
-  // Outer wrapper — position:relative anchors the absolute menu button
-  const outer=document.createElement('div');
-  outer.style.cssText='position:relative';
+  // Outer — keeps card + absolute menu together without clipping the dropdown
+  const outer=document.createElement('div');outer.style.cssText='position:relative';
 
-  // Token card — .tok uses ::before/::after pseudo-elements for notch cutouts
-  const tok=document.createElement('div');
-  tok.className='tok';
+  // Card
+  const card=document.createElement('div');card.className='appt-card';
 
-  // Content body
-  const body=document.createElement('div');
-  body.className='tok-body';
+  // Service name
+  const svcEl=document.createElement('p');
+  svcEl.style.cssText='font-family:"Syne",sans-serif;font-size:1.25rem;font-weight:800;color:var(--accent);'
+    +'text-transform:uppercase;letter-spacing:.04em;padding:18px 52px 14px 20px;line-height:1.2';
+  svcEl.textContent=san(bk.service,30).toUpperCase();
+  card.appendChild(svcEl);
 
-  // Micro-label
-  const lbl=document.createElement('p');
-  lbl.style.cssText='font-size:9px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;opacity:.7;margin:0 0 5px';
-  lbl.textContent=T('home.upcoming');
-  body.appendChild(lbl);
-
-  // Date headline
-  const dateEl=document.createElement('p');
-  dateEl.style.cssText='font-family:"Syne",sans-serif;font-size:1.2rem;font-weight:800;'
-    +'letter-spacing:-.01em;line-height:1.2;margin:0 0 14px;text-transform:uppercase';
-  dateEl.textContent=fmtDate(bk.date,{weekday:'long',month:'short',day:'numeric'});
-  body.appendChild(dateEl);
-
-  // Info columns — TIME / SERVICE / PRICE
-  const infoRow=document.createElement('div');
-  infoRow.style.cssText='display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap';
-  const mkCol=(labelKey,val)=>{
+  // Three info columns — Date · Time · Price
+  const grid=document.createElement('div');
+  grid.style.cssText='display:grid;grid-template-columns:1fr 1fr 1fr;padding:0 20px 18px';
+  const mkCol=(lk,val,accent)=>{
     const col=document.createElement('div');
-    const cl=document.createElement('p');
-    cl.style.cssText='font-size:9px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;opacity:.7;margin:0 0 2px';
-    cl.textContent=T(labelKey);
-    const cv=document.createElement('p');
-    cv.style.cssText='font-family:"Syne",sans-serif;font-size:1.05rem;font-weight:800;margin:0;line-height:1.1;white-space:nowrap';
-    cv.textContent=val;
-    col.appendChild(cl);col.appendChild(cv);return col;
+    const lbl=document.createElement('p');
+    lbl.style.cssText='font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);margin-bottom:5px';
+    lbl.textContent=T(lk);
+    const vp=document.createElement('p');
+    vp.style.cssText='font-family:"Space Mono",monospace;font-size:15px;font-weight:700;'+(accent?'color:var(--accent)':'color:var(--text)');
+    vp.textContent=san(String(val),20);
+    col.appendChild(lbl);col.appendChild(vp);return col;
   };
-  infoRow.appendChild(mkCol('book.time_lbl',bk.time));
-  infoRow.appendChild(mkCol('book.service_lbl',san(bk.service,18)));
-  infoRow.appendChild(mkCol('book.price_lbl','$'+bk.price));
-  body.appendChild(infoRow);
+  grid.appendChild(mkCol('book.date_lbl',fmtShort(bk.date),false));
+  grid.appendChild(mkCol('book.time_lbl',bk.time,true));
+  grid.appendChild(mkCol('book.price_lbl','$'+bk.price,false));
+  card.appendChild(grid);
 
-  tok.appendChild(body);
-  outer.appendChild(tok);
+  // Thin gold divider
+  const divEl=document.createElement('div');
+  divEl.style.cssText='height:1px;background:rgba(212,175,55,.22);margin:0 20px';
+  card.appendChild(divEl);
 
-  // Three-dot menu — sibling of .tok so dropdown is never clipped
+  // Bottom row — status badge
+  const bot=document.createElement('div');
+  bot.style.cssText='display:flex;align-items:center;padding:12px 20px';
+  const badge=document.createElement('span');badge.className='badge ba';badge.textContent=T('home.upcoming');
+  bot.appendChild(badge);
+  card.appendChild(bot);
+
+  outer.appendChild(card);
+
+  // Three-dot menu — outside .appt-card so overflow:hidden never clips the dropdown
   const menuWrap=document.createElement('div');menuWrap.className='bk-menu-wrap';
-  menuWrap.style.cssText='position:absolute;top:12px;'+(isRTL?'left:12px;right:auto':'right:12px;left:auto')+';z-index:20';
+  menuWrap.style.cssText='position:absolute;top:12px;'+(isRTL?'left:12px;right:auto':'right:12px;left:auto')+';z-index:10';
   const dotBtn=document.createElement('button');
-  dotBtn.style.cssText='background:rgba(36,26,0,.1);border:none;color:rgba(36,26,0,.65);font-size:1.2rem;'
-    +'cursor:pointer;line-height:1;width:32px;height:32px;border-radius:50%;'
-    +'display:flex;align-items:center;justify-content:center;transition:background .15s';
+  dotBtn.style.cssText='background:transparent;border:none;color:var(--accent);font-size:1.3rem;padding:8px;cursor:pointer;line-height:1;width:36px;height:36px;display:flex;align-items:center;justify-content:center';
   dotBtn.textContent='⋮';
   dotBtn.onclick=(e)=>{e.stopPropagation();const m=document.getElementById('bk-menu-'+bk.id);if(m){const wasHidden=m.classList.contains('hidden');closeAllMenus();if(wasHidden)m.classList.remove('hidden');}};
   const menu=document.createElement('div');menu.className='bk-menu hidden';menu.id='bk-menu-'+bk.id;
