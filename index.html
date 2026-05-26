@@ -490,6 +490,86 @@ button:hover:not(:disabled) svg,.back:hover svg{transform:scale(1.14)}
   animation-delay:.22s;
 }
 @keyframes secUnderline{from{width:0;opacity:0}to{width:50px;opacity:1}}
+
+/* ══ APPOINTMENT TICKET ══ */
+@keyframes ticketFlip{
+  from{opacity:0;transform:perspective(700px) rotateX(8deg) translateY(10px)}
+  to{opacity:1;transform:perspective(700px) rotateX(0deg) translateY(0px)}
+}
+.ticket-outer{animation:ticketFlip .4s cubic-bezier(.16,1,.3,1) both;position:relative}
+.ticket{
+  display:flex;
+  border-radius:16px;
+  border:1px solid var(--accent);
+  background:#1a1a1a;
+  background-image:radial-gradient(rgba(212,175,55,.07) 1px,transparent 1px);
+  background-size:14px 14px;
+  position:relative;
+  box-shadow:0 0 0 1px rgba(212,175,55,.06),0 8px 32px rgba(0,0,0,.6),0 0 40px rgba(212,175,55,.06);
+  transition:transform .25s ease,box-shadow .25s ease;
+}
+.ticket:hover{
+  transform:translateY(-3px);
+  box-shadow:0 0 0 1px rgba(212,175,55,.24),0 16px 48px rgba(0,0,0,.75),0 0 60px rgba(212,175,55,.18);
+}
+.ticket-left{
+  flex:1;padding:20px 16px 18px 20px;
+  display:flex;flex-direction:column;gap:7px;
+  min-width:0;position:relative;
+}
+.ticket-perf{
+  flex-shrink:0;align-self:stretch;
+  width:1px;border-left:2px dashed rgba(201,168,76,.45);
+  position:relative;
+}
+.ticket-perf::before,.ticket-perf::after{
+  content:'';position:absolute;
+  width:18px;height:18px;border-radius:50%;
+  background:var(--bg);border:1px solid rgba(212,175,55,.3);
+  left:-9px;z-index:5;
+}
+.ticket-perf::before{top:-9px}
+.ticket-perf::after{bottom:-9px}
+.ticket-right{
+  width:72px;flex-shrink:0;
+  padding:16px 10px;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:space-between;
+}
+.ticket-service{
+  font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;
+  color:var(--accent);text-transform:uppercase;letter-spacing:.02em;
+  line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.ticket-datetime{
+  font-size:1rem;color:var(--text);font-weight:500;letter-spacing:.02em;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.ticket-price{
+  font-family:'Space Mono',monospace;font-size:1.5rem;font-weight:700;
+  color:var(--gold);margin-top:4px;
+}
+.ticket-scissors{
+  font-size:13px;color:rgba(212,175,55,.4);
+  position:absolute;bottom:14px;right:10px;transform:rotate(-90deg);
+}
+.ticket-vip{
+  font-family:'Syne',sans-serif;font-size:.7rem;font-weight:800;
+  color:var(--accent);letter-spacing:.22em;text-transform:uppercase;
+  writing-mode:vertical-rl;transform:rotate(180deg);opacity:.9;
+}
+.ticket-barcode{
+  width:28px;height:46px;
+  background:repeating-linear-gradient(
+    90deg,rgba(212,175,55,.55) 0,rgba(212,175,55,.55) 2px,
+    transparent 2px,transparent 5px);
+  border-radius:2px;opacity:.8;
+}
+.ticket-stamp{
+  font-size:7px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--accent);border:1px solid rgba(212,175,55,.45);
+  padding:3px 5px;border-radius:4px;white-space:nowrap;text-align:center;
+}
 </style>
 </head>
 <body>
@@ -1396,37 +1476,50 @@ function renderNextAppt(){
   }
 
   const bk=upcoming[0];
-  const wrap=document.createElement('div');wrap.className='card card-glow';wrap.style.cssText='padding:20px;position:relative;overflow:hidden';
-  const shine=document.createElement('div');shine.style.cssText='position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:.6';wrap.appendChild(shine);
 
-  const topRow=document.createElement('div');topRow.style.cssText='display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px';
-  const badge=document.createElement('span');badge.className='badge ba';badge.textContent=san(bk.service,30);
+  // ── Ticket outer (menu lives here so it escapes overflow) ──
+  const outer=document.createElement('div');outer.className='ticket-outer';
 
-  // ── Three-dot menu ──
+  // ── Ticket ──
+  const ticket=document.createElement('div');ticket.className='ticket';
+
+  // LEFT section
+  const left=document.createElement('div');left.className='ticket-left';
+  const svcEl=document.createElement('p');svcEl.className='ticket-service';svcEl.textContent=san(bk.service,30).toUpperCase();
+  const dtEl=document.createElement('p');dtEl.className='ticket-datetime';dtEl.textContent=`${fmtShort(bk.date)} · ${bk.time}`;
+  const priceEl=document.createElement('p');priceEl.className='ticket-price';priceEl.textContent=`$${bk.price}`;
+  const scissors=document.createElement('span');scissors.className='ticket-scissors';scissors.textContent='✂';
+  left.appendChild(svcEl);left.appendChild(dtEl);left.appendChild(priceEl);left.appendChild(scissors);
+
+  // Perforated divider
+  const perf=document.createElement('div');perf.className='ticket-perf';
+
+  // RIGHT stub
+  const right=document.createElement('div');right.className='ticket-right';
+  const vip=document.createElement('div');vip.className='ticket-vip';vip.textContent='APPT';
+  const barcode=document.createElement('div');barcode.className='ticket-barcode';
+  const stamp=document.createElement('div');stamp.className='ticket-stamp';stamp.textContent=T('home.upcoming');
+  right.appendChild(vip);right.appendChild(barcode);right.appendChild(stamp);
+
+  ticket.appendChild(left);ticket.appendChild(perf);ticket.appendChild(right);
+
+  // ── Three-dot menu (outside ticket to avoid border-radius overflow) ──
   const menuWrap=document.createElement('div');menuWrap.className='bk-menu-wrap';
+  menuWrap.style.cssText='position:absolute;top:10px;right:10px;z-index:20';
   const dotBtn=document.createElement('button');
-  dotBtn.style.cssText='background:transparent;border:none;color:var(--text2);font-size:22px;padding:2px 6px;cursor:pointer;line-height:1;flex-shrink:0';
+  dotBtn.style.cssText='background:rgba(0,0,0,.55);border:1px solid rgba(212,175,55,.22);color:var(--text2);font-size:18px;padding:2px 7px;cursor:pointer;line-height:1;border-radius:6px';
   dotBtn.textContent='⋮';
   dotBtn.onclick=(e)=>{e.stopPropagation();const m=document.getElementById('bk-menu-'+bk.id);if(m){const wasHidden=m.classList.contains('hidden');closeAllMenus();if(wasHidden)m.classList.remove('hidden');}};
-
   const menu=document.createElement('div');menu.className='bk-menu hidden';menu.id='bk-menu-'+bk.id;
-
   const editItem=document.createElement('button');editItem.className='bk-mi';editItem.textContent=T('booking.edit_date');
   editItem.onclick=(e)=>{e.stopPropagation();closeAllMenus();openEditBooking(bk.id);};
-
   const cancelItem=document.createElement('button');cancelItem.className='bk-mi danger';cancelItem.textContent=T('booking.cancel');
   cancelItem.onclick=(e)=>{e.stopPropagation();closeAllMenus();openCancel(bk.id);};
-
   menu.appendChild(editItem);menu.appendChild(cancelItem);
   menuWrap.appendChild(dotBtn);menuWrap.appendChild(menu);
-  topRow.appendChild(badge);topRow.appendChild(menuWrap);
 
-  const grid=document.createElement('div');grid.style.cssText='display:grid;grid-template-columns:1fr 1fr 1fr;gap:0';
-  const mkCell=(lk,v,c)=>{const d=document.createElement('div');d.style.padding='8px 0';const l=document.createElement('p');l.className='label';l.style.marginBottom='4px';l.textContent=T(lk);const vp=document.createElement('p');vp.className='mono';vp.style.cssText=`font-size:15px;font-weight:700${c?';color:var(--accent)':''}`;vp.textContent=san(String(v),20);d.appendChild(l);d.appendChild(vp);return d;};
-  grid.appendChild(mkCell('book.date_lbl',fmtShort(bk.date)));
-  grid.appendChild(mkCell('book.time_lbl',bk.time,true));
-  grid.appendChild(mkCell('book.price_lbl',`$${bk.price}`));
-  wrap.appendChild(topRow);wrap.appendChild(grid);el.appendChild(wrap);
+  outer.appendChild(ticket);outer.appendChild(menuWrap);
+  el.appendChild(outer);
 }
 
 function renderClientList(){
