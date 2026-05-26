@@ -789,7 +789,7 @@ button:hover:not(:disabled) svg,.back:hover svg{transform:scale(1.14)}
       <div class="div" style="margin:8px 0 0"></div>
       <span class="sec" data-i18n="cal.controls">Quick Controls</span>
       <div style="padding:0 20px;display:flex;flex-direction:column;gap:8px">
-        <button onclick="lockToday()" class="btn-o" style="width:100%;font-size:11px" data-i18n="cal.lock_today">Lock Today</button>
+        <button id="btn-lock-today" onclick="lockToday()" class="btn-o" style="width:100%;font-size:11px" data-i18n="cal.lock_today">Lock Today</button>
         <button onclick="openLockPeriod()" class="btn-o" style="width:100%;font-size:11px;color:var(--accent);border-color:rgba(212,175,55,.35)" data-i18n="cal.lock_period">Lock a Period…</button>
         <button onclick="unlockAll()" class="btn-o" style="width:100%;font-size:11px" data-i18n="cal.unlock_all">Unlock All Days</button>
         <div class="card" style="padding:14px 16px;display:flex;align-items:center;justify-content:space-between">
@@ -1021,6 +1021,40 @@ button:hover:not(:disabled) svg,.back:hover svg{transform:scale(1.14)}
   </div>
 </div>
 
+<!-- Client Profile -->
+<div id="ov-client-profile" class="modal-bg hidden" onclick="if(event.target===this)closeOv('ov-client-profile')">
+  <div class="modal" style="border-radius:16px;border-color:rgba(212,175,55,.55)">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px">
+      <p id="cp-name" style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--accent);letter-spacing:-.02em;line-height:1.2;max-width:calc(100% - 42px)">Client</p>
+      <button onclick="closeOv('ov-client-profile')" style="width:30px;height:30px;background:var(--s3);border:none;color:var(--text2);font-size:18px;border-radius:50%;flex-shrink:0">✕</button>
+    </div>
+    <div style="display:flex;gap:12px;margin-bottom:18px">
+      <div style="flex:1;padding:12px 14px;background:var(--s3);border:1px solid var(--border)">
+        <p class="label" style="margin-bottom:4px">Phone</p>
+        <p id="cp-phone" class="mono" style="font-size:14px;font-weight:700;color:var(--text)">—</p>
+      </div>
+      <div style="flex:1;padding:12px 14px;background:var(--s3);border:1px solid var(--border)">
+        <p class="label" style="margin-bottom:4px">Bookings</p>
+        <p id="cp-count" class="mono" style="font-size:24px;font-weight:700;color:var(--accent)">0</p>
+      </div>
+    </div>
+    <div class="div" style="margin-bottom:14px"></div>
+    <p class="label" style="margin-bottom:10px">Booking History</p>
+    <div id="cp-history" style="display:flex;flex-direction:column;gap:6px;max-height:280px;overflow-y:auto"></div>
+  </div>
+</div>
+
+<!-- Week-day bookings panel -->
+<div id="ov-week-day" class="modal-bg hidden" onclick="if(event.target===this)closeOv('ov-week-day')">
+  <div class="modal" style="border-radius:16px;border-color:rgba(212,175,55,.35)">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+      <p id="wd-title" class="title" style="font-size:18px">Monday</p>
+      <button onclick="closeOv('ov-week-day')" style="width:30px;height:30px;background:var(--s3);border:none;color:var(--text2);font-size:18px;border-radius:50%">✕</button>
+    </div>
+    <div id="wd-list" style="display:flex;flex-direction:column;gap:8px;max-height:60vh;overflow-y:auto"></div>
+  </div>
+</div>
+
 <div id="toast"></div>
 
 <!-- ════════════════════════════════════════════
@@ -1070,7 +1104,7 @@ const LANG={
     'dash.preview_no_bg':'No background photo set.','dash.preview_no_photos':'No studio photos yet.',
     'dash.preview_no_news':'No announcements published yet.',
     'barber.nav.dash':'Dashboard','barber.nav.cal':'Calendar','barber.nav.settings':'Settings',
-    'cal.controls':'Quick Controls','cal.lock_today':'Lock Today',
+    'cal.controls':'Quick Controls','cal.lock_today':'Lock Today','cal.unlock_today':'Unlock Today',
     'cal.lock_period':'Lock a Period…','cal.lock_period_title':'Lock a Period',
     'cal.lock_period_desc':'All days in this range will be blocked.',
     'cal.lock_from':'From','cal.lock_to':'To','cal.lock_confirm':'Lock Period',
@@ -1106,7 +1140,7 @@ const LANG={
     'day.mon':'Mon','day.tue':'Tue','day.wed':'Wed','day.thu':'Thu',
     'day.fri':'Fri','day.sat':'Sat','day.sun':'Sun',
     'toast.saved':'Saved','toast.booking_cancelled':'Booking cancelled',
-    'toast.locked':'Day locked','toast.unlocked':'All days unlocked',
+    'toast.locked':'Day locked','toast.today_unlocked':'Today unlocked','toast.unlocked':'All days unlocked',
     'toast.period_locked':'Period locked','toast.period_unlocked':'Period unlocked',
     'toast.photo_added':'Photo added','toast.member_added':'Team member added',
     'toast.news_published':'Announcement published','toast.news_deleted':'Announcement deleted',
@@ -1151,7 +1185,7 @@ const LANG={
     'dash.preview_no_bg':'לא הוגדרה תמונת רקע.','dash.preview_no_photos':'עדיין לא הועלו תמונות.',
     'dash.preview_no_news':'עדיין לא פורסמו הודעות.',
     'barber.nav.dash':'לוח בקרה','barber.nav.cal':'יומן','barber.nav.settings':'הגדרות',
-    'cal.controls':'פקדים מהירים','cal.lock_today':'נעל היום',
+    'cal.controls':'פקדים מהירים','cal.lock_today':'נעל היום','cal.unlock_today':'שחרר היום',
     'cal.lock_period':'נעל תקופה…','cal.lock_period_title':'נעל תקופה',
     'cal.lock_period_desc':'כל הימים בטווח זה ייחסמו.',
     'cal.lock_from':'מ','cal.lock_to':'עד','cal.lock_confirm':'נעל תקופה',
@@ -1187,7 +1221,7 @@ const LANG={
     'day.mon':'שני','day.tue':'שלישי','day.wed':'רביעי','day.thu':'חמישי',
     'day.fri':'שישי','day.sat':'שבת','day.sun':'ראשון',
     'toast.saved':'נשמר','toast.booking_cancelled':'הזמנה בוטלה',
-    'toast.locked':'יום ננעל','toast.unlocked':'כל הימים שוחררו',
+    'toast.locked':'יום ננעל','toast.today_unlocked':'היום שוחרר','toast.unlocked':'כל הימים שוחררו',
     'toast.period_locked':'תקופה ננעלה','toast.period_unlocked':'תקופה שוחררה',
     'toast.photo_added':'תמונה נוספה','toast.member_added':'חבר צוות נוסף',
     'toast.news_published':'הודעה פורסמה','toast.news_deleted':'הודעה נמחקה',
@@ -1231,8 +1265,8 @@ const LANG={
     'dash.preview_photos':'صور الاستوديو','dash.preview_news':'آخر الإعلانات',
     'dash.preview_no_bg':'لا توجد صورة خلفية.','dash.preview_no_photos':'لا توجد صور بعد.',
     'dash.preview_no_news':'لم يتم نشر أي إعلانات بعد.',
-    'barber.nav.dash':'لوحة التحكم','barber.nav.cal':'التقويم','barber.nav.settings':'الإعدادات',
-    'cal.controls':'تحكم سريع','cal.lock_today':'قفل اليوم',
+    'barber.nav.dash':'لوحة التحكم','barber.nav.cal':'البرنامج','barber.nav.settings':'الإعدادات',
+    'cal.controls':'تحكم سريع','cal.lock_today':'قفل اليوم','cal.unlock_today':'فتح اليوم',
     'cal.lock_period':'قفل فترة…','cal.lock_period_title':'قفل فترة',
     'cal.lock_period_desc':'سيتم حجب جميع أيام هذه الفترة.',
     'cal.lock_from':'من','cal.lock_to':'إلى','cal.lock_confirm':'قفل الفترة',
@@ -1268,7 +1302,7 @@ const LANG={
     'day.mon':'الاثنين','day.tue':'الثلاثاء','day.wed':'الأربعاء','day.thu':'الخميس',
     'day.fri':'الجمعة','day.sat':'السبت','day.sun':'الأحد',
     'toast.saved':'تم الحفظ','toast.booking_cancelled':'تم إلغاء الحجز',
-    'toast.locked':'تم قفل اليوم','toast.unlocked':'تم فتح جميع الأيام',
+    'toast.locked':'تم قفل اليوم','toast.today_unlocked':'تم فتح اليوم','toast.unlocked':'تم فتح جميع الأيام',
     'toast.period_locked':'تم قفل الفترة','toast.period_unlocked':'تم فتح الفترة',
     'toast.photo_added':'تمت إضافة الصورة','toast.member_added':'تمت إضافة عضو الفريق',
     'toast.news_published':'تم نشر الإعلان','toast.news_deleted':'تم حذف الإعلان',
@@ -1351,7 +1385,7 @@ function go(sid){
   const el=document.getElementById(sid);if(!el)return;
   el.classList.remove('hidden');el.classList.remove('anim-in');
   void el.offsetWidth;el.classList.add('anim-in');
-  ['ov-day','ov-booked','ov-cancel','ov-add-svc','ov-lock-period','ov-add-team','ov-edit-bk'].forEach(id=>{
+  ['ov-day','ov-booked','ov-cancel','ov-add-svc','ov-lock-period','ov-add-team','ov-edit-bk','ov-client-profile','ov-week-day'].forEach(id=>{
     const ov=document.getElementById(id);if(ov)ov.classList.add('hidden');
   });
   closeAllMenus();
@@ -1957,7 +1991,10 @@ function buildWeekCal(){
   days.forEach((d,i)=>{
     const ds=dStr(d),isToday=ds===TODAY;
     const col=document.createElement('div');
-    col.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 0;gap:3px';
+    col.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 0;gap:3px;cursor:pointer;transition:background .15s';
+    col.onclick=()=>openWeekDayPanel(ds,d);
+    col.onmouseenter=()=>{col.style.background='rgba(212,175,55,.07)'};
+    col.onmouseleave=()=>{col.style.background=''};
     const nameEl=document.createElement('p');
     nameEl.style.cssText='font-size:8px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text2)';
     nameEl.textContent=T(DAY_KEYS[i]).slice(0,3);
@@ -2015,7 +2052,7 @@ function buildWeekCal(){
       const block=document.createElement('div');block.className='wcal-appt';
       block.style.top=topPx+'px';block.style.height=hPx+'px';
       block.style.animationDelay=(_bi*.05)+'s';_bi++;
-      const nm=document.createElement('p');nm.className='wcal-appt-name';nm.textContent=san(bk.client,22);
+      const nm=document.createElement('p');nm.className='wcal-appt-name';nm.style.cursor='pointer';nm.textContent=san(bk.client,22);nm.onclick=(e)=>{e.stopPropagation();openClientProfile(bk.client);};
       const sv=document.createElement('p');sv.className='wcal-appt-svc';sv.textContent=san(bk.service,28);
       block.appendChild(nm);block.appendChild(sv);col.appendChild(block);
     });
@@ -2058,7 +2095,7 @@ function buildQueue(){
     const card=document.createElement('div');card.className=`appt${isDone?' done':isLive?' live':''}`;card.style.animation=`up .4s ${i*.06}s both`;
     const row=document.createElement('div');row.style.cssText='display:flex;align-items:center;justify-content:space-between';
     const left=document.createElement('div');
-    const nm=document.createElement('p');nm.style.cssText='font-size:13px;font-weight:600';nm.textContent=san(bk.client,40);
+    const nm=document.createElement('p');nm.style.cssText='font-size:13px;font-weight:600;cursor:pointer;color:var(--accent)';nm.textContent=san(bk.client,40);nm.onclick=()=>openClientProfile(bk.client);
     const svc=document.createElement('p');svc.style.cssText='font-size:11px;color:var(--text2);margin-top:2px';svc.textContent=san(bk.service,40);
     left.appendChild(nm);left.appendChild(svc);
     const right=document.createElement('div');right.style.cssText='text-align:right';
@@ -2095,7 +2132,18 @@ function buildBarberCal(){
   const lc=document.getElementById('locked-count');if(lc)lc.textContent=Object.keys(S.lockedDays).length;
 }
 function bCalNav(dir){S.bCalM+=dir;if(S.bCalM>11){S.bCalM=0;S.bCalY++;}if(S.bCalM<0){S.bCalM=11;S.bCalY--;}buildBarberCal()}
-function lockToday(){S.lockedDays[TODAY]=true;buildBarberCal();renderLockedPeriods();toast('toast.locked')}
+function lockToday(){
+  const btn=document.getElementById('btn-lock-today');
+  if(S.lockedDays[TODAY]){
+    delete S.lockedDays[TODAY];
+    if(btn){btn.dataset.i18n='cal.lock_today';btn.textContent=T('cal.lock_today');btn.style.color='';btn.style.borderColor='';}
+    buildBarberCal();renderLockedPeriods();toast('toast.today_unlocked');
+  } else {
+    S.lockedDays[TODAY]=true;
+    if(btn){btn.dataset.i18n='cal.unlock_today';btn.textContent=T('cal.unlock_today');btn.style.color='var(--red)';btn.style.borderColor='rgba(239,68,68,.35)';}
+    buildBarberCal();renderLockedPeriods();toast('toast.locked');
+  }
+}
 function unlockAll(){S.lockedDays={};S.lockedPeriods=[];buildBarberCal();renderLockedPeriods();toast('toast.unlocked')}
 
 // ─── LOCK PERIOD ─────────────────────────────────────────────
@@ -2151,12 +2199,75 @@ function buildDayAppts(ds){
     const card=document.createElement('div');card.className='appt';card.style.marginBottom='6px';
     const row=document.createElement('div');row.style.cssText='display:flex;align-items:center;justify-content:space-between';
     const left=document.createElement('div');
-    const nm=document.createElement('p');nm.style.cssText='font-size:13px;font-weight:600';nm.textContent=san(bk.client,40);
+    const nm=document.createElement('p');nm.style.cssText='font-size:13px;font-weight:600;cursor:pointer;color:var(--accent)';nm.textContent=san(bk.client,40);nm.onclick=()=>openClientProfile(bk.client);
     const svc=document.createElement('p');svc.style.cssText='font-size:11px;color:var(--text2);margin-top:2px';svc.textContent=san(bk.service,40);
     left.appendChild(nm);left.appendChild(svc);
     const t2=document.createElement('p');t2.className='mono';t2.style.cssText='font-size:14px;font-weight:700';t2.textContent=bk.time;
     row.appendChild(left);row.appendChild(t2);card.appendChild(row);el.appendChild(card);
   });
+}
+
+// ─── CLIENT PROFILE POPUP ────────────────────────────────────
+function openClientProfile(clientName){
+  const bks=S.allBks.filter(b=>b.client===clientName).sort((a,b)=>a.date>b.date?-1:a.date<b.date?1:a.time>b.time?-1:1);
+  const sample=bks[0]||{};
+  const nameEl=document.getElementById('cp-name');if(nameEl)nameEl.textContent=san(clientName,60);
+  const phoneEl=document.getElementById('cp-phone');if(phoneEl)phoneEl.textContent=san(sample.phone||'—',30);
+  const countEl=document.getElementById('cp-count');if(countEl)countEl.textContent=bks.length;
+  const hist=document.getElementById('cp-history');if(!hist)return;
+  while(hist.firstChild)hist.removeChild(hist.firstChild);
+  if(!bks.length){const p=document.createElement('p');p.style.cssText='font-size:12px;color:var(--text3);padding:8px 0';p.textContent='No booking history.';hist.appendChild(p);}
+  else{bks.forEach(bk=>{
+    const row=document.createElement('div');
+    row.style.cssText='padding:10px 12px;background:var(--s3);border:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;border-radius:4px';
+    const left=document.createElement('div');
+    const svcP=document.createElement('p');svcP.style.cssText='font-size:12px;font-weight:600;color:var(--text)';svcP.textContent=san(bk.service,30);
+    const dateP=document.createElement('p');dateP.style.cssText='font-size:11px;color:var(--text2);margin-top:2px';dateP.textContent=fmtShort(bk.date);
+    left.appendChild(svcP);left.appendChild(dateP);
+    const timeP=document.createElement('p');timeP.className='mono';timeP.style.cssText='font-size:13px;font-weight:700;color:var(--accent)';timeP.textContent=bk.time;
+    row.appendChild(left);row.appendChild(timeP);hist.appendChild(row);
+  });}
+  document.getElementById('ov-client-profile').classList.remove('hidden');
+}
+
+// ─── WEEK-DAY PANEL ──────────────────────────────────────────
+function openWeekDayPanel(ds,d){
+  const titleEl=document.getElementById('wd-title');
+  if(titleEl){try{titleEl.textContent=d.toLocaleDateString(locale(),{weekday:'long',month:'long',day:'numeric'});}catch{titleEl.textContent=ds;}}
+  const list=document.getElementById('wd-list');if(!list)return;
+  while(list.firstChild)list.removeChild(list.firstChild);
+  const bks=S.allBks.filter(b=>b.date===ds).sort((a,b)=>a.time<b.time?-1:1);
+  if(!bks.length){
+    const p=document.createElement('p');p.style.cssText='font-size:13px;color:var(--text3);padding:12px 0;text-align:center';p.textContent=T('day.no_appts');list.appendChild(p);
+  } else {
+    bks.forEach(bk=>{
+      const card=document.createElement('div');
+      card.style.cssText='padding:14px 16px;background:var(--s3);border:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;border-radius:6px';
+      const left=document.createElement('div');
+      const nm=document.createElement('p');nm.style.cssText='font-size:13px;font-weight:700;color:var(--accent);cursor:pointer';nm.textContent=san(bk.client,40);
+      nm.onclick=()=>{closeOv('ov-week-day');openClientProfile(bk.client);};
+      const svcP=document.createElement('p');svcP.style.cssText='font-size:11px;color:var(--text2);margin-top:3px';svcP.textContent=san(bk.service,35);
+      left.appendChild(nm);left.appendChild(svcP);
+      const right=document.createElement('div');right.style.cssText='text-align:right;flex-shrink:0';
+      const timeP=document.createElement('p');timeP.className='mono';timeP.style.cssText='font-size:14px;font-weight:700;color:var(--text)';timeP.textContent=bk.time;
+      const priceP=document.createElement('p');priceP.style.cssText='font-size:11px;color:var(--text2);margin-top:2px';priceP.textContent='$'+bk.price;
+      right.appendChild(timeP);right.appendChild(priceP);
+      card.appendChild(left);card.appendChild(right);list.appendChild(card);
+    });
+  }
+  document.getElementById('ov-week-day').classList.remove('hidden');
+}
+
+// ─── SYNC LOCK TODAY BUTTON ──────────────────────────────────
+function syncLockTodayBtn(){
+  const btn=document.getElementById('btn-lock-today');if(!btn)return;
+  if(S.lockedDays[TODAY]){
+    btn.dataset.i18n='cal.unlock_today';btn.textContent=T('cal.unlock_today');
+    btn.style.color='var(--red)';btn.style.borderColor='rgba(239,68,68,.35)';
+  } else {
+    btn.dataset.i18n='cal.lock_today';btn.textContent=T('cal.lock_today');
+    btn.style.color='';btn.style.borderColor='';
+  }
 }
 
 // ─── BARBER TABS ─────────────────────────────────────────────
@@ -2174,7 +2285,7 @@ function updateTabIndicator(){
 function bTab(tab){
   ['dash','cal','settings'].forEach(t=>{const p=document.getElementById('bt-'+t),b=document.getElementById('btab-'+t);if(p)p.classList.toggle('hidden',t!==tab);if(b)b.classList.toggle('on',t===tab);});
   const sc=document.getElementById('b-scroll');if(sc)sc.scrollTop=0;
-  if(tab==='dash')renderBarberDash();else if(tab==='cal'){buildBarberCal();renderLockedPeriods();}else if(tab==='settings')loadBarberSettings();
+  if(tab==='dash')renderBarberDash();else if(tab==='cal'){buildBarberCal();renderLockedPeriods();syncLockTodayBtn();}else if(tab==='settings')loadBarberSettings();
   updateTabIndicator();
 }
 
