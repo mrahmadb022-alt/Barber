@@ -491,7 +491,21 @@ button:hover:not(:disabled) svg,.back:hover svg{transform:scale(1.14)}
 }
 @keyframes secUnderline{from{width:0;opacity:0}to{width:50px;opacity:1}}
 
-/* ══ APPOINTMENT TICKET ══ */
+/* ══ CLEAN APPOINTMENT CARD ══ */
+.appt-card{
+  border-radius:16px;background:#1c1c1c;
+  border:1px solid var(--accent);
+  box-shadow:0 0 0 1px rgba(212,175,55,.06),0 8px 32px rgba(0,0,0,.6),0 0 30px rgba(212,175,55,.08);
+  overflow:hidden;
+  animation:ticketFlip .4s cubic-bezier(.16,1,.3,1) both;
+  transition:transform .25s ease,box-shadow .25s ease;
+}
+.appt-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 0 0 1px rgba(212,175,55,.22),0 12px 40px rgba(0,0,0,.72),0 0 50px rgba(212,175,55,.14);
+}
+
+/* ══ APPOINTMENT TICKET (legacy — kept for keyframe) ══ */
 @keyframes ticketFlip{
   from{opacity:0;transform:perspective(700px) rotateX(8deg) translateY(10px)}
   to{opacity:1;transform:perspective(700px) rotateX(0deg) translateY(0px)}
@@ -1477,37 +1491,55 @@ function renderNextAppt(){
 
   const bk=upcoming[0];
 
-  // ── Ticket outer (menu lives here so it escapes overflow) ──
-  const outer=document.createElement('div');outer.className='ticket-outer';
+  // Outer wrapper — keeps card + absolutely-positioned menu together
+  const outer=document.createElement('div');outer.style.cssText='position:relative';
 
-  // ── Ticket ──
-  const ticket=document.createElement('div');ticket.className='ticket';
+  // ── Card (overflow:hidden keeps everything inside the rounded border) ──
+  const card=document.createElement('div');card.className='appt-card';
 
-  // LEFT section
-  const left=document.createElement('div');left.className='ticket-left';
-  const svcEl=document.createElement('p');svcEl.className='ticket-service';svcEl.textContent=san(bk.service,30).toUpperCase();
-  const dtEl=document.createElement('p');dtEl.className='ticket-datetime';dtEl.textContent=`${fmtShort(bk.date)} · ${bk.time}`;
-  const priceEl=document.createElement('p');priceEl.className='ticket-price';priceEl.textContent=`$${bk.price}`;
-  const scissors=document.createElement('span');scissors.className='ticket-scissors';scissors.textContent='✂';
-  left.appendChild(svcEl);left.appendChild(dtEl);left.appendChild(priceEl);left.appendChild(scissors);
+  // Service name row
+  const svcEl=document.createElement('p');
+  svcEl.style.cssText='font-family:"Syne",sans-serif;font-size:1.25rem;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:.04em;padding:18px 52px 14px 20px;line-height:1.2';
+  svcEl.textContent=san(bk.service,30).toUpperCase();
+  card.appendChild(svcEl);
 
-  // Perforated divider
-  const perf=document.createElement('div');perf.className='ticket-perf';
+  // Three info columns
+  const grid=document.createElement('div');
+  grid.style.cssText='display:grid;grid-template-columns:1fr 1fr 1fr;padding:0 20px 18px';
+  const mkCol=(lk,val,accent)=>{
+    const col=document.createElement('div');
+    const lbl=document.createElement('p');
+    lbl.style.cssText='font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);margin-bottom:5px';
+    lbl.textContent=T(lk);
+    const vp=document.createElement('p');
+    vp.style.cssText=`font-family:"Space Mono",monospace;font-size:15px;font-weight:700;${accent?'color:var(--accent)':'color:var(--text)'}`;
+    vp.textContent=san(String(val),20);
+    col.appendChild(lbl);col.appendChild(vp);return col;
+  };
+  grid.appendChild(mkCol('book.date_lbl',fmtShort(bk.date),false));
+  grid.appendChild(mkCol('book.time_lbl',bk.time,true));
+  grid.appendChild(mkCol('book.price_lbl',`$${bk.price}`,false));
+  card.appendChild(grid);
 
-  // RIGHT stub
-  const right=document.createElement('div');right.className='ticket-right';
-  const vip=document.createElement('div');vip.className='ticket-vip';vip.textContent='APPT';
-  const barcode=document.createElement('div');barcode.className='ticket-barcode';
-  const stamp=document.createElement('div');stamp.className='ticket-stamp';stamp.textContent=T('home.upcoming');
-  right.appendChild(vip);right.appendChild(barcode);right.appendChild(stamp);
+  // Gold divider
+  const divEl=document.createElement('div');
+  divEl.style.cssText='height:1px;background:rgba(212,175,55,.22);margin:0 20px';
+  card.appendChild(divEl);
 
-  ticket.appendChild(left);ticket.appendChild(perf);ticket.appendChild(right);
+  // Bottom row: status badge
+  const bot=document.createElement('div');
+  bot.style.cssText='display:flex;align-items:center;padding:12px 20px';
+  const badge=document.createElement('span');badge.className='badge ba';badge.textContent=T('home.upcoming');
+  bot.appendChild(badge);
+  card.appendChild(bot);
 
-  // ── Three-dot menu (outside ticket to avoid border-radius overflow) ──
+  outer.appendChild(card);
+
+  // ── Three-dot menu — sits outside .appt-card so overflow:hidden never clips it ──
   const menuWrap=document.createElement('div');menuWrap.className='bk-menu-wrap';
-  menuWrap.style.cssText='position:absolute;top:10px;right:10px;z-index:20';
+  menuWrap.style.cssText='position:absolute;top:12px;right:14px;z-index:10';
   const dotBtn=document.createElement('button');
-  dotBtn.style.cssText='background:rgba(0,0,0,.55);border:1px solid rgba(212,175,55,.22);color:var(--text2);font-size:18px;padding:2px 7px;cursor:pointer;line-height:1;border-radius:6px';
+  dotBtn.style.cssText='background:transparent;border:none;color:var(--accent);font-size:1.3rem;padding:8px;cursor:pointer;line-height:1;width:36px;height:36px;display:flex;align-items:center;justify-content:center';
   dotBtn.textContent='⋮';
   dotBtn.onclick=(e)=>{e.stopPropagation();const m=document.getElementById('bk-menu-'+bk.id);if(m){const wasHidden=m.classList.contains('hidden');closeAllMenus();if(wasHidden)m.classList.remove('hidden');}};
   const menu=document.createElement('div');menu.className='bk-menu hidden';menu.id='bk-menu-'+bk.id;
@@ -1517,8 +1549,8 @@ function renderNextAppt(){
   cancelItem.onclick=(e)=>{e.stopPropagation();closeAllMenus();openCancel(bk.id);};
   menu.appendChild(editItem);menu.appendChild(cancelItem);
   menuWrap.appendChild(dotBtn);menuWrap.appendChild(menu);
+  outer.appendChild(menuWrap);
 
-  outer.appendChild(ticket);outer.appendChild(menuWrap);
   el.appendChild(outer);
 }
 
