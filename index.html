@@ -119,10 +119,11 @@ button:disabled{opacity:.25;cursor:not-allowed}
 .cdots{display:flex;gap:2px;position:absolute;bottom:3px}
 .cdot{width:3px;height:3px;border-radius:50%;background:var(--accent)}
 
-.slot{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--s2);cursor:pointer;transition:background .12s}
-.slot:hover:not(.slot-busy){background:var(--s2)}
-.slot-sel{background:var(--aD)!important}
-.slot-busy{cursor:default;opacity:.35}
+.slot{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;margin-bottom:8px;border-radius:12px;cursor:pointer;transition:all .2s ease;border:1px solid transparent;border-left-width:3px}
+.slot:not(.slot-busy):not(.slot-sel){background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.15);border-left-color:#22c55e}
+.slot:not(.slot-busy):not(.slot-sel):hover{background:rgba(34,197,94,.16);transform:translateY(-1px);box-shadow:0 4px 16px rgba(34,197,94,.12)}
+.slot-sel{background:rgba(201,168,76,.2)!important;border-color:rgba(212,175,55,.35)!important;border-left-color:var(--accent)!important;box-shadow:inset 0 0 20px rgba(201,168,76,.1)!important}
+.slot-busy{cursor:default;background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.15);border-left-color:#ef4444}
 
 /* barber picker card */
 .barber-card{padding:16px;border:1px solid var(--border);background:var(--s2);cursor:pointer;transition:all .2s cubic-bezier(.16,1,.3,1);display:flex;align-items:center;gap:14px}
@@ -360,8 +361,8 @@ input:focus,select:focus,textarea:focus{
 .tab.on{text-shadow:0 0 10px rgba(212,175,55,.38)}
 .tab{transition:color .2s ease}
 
-/* ── Slot rows ── */
-.slot{transition:background .12s ease}
+/* ── Slot rows ── (full rule in base block above) */
+.slot{transition:all .2s ease}
 
 /* ── Step progress pips ── */
 .step-pip{transition:background .3s ease,box-shadow .3s ease}
@@ -470,8 +471,14 @@ button:hover:not(:disabled) svg,.back:hover svg{transform:scale(1.14)}
 .tab.on svg{transform:scale(1.1)}
 
 /* ── Time slot flash on select ── */
-@keyframes slotFlash{0%{background:rgba(212,175,55,.36)}100%{background:var(--aD)}}
+@keyframes slotFlash{0%{background:rgba(212,175,55,.55)}100%{background:rgba(201,168,76,.2)}}
 .slot-sel{animation:slotFlash .4s ease forwards}
+
+/* ── Slot entrance animation ── */
+@keyframes slotIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* ── Date label on time-picker step ── */
+#s1-date{color:var(--gold)!important;font-size:1.1rem!important}
 
 /* ── Section header gold underline draw-in ── */
 .sec{position:relative}
@@ -1743,18 +1750,43 @@ function buildSlotList(){
   const {open,close}=dayHoursFor(S.selDate);
   const slots=genSlots(open,close,S.sessionDur);
   if(!slots.length){const p=document.createElement('div');p.style.cssText='padding:20px;color:var(--text3);font-size:13px';p.textContent=T('book.no_slots');el.appendChild(p);return;}
-  const isRtl=rtl();
+
+  // Availability summary
+  const busyCount=slots.filter(t=>isBooked(S.selDate,t)).length;
+  const availCount=slots.length-busyCount;
+  const summary=document.createElement('div');
+  summary.style.cssText='padding:6px 20px 12px;font-size:11px;color:var(--text3);letter-spacing:.06em;font-weight:600;text-transform:uppercase;font-family:"Space Mono",monospace';
+  summary.textContent=`${availCount} available · ${busyCount} booked`;
+  el.appendChild(summary);
+
+  const wrap=document.createElement('div');wrap.style.cssText='padding:0 14px 16px';
   slots.forEach((t,i)=>{
     const busy=isBooked(S.selDate,t),sel=S.selTime===t;
-    const row=document.createElement('div');row.className=`slot${busy?' slot-busy':''}${sel?' slot-sel':''}`;row.style.cssText=`animation:up .35s ${i*.04}s both;flex-direction:row`;
-    const timeEl=document.createElement('span');timeEl.className='mono';timeEl.style.cssText=`font-size:15px;font-weight:700;${sel?'color:var(--accent)':''}`;timeEl.textContent=t;
+    const row=document.createElement('div');row.className=`slot${busy?' slot-busy':''}${sel?' slot-sel':''}`;
+    row.style.animation=`slotIn .38s ${i*.02}s both`;
+
+    // Time label — left side
+    const timeEl=document.createElement('span');timeEl.className='mono';
+    timeEl.style.cssText=`font-size:1.25rem;font-weight:600;${sel?'color:var(--accent)':busy?'color:rgba(239,68,68,.65)':'color:var(--text)'}`;
+    timeEl.textContent=t;
+
+    // Right group: action badge + status dot
+    const right=document.createElement('div');right.style.cssText='display:flex;align-items:center;gap:8px';
     const actEl=document.createElement('span');
-    if(busy){actEl.className='badge br';actEl.style.textDecoration='line-through';actEl.textContent=T('book.booked');}
-    else{actEl.className=`badge${sel?' ba':''}`;actEl.style.cssText=sel?'':'border:1px solid var(--border2);background:transparent;color:var(--text2)';actEl.textContent=sel?'✓':T('book.select');}
+    const badgeBase='font-size:.85rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:6px;font-family:"Space Grotesk",sans-serif;border:1px solid ';
+    if(busy){actEl.style.cssText=badgeBase+'rgba(239,68,68,.4);background:rgba(239,68,68,.15);color:#ef4444';actEl.textContent=T('book.booked');}
+    else if(sel){actEl.style.cssText=badgeBase+'rgba(212,175,55,.45);background:rgba(212,175,55,.15);color:var(--accent)';actEl.textContent='✓ '+T('book.select');}
+    else{actEl.style.cssText=badgeBase+'#22c55e;background:rgba(34,197,94,.15);color:#22c55e';actEl.textContent=T('book.select');}
+    const dot=document.createElement('span');
+    dot.style.cssText=`width:7px;height:7px;border-radius:50%;flex-shrink:0;background:${busy?'#ef4444':sel?'var(--accent)':'#22c55e'}`;
+    right.appendChild(actEl);right.appendChild(dot);
+
     if(!busy){row.onclick=()=>{S.selTime=t;buildSlotList();const btn=document.getElementById('btn-s2');if(btn)btn.disabled=false;};}
-    if(isRtl){row.appendChild(timeEl);row.appendChild(actEl);}else{row.appendChild(actEl);row.appendChild(timeEl);}
-    el.appendChild(row);
+    // Time on left, action+dot on right (flex direction handles LTR/RTL)
+    row.appendChild(timeEl);row.appendChild(right);
+    wrap.appendChild(row);
   });
+  el.appendChild(wrap);
 }
 
 // ─── SERVICE PICKER ──────────────────────────────────────────
