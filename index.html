@@ -491,68 +491,54 @@ button:hover:not(:disabled) svg,.back:hover svg{transform:scale(1.14)}
 }
 @keyframes secUnderline{from{width:0;opacity:0}to{width:50px;opacity:1}}
 
-/* ══ TICKET TOKEN ══ */
-.ticket-token-wrap{
+/* ══ TOKEN VOUCHER COMPONENT ══
+   .tok            card shell — gold gradient, rounded, overflow:visible
+   .tok::before/after  22px circles at left/right vertical centre;
+                   background:var(--bg) creates the concave bite illusion
+   .tok-body       flex:1 content area, dark text on gold
+   .tok-divider    optional dashed vertical separator
+   .tok-stub       optional fixed-width right stub
+══════════════════════════════════════════════════════════════════ */
+.tok{
+  position:relative;
   display:flex;align-items:stretch;
-  width:100%;box-sizing:border-box;
   border-radius:10px;
-  background:linear-gradient(135deg,#2a1f00 0%,#1a1400 100%);
-  border:1px solid rgba(212,175,55,.4);
-  overflow:hidden;position:relative;
-  box-shadow:0 0 0 1px rgba(212,175,55,.04),0 8px 28px rgba(0,0,0,.6),0 0 30px rgba(212,175,55,.08);
-  transition:transform .25s ease,box-shadow .25s ease;
+  background:linear-gradient(45deg,#f2ca50,#d4af37);
+  box-shadow:0 16px 48px rgba(212,175,55,.2);
+  overflow:visible;
+  width:100%;box-sizing:border-box;
   animation:ticketFlip .4s cubic-bezier(.16,1,.3,1) both;
+  transition:transform .2s ease,box-shadow .2s ease;
 }
-.ticket-token-wrap:hover{
-  transform:translateY(-2px);
-  box-shadow:0 0 0 1px rgba(212,175,55,.2),0 12px 40px rgba(0,0,0,.72),0 0 50px rgba(212,175,55,.14);
+/* Concave semi-circular notches — circles with page-bg colour overlay the card edges */
+.tok::before,.tok::after{
+  content:'';
+  position:absolute;
+  width:22px;height:22px;border-radius:50%;
+  background:var(--bg,#0a0a0a);
+  top:50%;transform:translateY(-50%);
+  z-index:2;pointer-events:none;
 }
-.ticket-main{
-  flex:1;min-width:0;padding:16px 14px 16px 20px;
-  display:flex;flex-direction:column;justify-content:center;gap:4px;
+.tok::before{left:-11px}
+.tok::after{right:-11px}
+.tok-body{
+  flex:1;min-width:0;
+  padding:22px 48px 22px 22px;
+  color:#241a00;
 }
-[dir=rtl] .ticket-main{padding:16px 20px 16px 14px}
-.ticket-divider-v{
-  width:1px;flex-shrink:0;align-self:stretch;margin:10px 0;
+[dir=rtl] .tok-body{padding:22px 22px 22px 48px}
+.tok-divider{
+  width:1px;flex-shrink:0;align-self:stretch;margin:12px 0;
   background:repeating-linear-gradient(
     to bottom,
-    rgba(212,175,55,.45) 0,rgba(212,175,55,.45) 4px,
+    rgba(36,26,0,.25) 0,rgba(36,26,0,.25) 4px,
     transparent 4px,transparent 8px);
 }
-.ticket-stub{
-  width:62px;flex-shrink:0;padding:14px 8px;
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:space-between;
-}
-.ticket-tok-svc{
-  font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;
-  color:var(--accent);text-transform:uppercase;letter-spacing:.04em;
-  line-height:1.1;margin-bottom:6px;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
-.ticket-tok-date{
-  font-family:'Space Mono',monospace;font-size:11px;font-weight:700;
-  color:var(--text2);letter-spacing:.04em;
-}
-.ticket-tok-time{
-  font-family:'Space Mono',monospace;font-size:13px;font-weight:700;
-  color:var(--accent);letter-spacing:.04em;
-}
-.ticket-tok-price{
-  font-family:'Space Mono',monospace;font-size:1.3rem;font-weight:700;
-  color:var(--gold);margin-top:4px;
-}
-.ticket-stub-label{
-  font-family:'Syne',sans-serif;font-size:8px;font-weight:800;
-  color:var(--accent);letter-spacing:.2em;text-transform:uppercase;
-  writing-mode:vertical-rl;transform:rotate(180deg);opacity:.85;
-}
-.ticket-stub-barcode{
-  width:24px;height:44px;
-  background:repeating-linear-gradient(
-    90deg,rgba(212,175,55,.5) 0,rgba(212,175,55,.5) 2px,
-    transparent 2px,transparent 4px);
-  border-radius:2px;
+.tok-stub{
+  width:56px;flex-shrink:0;
+  padding:22px 8px;
+  display:flex;align-items:center;justify-content:center;
+  color:#241a00;
 }
 
 @keyframes ticketFlip{
@@ -1467,45 +1453,34 @@ function renderNextAppt(){
   const bk=upcoming[0];
   const isRTL=(S.lang==='he'||S.lang==='ar');
 
-  // Outer — position:relative so the absolute menu sits on top without being clipped
+  // Outer wrapper — position:relative anchors the absolute menu button
   const outer=document.createElement('div');
   outer.style.cssText='position:relative';
 
-  // Golden ticket — sharp corners (no border-radius), overflow:hidden keeps perf inside
-  const ticket=document.createElement('div');
-  ticket.style.cssText='display:flex;align-items:stretch;overflow:hidden;'
-    +'background:linear-gradient(45deg,#f2ca50,#d4af37);'
-    +'box-shadow:0 20px 50px rgba(212,175,55,.15);'
-    +'animation:ticketFlip .4s cubic-bezier(.16,1,.3,1) both';
+  // Token card — .tok uses ::before/::after pseudo-elements for notch cutouts
+  const tok=document.createElement('div');
+  tok.className='tok';
 
-  // Perforated left strip — repeating dot column
-  const perf=document.createElement('div');
-  perf.style.cssText='flex-shrink:0;width:10px;min-height:100%;opacity:.3;'
-    +'background-image:radial-gradient(circle,#131313 30%,transparent 30%);'
-    +'background-size:14px 14px;background-position:-7px center';
+  // Content body
+  const body=document.createElement('div');
+  body.className='tok-body';
 
-  // Content area — extra padding on the open side for the three-dot button
-  const content=document.createElement('div');
-  content.style.cssText='flex:1;min-width:0;color:#241a00;position:relative;'
-    +'padding:22px '+(isRTL?'22px 22px 52px':'52px 22px 22px')+';'
-    +(isRTL?'border-right:1px solid rgba(36,26,0,.2)':'border-left:1px solid rgba(36,26,0,.2)');
-
-  // "UPCOMING" micro-label
+  // Micro-label
   const lbl=document.createElement('p');
   lbl.style.cssText='font-size:9px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;opacity:.7;margin:0 0 5px';
   lbl.textContent=T('home.upcoming');
-  content.appendChild(lbl);
+  body.appendChild(lbl);
 
-  // Date — big bold headline like "WEDNESDAY, APR 9"
+  // Date headline
   const dateEl=document.createElement('p');
   dateEl.style.cssText='font-family:"Syne",sans-serif;font-size:1.2rem;font-weight:800;'
-    +'letter-spacing:-.01em;line-height:1.2;margin:0 0 16px;text-transform:uppercase';
+    +'letter-spacing:-.01em;line-height:1.2;margin:0 0 14px;text-transform:uppercase';
   dateEl.textContent=fmtDate(bk.date,{weekday:'long',month:'short',day:'numeric'});
-  content.appendChild(dateEl);
+  body.appendChild(dateEl);
 
-  // Info row — TIME  SERVICE  PRICE
+  // Info columns — TIME / SERVICE / PRICE
   const infoRow=document.createElement('div');
-  infoRow.style.cssText='display:flex;gap:28px;align-items:flex-start;flex-wrap:wrap';
+  infoRow.style.cssText='display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap';
   const mkCol=(labelKey,val)=>{
     const col=document.createElement('div');
     const cl=document.createElement('p');
@@ -1519,14 +1494,12 @@ function renderNextAppt(){
   infoRow.appendChild(mkCol('book.time_lbl',bk.time));
   infoRow.appendChild(mkCol('book.service_lbl',san(bk.service,18)));
   infoRow.appendChild(mkCol('book.price_lbl','$'+bk.price));
-  content.appendChild(infoRow);
+  body.appendChild(infoRow);
 
-  // Assemble ticket (perf on left for LTR, right for RTL)
-  if(isRTL){ticket.appendChild(content);ticket.appendChild(perf);}
-  else{ticket.appendChild(perf);ticket.appendChild(content);}
-  outer.appendChild(ticket);
+  tok.appendChild(body);
+  outer.appendChild(tok);
 
-  // Three-dot menu — sibling of ticket so dropdown is never clipped by overflow:hidden
+  // Three-dot menu — sibling of .tok so dropdown is never clipped
   const menuWrap=document.createElement('div');menuWrap.className='bk-menu-wrap';
   menuWrap.style.cssText='position:absolute;top:12px;'+(isRTL?'left:12px;right:auto':'right:12px;left:auto')+';z-index:20';
   const dotBtn=document.createElement('button');
