@@ -1465,47 +1465,74 @@ function renderNextAppt(){
   }
 
   const bk=upcoming[0];
-  const isRTL=rtl();
+  const isRTL=(S.lang==='he'||S.lang==='ar');
 
-  const outer=document.createElement('div');outer.style.cssText='position:relative';
+  // ── Ticket card (overflow:visible so notch circles show outside border) ──
+  const card=document.createElement('div');
+  card.style.cssText='position:relative;overflow:visible;width:100%;box-sizing:border-box;'
+    +'background:linear-gradient(135deg,#211a00,#1a1500);border:1px solid #c9a84c;border-radius:12px;'
+    +'padding:16px;animation:ticketFlip .4s cubic-bezier(.16,1,.3,1) both;'
+    +'transition:transform .25s ease,box-shadow .25s ease;'
+    +'box-shadow:0 0 0 1px rgba(201,168,76,.06),0 8px 28px rgba(0,0,0,.6),0 0 30px rgba(201,168,76,.08)';
 
-  // ── Ticket Token ──
-  const tokenWrap=document.createElement('div');tokenWrap.className='ticket-token-wrap';
+  // Left notch — dark circle biting into left edge
+  const notchL=document.createElement('div');
+  notchL.style.cssText='position:absolute;left:-10px;top:50%;transform:translateY(-50%);width:20px;height:20px;border-radius:50%;background:#111;z-index:2';
+  card.appendChild(notchL);
 
-  const main=document.createElement('div');main.className='ticket-main';
-  const svcEl=document.createElement('p');svcEl.className='ticket-tok-svc';
+  // Right notch
+  const notchR=document.createElement('div');
+  notchR.style.cssText='position:absolute;right:-10px;top:50%;transform:translateY(-50%);width:20px;height:20px;border-radius:50%;background:#111;z-index:2';
+  card.appendChild(notchR);
+
+  // Content row
+  const row=document.createElement('div');
+  row.style.cssText='display:flex;align-items:stretch;width:100%';
+
+  // Left column — service, date/time, price
+  const leftCol=document.createElement('div');
+  leftCol.style.cssText='flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:5px';
+
+  const svcEl=document.createElement('p');
+  svcEl.style.cssText='font-family:"Syne",sans-serif;font-size:1.1rem;font-weight:800;color:#c9a84c;'
+    +'text-transform:uppercase;letter-spacing:.04em;line-height:1.15;margin:0;'
+    +'white-space:nowrap;overflow:hidden;text-overflow:ellipsis';
   svcEl.textContent=san(bk.service,28).toUpperCase();
-  main.appendChild(svcEl);
+  leftCol.appendChild(svcEl);
 
-  const dtRow=document.createElement('div');dtRow.style.cssText='display:flex;align-items:center;gap:6px;margin-bottom:5px';
-  const dateEl=document.createElement('span');dateEl.className='ticket-tok-date';dateEl.textContent=fmtShort(bk.date);
-  const dot=document.createElement('span');dot.style.cssText='color:rgba(212,175,55,.35);font-size:8px';dot.textContent='◆';
-  const timeEl=document.createElement('span');timeEl.className='ticket-tok-time';timeEl.textContent=bk.time;
-  dtRow.appendChild(dateEl);dtRow.appendChild(dot);dtRow.appendChild(timeEl);
-  main.appendChild(dtRow);
+  const dtEl=document.createElement('p');
+  dtEl.style.cssText='font-size:0.9rem;color:#f5f0e0;margin:0;font-family:"Space Mono",monospace;letter-spacing:.02em';
+  dtEl.textContent=`${fmtShort(bk.date)}  ·  ${bk.time}`;
+  leftCol.appendChild(dtEl);
 
-  const priceEl=document.createElement('p');priceEl.className='ticket-tok-price';
+  const priceEl=document.createElement('p');
+  priceEl.style.cssText='font-family:"Space Mono",monospace;font-size:1.1rem;font-weight:700;color:#f2ca50;margin:0';
   priceEl.textContent=`$${bk.price}`;
-  main.appendChild(priceEl);
+  leftCol.appendChild(priceEl);
 
-  const divV=document.createElement('div');divV.className='ticket-divider-v';
+  // Dashed separator
+  const sep=document.createElement('div');
+  sep.style.cssText='border-left:2px dashed rgba(201,168,76,.5);margin:0 14px;align-self:stretch;flex-shrink:0';
 
-  const stub=document.createElement('div');stub.className='ticket-stub';
-  const stubLabel=document.createElement('span');stubLabel.className='ticket-stub-label';
-  stubLabel.textContent=T('home.upcoming').toUpperCase();
-  const stubBar=document.createElement('div');stubBar.className='ticket-stub-barcode';
-  stub.appendChild(stubLabel);stub.appendChild(stubBar);
+  // Right stub — "APPT" rotated
+  const stub=document.createElement('div');
+  stub.style.cssText='width:52px;flex-shrink:0;display:flex;align-items:center;justify-content:center';
+  const stubTxt=document.createElement('span');
+  stubTxt.style.cssText='font-family:"Syne",sans-serif;font-size:0.65rem;font-weight:800;color:#c9a84c;'
+    +'letter-spacing:.18em;text-transform:uppercase;transform:rotate(-90deg);white-space:nowrap;display:block';
+  stubTxt.textContent='APPT';
+  stub.appendChild(stubTxt);
 
-  tokenWrap.appendChild(main);
-  tokenWrap.appendChild(divV);
-  tokenWrap.appendChild(stub);
-  outer.appendChild(tokenWrap);
+  row.appendChild(leftCol);
+  row.appendChild(sep);
+  row.appendChild(stub);
+  card.appendChild(row);
 
-  // ── Three-dot menu — sibling of tokenWrap so it's never clipped ──
+  // Three-dot menu — inside card (overflow:visible means dropdown won't be clipped)
   const menuWrap=document.createElement('div');menuWrap.className='bk-menu-wrap';
-  menuWrap.style.cssText=`position:absolute;top:10px;${isRTL?'left:10px;right:auto':'right:10px;left:auto'};z-index:20`;
+  menuWrap.style.cssText=`position:absolute;top:10px;${isRTL?'left:12px;right:auto':'right:12px;left:auto'};z-index:10`;
   const dotBtn=document.createElement('button');
-  dotBtn.style.cssText='background:transparent;border:none;color:var(--accent);font-size:1.3rem;padding:8px;cursor:pointer;line-height:1;width:36px;height:36px;display:flex;align-items:center;justify-content:center';
+  dotBtn.style.cssText='background:transparent;border:none;color:#c9a84c;font-size:1.3rem;padding:6px;cursor:pointer;line-height:1;width:32px;height:32px;display:flex;align-items:center;justify-content:center';
   dotBtn.textContent='⋮';
   dotBtn.onclick=(e)=>{e.stopPropagation();const m=document.getElementById('bk-menu-'+bk.id);if(m){const wasHidden=m.classList.contains('hidden');closeAllMenus();if(wasHidden)m.classList.remove('hidden');}};
   const menu=document.createElement('div');menu.className='bk-menu hidden';menu.id='bk-menu-'+bk.id;
@@ -1515,9 +1542,9 @@ function renderNextAppt(){
   cancelItem.onclick=(e)=>{e.stopPropagation();closeAllMenus();openCancel(bk.id);};
   menu.appendChild(editItem);menu.appendChild(cancelItem);
   menuWrap.appendChild(dotBtn);menuWrap.appendChild(menu);
-  outer.appendChild(menuWrap);
+  card.appendChild(menuWrap);
 
-  el.appendChild(outer);
+  el.appendChild(card);
 }
 
 function renderClientList(){
