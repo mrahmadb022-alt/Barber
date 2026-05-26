@@ -22,7 +22,7 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;height:100%;overflow:hidden;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 
-.screen{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;overflow:hidden}
+.screen{position:fixed;inset:0;display:flex;flex-direction:column;overflow:hidden}
 .screen.hidden{display:none!important}
 .screen.anim-in{animation:scrnIn .42s cubic-bezier(.16,1,.3,1) both}
 @keyframes scrnIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
@@ -137,7 +137,7 @@ button:disabled{opacity:.25;cursor:not-allowed}
 
 /* appointment blocks: gold accent bar, live pulsing gold */
 .appt{padding:15px 18px;background:var(--s2);border:1px solid var(--border);position:relative;overflow:hidden;transition:border-color .2s}
-.appt::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--blue)}
+.appt::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--blue);animation:apptBarGlow 3s ease-in-out infinite}
 .appt.done::before{background:var(--text3)}
 .appt.live::before{background:var(--accent);animation:blink 1.2s ease-in-out infinite}
 [dir=rtl] .appt::before{left:auto;right:0}
@@ -241,7 +241,10 @@ button:disabled{opacity:.25;cursor:not-allowed}
 
 /* ── New keyframes ── */
 @keyframes btnShimmer{0%{transform:translateX(-120%) skewX(-8deg)}100%{transform:translateX(120%) skewX(-8deg)}}
-@keyframes statusPulse{0%,100%{transform:scale(1)}55%{transform:scale(1.5);opacity:.7}}
+@keyframes heartbeat{
+  0%{transform:scale(1)}7%{transform:scale(1.6);opacity:.7}14%{transform:scale(1)}
+  21%{transform:scale(1.45);opacity:.8}28%{transform:scale(1)}100%{transform:scale(1)}
+}
 @keyframes logoPulse{
   0%,100%{box-shadow:0 0 0 1px rgba(212,175,55,.18),0 8px 32px rgba(212,175,55,.22)}
   50%{box-shadow:0 0 0 3px rgba(212,175,55,.42),0 10px 56px rgba(212,175,55,.52)}}
@@ -343,7 +346,7 @@ input:focus,select:focus,textarea:focus{
 .card-lift{cursor:pointer}
 
 /* ── Status dot — heartbeat pulse ── */
-.status-dot-pulse{animation:statusPulse 2.2s ease-in-out infinite;transform-origin:center}
+.status-dot-pulse{animation:heartbeat 1.9s ease-in-out infinite;transform-origin:center}
 
 /* ── Client logo frame — ambient glow pulse ── */
 #ch-logo-wrap{
@@ -363,9 +366,127 @@ input:focus,select:focus,textarea:focus{
 /* ── Step progress pips ── */
 .step-pip{transition:background .3s ease,box-shadow .3s ease}
 .step-pip.on{box-shadow:0 0 8px rgba(212,175,55,.3)}
+
+/* ═══════════════════════════════════════════════════
+   ALIVE — ambient, glows, shimmer, motion polish
+   ═══════════════════════════════════════════════════ */
+
+/* ── Ambient breathing background ── */
+#ambient-bg{
+  position:fixed;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 70% 55% at 18% 22%,rgba(212,175,55,.038) 0%,transparent 55%),
+    radial-gradient(ellipse 55% 65% at 82% 75%,rgba(212,175,55,.026) 0%,transparent 55%);
+  animation:ambientDrift 14s ease-in-out infinite alternate;
+}
+@keyframes ambientDrift{
+  from{opacity:.44;transform:scale(1) translate(0,0)}
+  to{opacity:1;transform:scale(1.07) translate(-1%,.5%)}
+}
+
+/* ── Hero background slow zoom ── */
+@keyframes heroZoom{from{transform:scale(1)}to{transform:scale(1.04)}}
+#ch-hero-bg-img,#b-hero-bg-img{
+  animation:heroZoom 12s ease-in-out infinite alternate;
+  transform-origin:center;
+}
+
+/* ── Hero content staggered fade-up ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+#ch-hero-content>*{animation:fadeUp .6s cubic-bezier(.16,1,.3,1) both}
+#ch-hero-content>*:nth-child(1){animation-delay:.06s}
+#ch-hero-content>*:nth-child(2){animation-delay:.16s}
+#ch-hero-content>*:nth-child(3){animation-delay:.26s}
+#ch-hero-content>*:nth-child(4){animation-delay:.36s}
+#ch-hero-content>*:nth-child(5){animation-delay:.46s}
+
+/* ── Gold button continuous glow pulse ── */
+@keyframes goldPulse{
+  0%,100%{box-shadow:0 0 6px rgba(212,175,55,.18),0 2px 10px rgba(212,175,55,.1)}
+  50%    {box-shadow:0 0 24px rgba(212,175,55,.52),0 4px 32px rgba(212,175,55,.24)}
+}
+.btn-p:not(:disabled){animation:goldPulse 3s ease-in-out infinite}
+.btn-p:hover:not(:disabled){
+  animation-play-state:paused;
+  transform:translateY(-3px);
+  box-shadow:0 6px 38px rgba(212,175,55,.68),0 0 80px rgba(212,175,55,.28)!important;
+}
+
+/* ── Ripple ── */
+@keyframes rippleOut{from{transform:scale(0);opacity:.5}to{transform:scale(1);opacity:0}}
+.ripple{
+  position:absolute;border-radius:50%;pointer-events:none;
+  background:rgba(255,255,255,.22);
+  animation:rippleOut .55s ease-out forwards;
+}
+.btn-p .ripple{background:rgba(255,210,60,.3)}
+
+/* ── Card shimmer sweep on hover ── */
+.card{position:relative;overflow:hidden}
+.card::before{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:1;
+  background:linear-gradient(108deg,transparent 38%,rgba(255,255,255,.055) 50%,transparent 62%);
+  transform:translateX(-100%);
+}
+.card:hover::before{animation:cardShimmer .75s ease forwards}
+@keyframes cardShimmer{from{transform:translateX(-100%)}to{transform:translateX(220%)}}
+
+/* ── Appointment bar glow ── */
+@keyframes apptBarGlow{
+  0%,100%{box-shadow:2px 0 6px rgba(242,202,80,.18)}
+  50%    {box-shadow:2px 0 18px rgba(242,202,80,.58),2px 0 32px rgba(242,202,80,.2)}
+}
+
+/* ── Sliding nav tab indicator ── */
+.bot-nav{position:relative}
+#tab-indicator{
+  position:absolute;top:0;left:0;height:2px;width:0;
+  background:linear-gradient(90deg,var(--accent),var(--gold));
+  box-shadow:0 0 10px rgba(212,175,55,.55);
+  transition:transform .32s cubic-bezier(.16,1,.3,1),width .32s cubic-bezier(.16,1,.3,1);
+  pointer-events:none;
+}
+
+/* ── Carousel vignette ── */
+.studio-carousel-item{position:relative}
+.studio-carousel-item::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse at center,transparent 36%,rgba(0,0,0,.7) 100%);
+}
+
+/* ── Weekly calendar appointment block entrance + shimmer ── */
+@keyframes wcalApptIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.wcal-appt{animation:wcalApptIn .4s cubic-bezier(.16,1,.3,1) both;overflow:hidden;position:relative}
+.wcal-appt::after{
+  content:'';position:absolute;inset:0;pointer-events:none;z-index:1;
+  background:linear-gradient(108deg,transparent 38%,rgba(255,255,255,.1) 50%,transparent 62%);
+  transform:translateX(-100%);
+}
+.wcal-appt:hover::after{animation:cardShimmer .6s ease forwards}
+
+/* ── SVG icon hover scale ── */
+button svg,.back svg,.tab svg,.btn-icon svg{transition:transform .2s ease}
+button:hover:not(:disabled) svg,.back:hover svg{transform:scale(1.14)}
+.tab.on svg{transform:scale(1.1)}
+
+/* ── Time slot flash on select ── */
+@keyframes slotFlash{0%{background:rgba(212,175,55,.36)}100%{background:var(--aD)}}
+.slot-sel{animation:slotFlash .4s ease forwards}
+
+/* ── Section header gold underline draw-in ── */
+.sec{position:relative}
+.sec::after{
+  content:'';position:absolute;bottom:4px;left:20px;
+  height:1px;width:0;
+  background:linear-gradient(90deg,var(--accent),transparent);
+  animation:secUnderline .7s ease forwards;
+  animation-delay:.22s;
+}
+@keyframes secUnderline{from{width:0;opacity:0}to{width:50px;opacity:1}}
 </style>
 </head>
 <body>
+<div id="ambient-bg"></div>
 
 <!-- ════════ ROLE SELECTION ════════ -->
 <div id="s-role" class="screen phero">
@@ -411,7 +532,7 @@ input:focus,select:focus,textarea:focus{
       <img id="ch-hero-bg-img" alt="" style="width:100%;height:100%;object-fit:cover;display:none">
     </div>
     <div id="ch-hero-overlay" style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45) 0%,rgba(0,0,0,.8) 100%);display:none"></div>
-    <div style="position:relative;z-index:2;padding:58px 20px 28px;display:flex;flex-direction:column;align-items:center;text-align:center">
+    <div id="ch-hero-content" style="position:relative;z-index:2;padding:58px 20px 28px;display:flex;flex-direction:column;align-items:center;text-align:center">
       <div id="ch-logo-wrap" style="display:none;margin-bottom:14px;width:96px;height:96px;border-radius:12px;border:2px solid var(--accent);overflow:hidden;flex-shrink:0">
         <img id="ch-logo-img" alt="" style="width:100%;height:100%;object-fit:cover;display:block">
       </div>
@@ -735,6 +856,7 @@ input:focus,select:focus,textarea:focus{
     </div>
   </div>
   <div class="bot-nav">
+    <div id="tab-indicator"></div>
     <button class="tab on" onclick="bTab('dash')" id="btab-dash"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg><span data-i18n="barber.nav.dash">Dashboard</span></button>
     <button class="tab" onclick="bTab('cal')" id="btab-cal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span data-i18n="barber.nav.cal">Calendar</span></button>
     <button class="tab" onclick="bTab('settings')" id="btab-settings"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span data-i18n="barber.nav.settings">Settings</span></button>
@@ -1791,6 +1913,7 @@ function buildWeekCal(){
   inner.appendChild(gutter);
 
   // Day columns
+  let _bi=0;
   days.forEach((d,di)=>{
     const ds=dStr(d),isToday=ds===TODAY;
     const col=document.createElement('div');col.className='wcal-col'+(isToday?' wcal-today':'');
@@ -1813,6 +1936,7 @@ function buildWeekCal(){
       const hPx=Math.max(Math.round(durMin/30*SLOT_H)-2,SLOT_H*0.75);
       const block=document.createElement('div');block.className='wcal-appt';
       block.style.top=topPx+'px';block.style.height=hPx+'px';
+      block.style.animationDelay=(_bi*.05)+'s';_bi++;
       const nm=document.createElement('p');nm.className='wcal-appt-name';nm.textContent=san(bk.client,22);
       const sv=document.createElement('p');sv.className='wcal-appt-svc';sv.textContent=san(bk.service,28);
       block.appendChild(nm);block.appendChild(sv);col.appendChild(block);
@@ -1958,10 +2082,22 @@ function buildDayAppts(ds){
 }
 
 // ─── BARBER TABS ─────────────────────────────────────────────
+function updateTabIndicator(){
+  requestAnimationFrame(()=>{
+    const ind=document.getElementById('tab-indicator');
+    const active=document.querySelector('.bot-nav .tab.on');
+    const nav=document.querySelector('.bot-nav');
+    if(!ind||!active||!nav)return;
+    const nr=nav.getBoundingClientRect(),tr=active.getBoundingClientRect();
+    ind.style.width=tr.width+'px';
+    ind.style.transform='translateX('+(tr.left-nr.left)+'px)';
+  });
+}
 function bTab(tab){
   ['dash','cal','settings'].forEach(t=>{const p=document.getElementById('bt-'+t),b=document.getElementById('btab-'+t);if(p)p.classList.toggle('hidden',t!==tab);if(b)b.classList.toggle('on',t===tab);});
   const sc=document.getElementById('b-scroll');if(sc)sc.scrollTop=0;
   if(tab==='dash')renderBarberDash();else if(tab==='cal'){buildBarberCal();renderLockedPeriods();}else if(tab==='settings')loadBarberSettings();
+  updateTabIndicator();
 }
 
 // ─── BARBER SETTINGS ─────────────────────────────────────────
@@ -2101,6 +2237,18 @@ function init(){
   const role=document.getElementById('s-role');if(role)role.classList.remove('hidden');
   // Close menus on outside click
   document.addEventListener('click',()=>closeAllMenus());
+  // Ripple on buttons
+  document.addEventListener('click',function(e){
+    const btn=e.target.closest('.btn-p,.btn-o,.btn-ghost,.btn-danger,.btn-icon');
+    if(!btn||btn.disabled)return;
+    const r=btn.getBoundingClientRect();
+    const sz=Math.max(r.width,r.height)*2;
+    const rp=document.createElement('span');
+    rp.className='ripple';
+    rp.style.cssText=`width:${sz}px;height:${sz}px;left:${e.clientX-r.left-sz/2}px;top:${e.clientY-r.top-sz/2}px`;
+    btn.appendChild(rp);
+    setTimeout(()=>rp.remove(),580);
+  });
   setTimeout(()=>{const cc=document.getElementById('card-client'),cb=document.getElementById('card-barber');if(cc)addTilt(cc);if(cb)addTilt(cb);},900);
 }
 init();
