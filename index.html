@@ -1145,6 +1145,7 @@ const LANG={
     'toast.photo_added':'Photo added','toast.member_added':'Team member added',
     'toast.news_published':'Announcement published','toast.news_deleted':'Announcement deleted',
     'toast.booking_updated':'Booking updated',
+    'appt.done':'DONE',
   },
   he:{
     'role.choose':'מי אתה?','role.badge_client':'לקוח','role.badge_barber':'ספר',
@@ -1226,6 +1227,7 @@ const LANG={
     'toast.photo_added':'תמונה נוספה','toast.member_added':'חבר צוות נוסף',
     'toast.news_published':'הודעה פורסמה','toast.news_deleted':'הודעה נמחקה',
     'toast.booking_updated':'הזמנה עודכנה',
+    'appt.done':'בוצע',
   },
   ar:{
     'role.choose':'من أنت؟','role.badge_client':'عميل','role.badge_barber':'حلاق',
@@ -1307,6 +1309,7 @@ const LANG={
     'toast.photo_added':'تمت إضافة الصورة','toast.member_added':'تمت إضافة عضو الفريق',
     'toast.news_published':'تم نشر الإعلان','toast.news_deleted':'تم حذف الإعلان',
     'toast.booking_updated':'تم تحديث الحجز',
+    'appt.done':'تم',
   }
 };
 
@@ -2102,7 +2105,7 @@ function buildQueue(){
     const time2=document.createElement('p');time2.className='mono';time2.style.cssText='font-size:14px;font-weight:700';time2.textContent=bk.time;
     const status=document.createElement('p');status.style.cssText='font-size:9px;margin-top:2px;font-weight:700;letter-spacing:.08em;text-transform:uppercase';
     if(isLive){status.style.color='var(--accent)';status.textContent='● LIVE';}
-    else if(isDone){status.style.color='var(--text3)';status.textContent='✓ DONE';}
+    else if(isDone){status.style.color='var(--text3)';status.textContent='✓ '+T('appt.done');}
     else{status.style.color='var(--text2)';status.textContent='UPCOMING';}
     right.appendChild(time2);right.appendChild(status);row.appendChild(left);row.appendChild(right);card.appendChild(row);el.appendChild(card);
   });
