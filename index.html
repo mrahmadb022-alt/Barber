@@ -944,7 +944,7 @@ button:hover:not(:disabled) svg,.back:hover svg{transform:scale(1.14)}
     <p class="title" style="margin-bottom:18px" data-i18n="svc.add_title">New Service</p>
     <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:18px">
       <div><p class="label" style="margin-bottom:7px" data-i18n="svc.name">Name</p><input type="text" id="as-name" maxlength="50"></div>
-      <div><p class="label" style="margin-bottom:7px" data-i18n="svc.price">Price ($)</p><input type="number" id="as-price" min="0" max="9999" placeholder="0"></div>
+      <div><p class="label" style="margin-bottom:7px" data-i18n="svc.price">Price (₪)</p><input type="number" id="as-price" min="0" max="9999" placeholder="0"></div>
       <div><p class="label" style="margin-bottom:7px" data-i18n="svc.duration">Duration (min)</p><input type="number" id="as-dur" min="10" max="240" placeholder="30"></div>
     </div>
     <div style="display:flex;gap:8px">
@@ -1086,6 +1086,7 @@ const LANG={
     'book.time_lbl':'Time','book.service_lbl':'Service','book.price_lbl':'Price',
     'book.terms':'By confirming you agree to our cancellation policy. 24-hour notice required.',
     'book.confirm':'Confirm Booking','book.booked':'Booked','book.select':'Select',
+    'book.available':'Available',
     'book.no_slots':'No available slots for this day.',
     'settings.title':'Settings','settings.profile':'Profile','settings.name':'Full Name',
     'settings.phone':'Phone','settings.email':'Email','settings.language':'Language',
@@ -1099,6 +1100,7 @@ const LANG={
     'edit.confirm':'Confirm Change','edit.no_slots':'No available slots for this day',
     'dash.live':'Live','dash.todays_queue':"Today's Queue",'dash.no_appts':'No appointments today.',
     'dash.clients':'Clients Today','dash.remaining':'Available Slots','dash.next':'Next Client',
+    'dash.upcoming':'Upcoming',
     'dash.preview_title':'What Clients See','dash.preview_bg':'Background Photo',
     'dash.preview_photos':'Studio Photos','dash.preview_news':'Latest Announcements',
     'dash.preview_no_bg':'No background photo set.','dash.preview_no_photos':'No studio photos yet.',
@@ -1131,7 +1133,7 @@ const LANG={
     'bsettings.no_members':'No team members yet.',
     'bsettings.news':'News & Announcements','bsettings.publish':'Publish',
     'bsettings.no_news':'No announcements published yet.',
-    'svc.add_title':'New Service','svc.name':'Name','svc.price':'Price ($)',
+    'svc.add_title':'New Service','svc.name':'Name','svc.price':'Price (₪)',
     'svc.duration':'Duration (min)','svc.cancel':'Cancel','svc.add':'Add Service','svc.delete':'Remove',
     'team.add_title':'Add Team Member','team.photo':'Photo','team.choose_photo':'Choose Photo',
     'team.name':'Name','team.bio':'Bio / Note','team.cancel':'Cancel','team.add':'Add Member',
@@ -1168,6 +1170,7 @@ const LANG={
     'book.time_lbl':'שעה','book.service_lbl':'שירות','book.price_lbl':'מחיר',
     'book.terms':'בלחיצה על אישור אתה מסכים למדיניות הביטול.',
     'book.confirm':'אשר הזמנה','book.booked':'תפוס','book.select':'בחר',
+    'book.available':'זמין',
     'book.no_slots':'אין תורים פנויים ביום זה.',
     'settings.title':'הגדרות','settings.profile':'פרופיל','settings.name':'שם מלא',
     'settings.phone':'טלפון','settings.email':'אימייל','settings.language':'שפה',
@@ -1181,6 +1184,7 @@ const LANG={
     'edit.confirm':'אשר שינוי','edit.no_slots':'אין תורים פנויים ביום זה',
     'dash.live':'פעיל','dash.todays_queue':'תורים היום','dash.no_appts':'אין תורים היום.',
     'dash.clients':'לקוחות היום','dash.remaining':'תורים פנויים','dash.next':'הלקוח הבא',
+    'dash.upcoming':'בקרוב',
     'dash.preview_title':'מה רואים הלקוחות','dash.preview_bg':'תמונת רקע',
     'dash.preview_photos':'תמונות סטודיו','dash.preview_news':'הודעות אחרונות',
     'dash.preview_no_bg':'לא הוגדרה תמונת רקע.','dash.preview_no_photos':'עדיין לא הועלו תמונות.',
@@ -1250,6 +1254,7 @@ const LANG={
     'book.time_lbl':'الوقت','book.service_lbl':'الخدمة','book.price_lbl':'السعر',
     'book.terms':'بالتأكيد توافق على سياسة الإلغاء.',
     'book.confirm':'تأكيد الحجز','book.booked':'محجوز','book.select':'اختر',
+    'book.available':'متاح',
     'book.no_slots':'لا تتوفر أوقات في هذا اليوم.',
     'settings.title':'الإعدادات','settings.profile':'الملف الشخصي','settings.name':'الاسم الكامل',
     'settings.phone':'الهاتف','settings.email':'البريد الإلكتروني','settings.language':'اللغة',
@@ -1263,6 +1268,7 @@ const LANG={
     'edit.confirm':'تأكيد التغيير','edit.no_slots':'لا تتوفر أوقات في هذا اليوم',
     'dash.live':'مباشر','dash.todays_queue':'طابور اليوم','dash.no_appts':'لا توجد مواعيد اليوم.',
     'dash.clients':'عملاء اليوم','dash.remaining':'أوقات متاحة','dash.next':'العميل التالي',
+    'dash.upcoming':'قادم',
     'dash.preview_title':'ما يراه العملاء','dash.preview_bg':'صورة الخلفية',
     'dash.preview_photos':'صور الاستوديو','dash.preview_news':'آخر الإعلانات',
     'dash.preview_no_bg':'لا توجد صورة خلفية.','dash.preview_no_photos':'لا توجد صور بعد.',
@@ -1320,7 +1326,7 @@ const TODAY=dStr(new Date());
 const S={
   lang:localStorage.getItem('sov_lang')||'en',
   role:null,
-  clientProfile:{name:'',phone:'',email:''},
+  clientProfile:(()=>{try{return JSON.parse(localStorage.getItem('sov_clientProfile'))||{name:'',phone:'',email:''};}catch{return{name:'',phone:'',email:''};}})(),
   clientBks:[],
   allBks:[
     {id:10,date:TODAY,time:'09:30',service:'Royal Cut',client:'John D.',price:80},
@@ -1356,7 +1362,7 @@ const S={
 // ─── UTILITIES ───────────────────────────────────────────────
 function san(v,max){if(typeof v!=='string')v=String(v);return v.slice(0,max||200).replace(/[<>"'`]/g,'')}
 function T(k){return(LANG[S.lang]&&LANG[S.lang][k])||LANG.en[k]||k}
-function locale(){return S.lang==='he'?'he-IL':S.lang==='ar'?'ar-SA':'en-GB'}
+function locale(){return S.lang==='he'?'he-IL':S.lang==='ar'?'ar-SA-u-ca-gregory':'en-GB'}
 function fmtDate(ds,opts){try{const[y,m,d]=ds.split('-').map(Number);return new Date(y,m-1,d).toLocaleDateString(locale(),opts||{weekday:'long',month:'long',day:'numeric'})}catch{return ds}}
 function fmtShort(ds){return fmtDate(ds,{month:'short',day:'numeric'})}
 function timeToMin(t){const[h,m]=t.split(':').map(Number);return h*60+m}
@@ -1364,6 +1370,7 @@ function minToTime(n){return `${String(Math.floor(n/60)).padStart(2,'0')}:${Stri
 function genSlots(open,close,dur){const s=[];let c=timeToMin(open);const e=timeToMin(close);while(c+dur<=e){s.push(minToTime(c));c+=dur;}return s}
 function dayHoursFor(ds){return S.dayHours[ds]||S.workHours}
 function isBooked(ds,t){return S.allBks.some(b=>b.date===ds&&b.time===t)}
+function saveClientProfileStorage(){try{localStorage.setItem('sov_clientProfile',JSON.stringify(S.clientProfile));}catch{}}
 function rtl(){return document.documentElement.dir==='rtl'}
 function strToDate(s){const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)}
 function eachDayInRange(from,to,cb){const start=strToDate(from),end=strToDate(to);const c=new Date(start);while(c<=end){cb(dStr(c));c.setDate(c.getDate()+1)}}
@@ -1476,7 +1483,7 @@ function renderNextAppt(){
   };
   grid.appendChild(mkCol('book.date_lbl',fmtShort(bk.date),false));
   grid.appendChild(mkCol('book.time_lbl',bk.time,true));
-  grid.appendChild(mkCol('book.price_lbl','$'+bk.price,false));
+  grid.appendChild(mkCol('book.price_lbl',bk.price+' ₪',false));
   card.appendChild(grid);
 
   // Thin gold divider
@@ -1523,7 +1530,7 @@ function renderClientList(){
     const meta=document.createElement('p');meta.style.cssText='font-size:11px;color:var(--text2);margin-top:3px;font-family:\'Space Mono\',monospace';meta.textContent=`${fmtShort(bk.date)}  ·  ${bk.time}`;
     left.appendChild(nm);left.appendChild(meta);
     const right=document.createElement('div');right.style.cssText='display:flex;align-items:center;gap:8px';
-    const price=document.createElement('p');price.style.cssText='font-size:11px;color:var(--gold);font-family:\'Space Mono\',monospace;font-weight:700';price.textContent=`$${bk.price}`;
+    const price=document.createElement('p');price.style.cssText='font-size:11px;color:var(--gold);font-family:\'Space Mono\',monospace;font-weight:700';price.textContent=`${bk.price} ₪`;
     const isPast=bk.date<TODAY;
     const badge_=document.createElement('span');badge_.className=`badge ${isPast?'bb':'ba'}`;badge_.textContent=T(isPast?'home.past':'home.upcoming');
     right.appendChild(price);right.appendChild(badge_);
@@ -1771,10 +1778,16 @@ function goStep(n){
   if(n===1)buildBookCal();
   if(n===2)buildSlotList();
   if(n===3)buildSvcPicker();
-  if(n===4)updateSummary();
+  if(n===4){prefillClientDetails();updateSummary();}
 }
 
 function bookBack(){if(S.bookStep===0)go('s-client-home');else goStep(S.bookStep-1)}
+
+function prefillClientDetails(){
+  const ni=document.getElementById('bk-name'),pi=document.getElementById('bk-phone');
+  if(ni&&!ni.value&&S.clientProfile.name)ni.value=S.clientProfile.name;
+  if(pi&&!pi.value&&S.clientProfile.phone)pi.value=S.clientProfile.phone;
+}
 
 // ─── BARBER PICKER (step 0) ───────────────────────────────────
 function buildBarberPicker(){
@@ -1839,7 +1852,7 @@ function buildSlotList(){
   const availCount=slots.length-busyCount;
   const summary=document.createElement('div');
   summary.style.cssText='padding:6px 20px 12px;font-size:11px;color:var(--text3);letter-spacing:.06em;font-weight:600;text-transform:uppercase;font-family:"Space Mono",monospace';
-  summary.textContent=`${availCount} available · ${busyCount} booked`;
+  summary.textContent=`${availCount} ${T('book.available')} · ${busyCount} ${T('book.booked')}`;
   el.appendChild(summary);
 
   const wrap=document.createElement('div');wrap.style.cssText='padding:0 14px 16px';
@@ -1882,7 +1895,7 @@ function buildSvcPicker(){
     const nm=document.createElement('p');nm.style.cssText='font-size:14px;font-weight:600;margin-bottom:3px';nm.textContent=san(svc.name,40);
     const dur=document.createElement('p');dur.style.cssText='font-size:11px;color:var(--text2)';dur.textContent=`${svc.dur} min`;
     left.appendChild(nm);left.appendChild(dur);
-    const price=document.createElement('p');price.className='mono';price.style.cssText=`font-size:18px;font-weight:700;${S.selSvcId===svc.id?'color:var(--accent)':''}`;price.textContent=`$${svc.price}`;
+    const price=document.createElement('p');price.className='mono';price.style.cssText=`font-size:18px;font-weight:700;${S.selSvcId===svc.id?'color:var(--accent)':''}`;price.textContent=`${svc.price} ₪`;
     card.appendChild(left);card.appendChild(price);el.appendChild(card);
   });
 }
@@ -1899,7 +1912,7 @@ function updateSummary(){
   if(sd)sd.textContent=S.selDate?fmtShort(S.selDate):'—';
   if(st)st.textContent=S.selTime||'—';
   if(ss)ss.textContent=svc?san(svc.name,40):'—';
-  if(sp)sp.textContent=svc?`$${svc.price}`:'—';
+  if(sp)sp.textContent=svc?`${svc.price} ₪`:'—';
 }
 
 function submitBooking(){
@@ -1912,10 +1925,10 @@ function submitBooking(){
   const barberName=getBarberName();
   const bk={id:Date.now(),date:S.selDate,time:S.selTime,service:svc?svc.name:'',client:name,phone,price:svc?svc.price:0,barber:barberName};
   S.clientBks.push(bk);S.allBks.push({...bk});
-  if(!S.clientProfile.name)S.clientProfile.name=name;if(!S.clientProfile.phone)S.clientProfile.phone=phone;
+  if(!S.clientProfile.name)S.clientProfile.name=name;if(!S.clientProfile.phone)S.clientProfile.phone=phone;saveClientProfileStorage();
   const cb=document.getElementById('conf-barber'),cd=document.getElementById('conf-date'),ct=document.getElementById('conf-time'),cs=document.getElementById('conf-svc'),cp=document.getElementById('conf-price');
   if(cb)cb.textContent=barberName;if(cd)cd.textContent=fmtShort(S.selDate);if(ct)ct.textContent=S.selTime;
-  if(cs)cs.textContent=svc?san(svc.name,40):'—';if(cp)cp.textContent=svc?`$${svc.price}`:'—';
+  if(cs)cs.textContent=svc?san(svc.name,40):'—';if(cp)cp.textContent=svc?`${svc.price} ₪`:'—';
   document.getElementById('ov-booked').classList.remove('hidden');
   S.selDate=null;S.selTime=null;S.selSvcId=null;
   if(ni)ni.value='';if(pi)pi.value='';
@@ -1928,7 +1941,7 @@ function loadClientSettings(){
 }
 function saveClientProfile(){
   const n=document.getElementById('cs-name'),p=document.getElementById('cs-phone'),e=document.getElementById('cs-email');
-  S.clientProfile.name=san(n?n.value.trim():'',50);S.clientProfile.phone=san(p?p.value.trim():'',20);S.clientProfile.email=san(e?e.value.trim():'',100);toast('toast.saved');
+  S.clientProfile.name=san(n?n.value.trim():'',50);S.clientProfile.phone=san(p?p.value.trim():'',20);S.clientProfile.email=san(e?e.value.trim():'',100);saveClientProfileStorage();toast('toast.saved');
 }
 
 // ─── BARBER DASHBOARD ────────────────────────────────────────
@@ -2104,9 +2117,9 @@ function buildQueue(){
     const right=document.createElement('div');right.style.cssText='text-align:right';
     const time2=document.createElement('p');time2.className='mono';time2.style.cssText='font-size:14px;font-weight:700';time2.textContent=bk.time;
     const status=document.createElement('p');status.style.cssText='font-size:9px;margin-top:2px;font-weight:700;letter-spacing:.08em;text-transform:uppercase';
-    if(isLive){status.style.color='var(--accent)';status.textContent='● LIVE';}
+    if(isLive){status.style.color='var(--accent)';status.textContent='● '+T('dash.live');}
     else if(isDone){status.style.color='var(--text3)';status.textContent='✓ '+T('appt.done');}
-    else{status.style.color='var(--text2)';status.textContent='UPCOMING';}
+    else{status.style.color='var(--text2)';status.textContent=T('dash.upcoming');}
     right.appendChild(time2);right.appendChild(status);row.appendChild(left);row.appendChild(right);card.appendChild(row);el.appendChild(card);
   });
 }
@@ -2253,7 +2266,7 @@ function openWeekDayPanel(ds,d){
       left.appendChild(nm);left.appendChild(svcP);
       const right=document.createElement('div');right.style.cssText='text-align:right;flex-shrink:0';
       const timeP=document.createElement('p');timeP.className='mono';timeP.style.cssText='font-size:14px;font-weight:700;color:var(--text)';timeP.textContent=bk.time;
-      const priceP=document.createElement('p');priceP.style.cssText='font-size:11px;color:var(--text2);margin-top:2px';priceP.textContent='$'+bk.price;
+      const priceP=document.createElement('p');priceP.style.cssText='font-size:11px;color:var(--text2);margin-top:2px';priceP.textContent=bk.price+' ₪';
       right.appendChild(timeP);right.appendChild(priceP);
       card.appendChild(left);card.appendChild(right);list.appendChild(card);
     });
@@ -2317,7 +2330,7 @@ function renderSvcList(){
     const row=document.createElement('div');row.className='list-row';
     const left=document.createElement('div');
     const nm=document.createElement('p');nm.style.cssText='font-size:13px;font-weight:600';nm.textContent=san(svc.name,40);
-    const meta=document.createElement('p');meta.style.cssText='font-size:11px;color:var(--text2);margin-top:2px;font-family:\'Space Mono\',monospace';meta.textContent=`$${svc.price}  ·  ${svc.dur}min`;
+    const meta=document.createElement('p');meta.style.cssText='font-size:11px;color:var(--text2);margin-top:2px;font-family:\'Space Mono\',monospace';meta.textContent=`${svc.price} ₪  ·  ${svc.dur}min`;
     left.appendChild(nm);left.appendChild(meta);
     const del=document.createElement('button');del.style.cssText='background:var(--rD);border:1px solid rgba(239,68,68,.2);color:var(--red);padding:5px 10px;font-size:9px;letter-spacing:.08em;text-transform:uppercase;font-family:\'Space Grotesk\',sans-serif;font-weight:600;cursor:pointer';
     del.textContent=T('svc.delete');del.onclick=()=>{S.services=S.services.filter(s=>s.id!==svc.id);renderSvcList();};
