@@ -1086,7 +1086,7 @@ const LANG={
     'book.time_lbl':'Time','book.service_lbl':'Service','book.price_lbl':'Price',
     'book.terms':'By confirming you agree to our cancellation policy. 24-hour notice required.',
     'book.confirm':'Confirm Booking','book.booked':'Booked','book.select':'Select',
-    'book.available':'Available',
+    'book.available':'Available','dur.min':'min',
     'book.no_slots':'No available slots for this day.',
     'settings.title':'Settings','settings.profile':'Profile','settings.name':'Full Name',
     'settings.phone':'Phone','settings.email':'Email','settings.language':'Language',
@@ -1170,7 +1170,7 @@ const LANG={
     'book.time_lbl':'שעה','book.service_lbl':'שירות','book.price_lbl':'מחיר',
     'book.terms':'בלחיצה על אישור אתה מסכים למדיניות הביטול.',
     'book.confirm':'אשר הזמנה','book.booked':'תפוס','book.select':'בחר',
-    'book.available':'זמין',
+    'book.available':'זמין','dur.min':'דק\'',
     'book.no_slots':'אין תורים פנויים ביום זה.',
     'settings.title':'הגדרות','settings.profile':'פרופיל','settings.name':'שם מלא',
     'settings.phone':'טלפון','settings.email':'אימייל','settings.language':'שפה',
@@ -1254,7 +1254,7 @@ const LANG={
     'book.time_lbl':'الوقت','book.service_lbl':'الخدمة','book.price_lbl':'السعر',
     'book.terms':'بالتأكيد توافق على سياسة الإلغاء.',
     'book.confirm':'تأكيد الحجز','book.booked':'محجوز','book.select':'اختر',
-    'book.available':'متاح',
+    'book.available':'متاح','dur.min':'د',
     'book.no_slots':'لا تتوفر أوقات في هذا اليوم.',
     'settings.title':'الإعدادات','settings.profile':'الملف الشخصي','settings.name':'الاسم الكامل',
     'settings.phone':'الهاتف','settings.email':'البريد الإلكتروني','settings.language':'اللغة',
@@ -1362,7 +1362,7 @@ const S={
 // ─── UTILITIES ───────────────────────────────────────────────
 function san(v,max){if(typeof v!=='string')v=String(v);return v.slice(0,max||200).replace(/[<>"'`]/g,'')}
 function T(k){return(LANG[S.lang]&&LANG[S.lang][k])||LANG.en[k]||k}
-function locale(){return S.lang==='he'?'he-IL':S.lang==='ar'?'ar-SA-u-ca-gregory':'en-GB'}
+function locale(){return S.lang==='he'?'he-IL':S.lang==='ar'?'ar-SA-u-ca-gregory-nu-latn':'en-GB'}
 function fmtDate(ds,opts){try{const[y,m,d]=ds.split('-').map(Number);return new Date(y,m-1,d).toLocaleDateString(locale(),opts||{weekday:'long',month:'long',day:'numeric'})}catch{return ds}}
 function fmtShort(ds){return fmtDate(ds,{month:'short',day:'numeric'})}
 function timeToMin(t){const[h,m]=t.split(':').map(Number);return h*60+m}
@@ -1893,7 +1893,7 @@ function buildSvcPicker(){
     card.onclick=()=>{S.selSvcId=svc.id;buildSvcPicker();const btn=document.getElementById('btn-s3');if(btn)btn.disabled=false;};
     const left=document.createElement('div');
     const nm=document.createElement('p');nm.style.cssText='font-size:14px;font-weight:600;margin-bottom:3px';nm.textContent=san(svc.name,40);
-    const dur=document.createElement('p');dur.style.cssText='font-size:11px;color:var(--text2)';dur.textContent=`${svc.dur} min`;
+    const dur=document.createElement('p');dur.style.cssText='font-size:11px;color:var(--text2)';dur.textContent=`${svc.dur} ${T('dur.min')}`;
     left.appendChild(nm);left.appendChild(dur);
     const price=document.createElement('p');price.className='mono';price.style.cssText=`font-size:18px;font-weight:700;${S.selSvcId===svc.id?'color:var(--accent)':''}`;price.textContent=`${svc.price} ₪`;
     card.appendChild(left);card.appendChild(price);el.appendChild(card);
@@ -2330,7 +2330,7 @@ function renderSvcList(){
     const row=document.createElement('div');row.className='list-row';
     const left=document.createElement('div');
     const nm=document.createElement('p');nm.style.cssText='font-size:13px;font-weight:600';nm.textContent=san(svc.name,40);
-    const meta=document.createElement('p');meta.style.cssText='font-size:11px;color:var(--text2);margin-top:2px;font-family:\'Space Mono\',monospace';meta.textContent=`${svc.price} ₪  ·  ${svc.dur}min`;
+    const meta=document.createElement('p');meta.style.cssText='font-size:11px;color:var(--text2);margin-top:2px;font-family:\'Space Mono\',monospace';meta.textContent=`${svc.price} ₪  ·  ${svc.dur}${T('dur.min')}`;
     left.appendChild(nm);left.appendChild(meta);
     const del=document.createElement('button');del.style.cssText='background:var(--rD);border:1px solid rgba(239,68,68,.2);color:var(--red);padding:5px 10px;font-size:9px;letter-spacing:.08em;text-transform:uppercase;font-family:\'Space Grotesk\',sans-serif;font-weight:600;cursor:pointer';
     del.textContent=T('svc.delete');del.onclick=()=>{S.services=S.services.filter(s=>s.id!==svc.id);renderSvcList();};
