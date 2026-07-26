@@ -552,6 +552,7 @@ button:hover:not(:disabled) svg,.back:hover svg{transform:scale(1.14)}
       <img id="ch-hero-bg-img" alt="" style="width:100%;height:100%;object-fit:cover;display:none">
     </div>
     <div id="ch-hero-overlay" style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45) 0%,rgba(0,0,0,.8) 100%);display:none"></div>
+    <div id="ch-hero-fade" style="position:absolute;left:0;right:0;bottom:0;height:100px;background:linear-gradient(180deg,rgba(0,0,0,0) 0%,var(--bg) 100%);z-index:1;pointer-events:none"></div>
     <div id="ch-hero-content" style="position:relative;z-index:2;padding:58px 20px 28px;display:flex;flex-direction:column;align-items:center;text-align:center">
       <div id="ch-logo-wrap" style="display:none;margin-bottom:14px;width:96px;height:96px;border-radius:12px;border:2px solid var(--accent);overflow:hidden;flex-shrink:0">
         <img id="ch-logo-img" alt="" style="width:100%;height:100%;object-fit:cover;display:block">
@@ -582,6 +583,13 @@ button:hover:not(:disabled) svg,.back:hover svg{transform:scale(1.14)}
     </div>
     <span class="sec" data-i18n="home.news">News & Updates</span>
     <div id="ch-news-feed" style="padding:0 20px 8px"></div>
+    <div id="ch-contact-section" style="display:none">
+      <span class="sec" data-i18n="home.contact">Contact Us</span>
+      <div style="padding:0 20px 8px;display:flex;flex-direction:column;gap:6px">
+        <p id="ch-contact-address" style="display:none;font-size:13px;color:var(--text2);line-height:1.5"></p>
+        <p id="ch-contact-phone" style="display:none;font-size:13px;color:var(--text2);font-family:'Space Mono',monospace"></p>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -825,6 +833,8 @@ button:hover:not(:disabled) svg,.back:hover svg{transform:scale(1.14)}
         <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:22px">
           <div><p class="label" style="margin-bottom:7px" data-i18n="bsettings.shopname">Shop Name</p><input type="text" id="bs-shop" maxlength="50"></div>
           <div><p class="label" style="margin-bottom:7px" data-i18n="bsettings.barbername">Barber Name</p><input type="text" id="bs-barber" maxlength="50"></div>
+          <div><p class="label" style="margin-bottom:7px" data-i18n="bsettings.address">Address</p><input type="text" id="bs-address" maxlength="100"></div>
+          <div><p class="label" style="margin-bottom:7px" data-i18n="bsettings.phone">Phone</p><input type="tel" id="bs-phone" maxlength="20"></div>
           <button onclick="saveBarberIdentity()" class="btn-p" style="width:100%" data-i18n="settings.save">Save</button>
         </div>
         <div class="div" style="margin-bottom:22px"></div>
@@ -1071,7 +1081,7 @@ const LANG={
     'home.next':'Next Appointment','home.no_next':'No upcoming appointments.',
     'home.cancel_booking':'Cancel','home.no_bookings':'No bookings yet.',
     'home.upcoming':'Upcoming','home.past':'Completed','home.news':'News & Updates',
-    'home.no_news':'No announcements yet.','home.studio_section':'Our Studio',
+    'home.no_news':'No announcements yet.','home.studio_section':'Our Studio','home.contact':'Contact Us',
     'home.open':'Open','home.closed':'Closed',
     'book.barber_title':'Choose a Barber','book.pick_barber':'Choose Your Barber',
     'book.any_barber':'Any Available Barber','book.any_barber_desc':'No preference — first available',
@@ -1122,6 +1132,7 @@ const LANG={
     'bsettings.bg_no_photo':'No background set',
     'bsettings.identity':'Identity',
     'bsettings.shopname':'Shop Name','bsettings.barbername':'Barber Name',
+    'bsettings.address':'Address','bsettings.phone':'Phone',
     'bsettings.hours':'Working Hours','bsettings.open':'Opens','bsettings.close':'Closes',
     'bsettings.save_hours':'Save Hours','bsettings.session':'Session Duration (min)',
     'bsettings.services':'Services','bsettings.add_service':'Add',
@@ -1155,7 +1166,7 @@ const LANG={
     'home.next':'התור הבא','home.no_next':'אין תורים קרובים.',
     'home.cancel_booking':'בטל','home.no_bookings':'אין הזמנות עדיין.',
     'home.upcoming':'קרוב','home.past':'הושלם','home.news':'חדשות ועדכונים',
-    'home.no_news':'אין הודעות עדיין.','home.studio_section':'הסטודיו שלנו',
+    'home.no_news':'אין הודעות עדיין.','home.studio_section':'הסטודיו שלנו','home.contact':'צור קשר',
     'home.open':'פתוח','home.closed':'סגור',
     'book.barber_title':'בחר ספר','book.pick_barber':'בחר את הספר שלך',
     'book.any_barber':'כל ספר זמין','book.any_barber_desc':'ללא העדפה — הזמין הראשון',
@@ -1206,6 +1217,7 @@ const LANG={
     'bsettings.bg_no_photo':'לא הוגדרה תמונת רקע',
     'bsettings.identity':'זהות',
     'bsettings.shopname':'שם המספרה','bsettings.barbername':'שם הספר',
+    'bsettings.address':'כתובת','bsettings.phone':'טלפון',
     'bsettings.hours':'שעות עבודה','bsettings.open':'פתיחה','bsettings.close':'סגירה',
     'bsettings.save_hours':'שמור שעות','bsettings.session':'משך תור (דקות)',
     'bsettings.services':'שירותים','bsettings.add_service':'הוסף',
@@ -1239,7 +1251,7 @@ const LANG={
     'home.next':'الموعد القادم','home.no_next':'لا توجد مواعيد قادمة.',
     'home.cancel_booking':'إلغاء','home.no_bookings':'لا توجد حجوزات بعد.',
     'home.upcoming':'قادم','home.past':'مكتمل','home.news':'أخبار وتحديثات',
-    'home.no_news':'لا توجد إعلانات بعد.','home.studio_section':'استوديونا',
+    'home.no_news':'لا توجد إعلانات بعد.','home.studio_section':'استوديونا','home.contact':'تواصل معنا',
     'home.open':'مفتوح','home.closed':'مغلق',
     'book.barber_title':'اختر الحلاق','book.pick_barber':'اختر حلاقك',
     'book.any_barber':'أي حلاق متاح','book.any_barber_desc':'بلا تفضيل — الأول المتاح',
@@ -1290,6 +1302,7 @@ const LANG={
     'bsettings.bg_no_photo':'لا توجد صورة خلفية',
     'bsettings.identity':'الهوية',
     'bsettings.shopname':'اسم الصالون','bsettings.barbername':'اسم الحلاق',
+    'bsettings.address':'العنوان','bsettings.phone':'الهاتف',
     'bsettings.hours':'ساعات العمل','bsettings.open':'الفتح','bsettings.close':'الإغلاق',
     'bsettings.save_hours':'حفظ الساعات','bsettings.session':'مدة الجلسة (دقيقة)',
     'bsettings.services':'الخدمات','bsettings.add_service':'إضافة',
@@ -1332,6 +1345,7 @@ const S={
     {id:12,date:TODAY,time:'14:30',service:'Beard Trim',client:'Sam K.',price:50},
   ],
   barberName:'Marcus',shopName:'SOVEREIGN',
+  shopAddress:'',shopPhone:'',
   workHours:{open:'09:00',close:'20:00'},
   sessionDur:30,dayHours:{},
   services:[
@@ -1432,7 +1446,19 @@ function animateIntro(){
 // ─── CLIENT HOME ─────────────────────────────────────────────
 function renderClientHome(){
   const g=document.getElementById('ch-greeting');if(g)g.textContent=san(S.clientProfile.name||'Guest',40);
-  renderShopLogo();renderBgPhoto();renderShopStatus();renderNextAppt();renderClientList();renderNewsFeed();renderClientStudioGallery();
+  renderShopLogo();renderBgPhoto();renderShopStatus();renderNextAppt();renderClientList();renderNewsFeed();renderClientStudioGallery();renderClientContact();
+}
+
+// ─── CONTACT (client) ─────────────────────────────────────────
+function renderClientContact(){
+  const section=document.getElementById('ch-contact-section');
+  const addrEl=document.getElementById('ch-contact-address');
+  const phoneEl=document.getElementById('ch-contact-phone');
+  if(!section||!addrEl||!phoneEl)return;
+  const hasAddr=!!S.shopAddress;const hasPhone=!!S.shopPhone;
+  addrEl.style.display=hasAddr?'block':'none';addrEl.textContent=hasAddr?san(S.shopAddress,100):'';
+  phoneEl.style.display=hasPhone?'block':'none';phoneEl.textContent=hasPhone?san(S.shopPhone,20):'';
+  section.style.display=(hasAddr||hasPhone)?'block':'none';
 }
 
 function renderNextAppt(){
@@ -2303,14 +2329,17 @@ function bTab(tab){
 // ─── BARBER SETTINGS ─────────────────────────────────────────
 function loadBarberSettings(){
   const sn=document.getElementById('bs-shop'),bn=document.getElementById('bs-barber'),op=document.getElementById('bs-open'),cl=document.getElementById('bs-close');
+  const ad=document.getElementById('bs-address'),ph=document.getElementById('bs-phone');
   if(sn)sn.value=S.shopName;if(bn)bn.value=S.barberName;if(op)op.value=S.workHours.open;if(cl)cl.value=S.workHours.close;
+  if(ad)ad.value=S.shopAddress;if(ph)ph.value=S.shopPhone;
   buildDurBtns();renderSvcList();renderStudioPhotos();renderTeamMembers();renderNewsBarber();updateLangCards();renderShopLogo();renderBgPhoto();renderBarberPreview();
 }
 function saveBarberIdentity(){
-  const sn=document.getElementById('bs-shop'),bn=document.getElementById('bs-barber');
+  const sn=document.getElementById('bs-shop'),bn=document.getElementById('bs-barber'),ad=document.getElementById('bs-address'),ph=document.getElementById('bs-phone');
   S.shopName=san(sn?sn.value.trim():'SOVEREIGN',50);S.barberName=san(bn?bn.value.trim():'',50);
+  S.shopAddress=san(ad?ad.value.trim():'',100);S.shopPhone=san(ph?ph.value.trim():'',20);
   const sl=document.getElementById('b-shopname-lbl'),bl=document.getElementById('b-barber-lbl');if(sl)sl.textContent=S.shopName;if(bl)bl.textContent=S.barberName;
-  renderShopLogo();toast('toast.saved');
+  renderShopLogo();renderClientContact();toast('toast.saved');
 }
 function saveHours(){const op=document.getElementById('bs-open'),cl=document.getElementById('bs-close');if(op)S.workHours.open=op.value||'09:00';if(cl)S.workHours.close=cl.value||'20:00';toast('toast.saved')}
 function buildDurBtns(){
