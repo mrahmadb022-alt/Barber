@@ -79,6 +79,7 @@ button:disabled{opacity:.25;cursor:not-allowed}
 
 .card{background:var(--s2);border:1px solid var(--border);transition:border-color .2s,transform .25s cubic-bezier(.16,1,.3,1),box-shadow .25s}
 .card-lift:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 14px 44px rgba(0,0,0,.7)}
+.dash-box-icon{width:42px;height:42px;flex-shrink:0;border-radius:50%;background:var(--aD);border:1px solid rgba(212,175,55,.3);display:flex;align-items:center;justify-content:center;color:var(--accent)}
 .card-glow{border-color:rgba(212,175,55,.45)!important;box-shadow:0 0 0 1px rgba(212,175,55,.1),0 0 40px rgba(212,175,55,.1)}
 
 .skel{background:linear-gradient(90deg,var(--s2) 25%,var(--s3) 50%,var(--s2) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite}
@@ -777,8 +778,38 @@ button:hover:not(:disabled) svg,.back:hover svg{transform:scale(1.14)}
         </div>
       </div>
       <div class="div" style="margin-top:0"></div>
-      <span class="sec" data-i18n="dash.preview_title">What Clients See</span>
-      <div id="b-preview" style="padding:0 20px 28px"></div>
+      <div style="padding:16px 20px 28px;display:flex;flex-direction:column;gap:8px">
+        <div class="card card-lift" style="cursor:pointer;display:flex;align-items:center;gap:14px;padding:16px 18px" onclick="openPublicPageSettings()">
+          <div class="dash-box-icon">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </div>
+          <div style="flex:1">
+            <p style="font-size:14px;font-weight:700" data-i18n="dash.box_public">Public Page Settings</p>
+            <p class="label" style="margin-top:2px" data-i18n="dash.box_public_sub">Logo, photos &amp; hours clients see</p>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text3)" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+        <div class="card card-lift" style="cursor:pointer;display:flex;align-items:center;gap:14px;padding:16px 18px" onclick="openStatsPanel()">
+          <div class="dash-box-icon">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          </div>
+          <div style="flex:1">
+            <p style="font-size:14px;font-weight:700" data-i18n="dash.box_stats">Statistics</p>
+            <p class="label" style="margin-top:2px" data-i18n="dash.box_stats_sub">Revenue &amp; customers over time</p>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text3)" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+        <div class="card card-lift" style="cursor:pointer;display:flex;align-items:center;gap:14px;padding:16px 18px" onclick="openNewsPanel()">
+          <div class="dash-box-icon">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l18-5v12L3 13v-2z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>
+          </div>
+          <div style="flex:1">
+            <p style="font-size:14px;font-weight:700" data-i18n="dash.box_news">News</p>
+            <p class="label" style="margin-top:2px" data-i18n="dash.box_news_sub">Publish announcements to clients</p>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text3)" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        </div>
+      </div>
     </div>
 
     <!-- CALENDAR -->
@@ -811,24 +842,6 @@ button:hover:not(:disabled) svg,.back:hover svg{transform:scale(1.14)}
     <div id="bt-settings" class="hidden">
       <div style="padding:52px 20px 44px">
         <p class="title" style="margin-bottom:24px" data-i18n="bsettings.title">Shop Settings</p>
-        <p class="label" style="margin-bottom:10px" data-i18n="bsettings.shop_logo">Shop Logo</p>
-        <div style="display:flex;flex-direction:column;align-items:center;margin-bottom:14px">
-          <div class="logo-preview" id="bs-logo-preview">+</div>
-          <p style="font-size:11px;color:var(--text2);margin-bottom:10px;text-align:center" data-i18n="bsettings.logo_hint">Shown on the client portal &amp; home screen</p>
-          <label class="file-label" style="margin:0;width:100%"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span id="bs-logo-btn-lbl" data-i18n="bsettings.upload_logo">Upload Logo</span><input type="file" accept="image/*" onchange="addShopLogo(event)" style="display:none"></label>
-        </div>
-        <div class="div" style="margin-bottom:22px"></div>
-        <p class="label" style="margin-bottom:10px" data-i18n="bsettings.bg_photo">Background Photo</p>
-        <div style="margin-bottom:22px">
-          <div id="bs-bg-preview" style="width:100%;height:130px;background:var(--s3);border:1px solid var(--border);overflow:hidden;margin-bottom:8px;display:flex;align-items:center;justify-content:center;color:var(--text3);position:relative">
-            <p id="bs-bg-empty-lbl" style="font-size:11px;color:var(--text3)" data-i18n="bsettings.bg_no_photo">No background set</p>
-          </div>
-          <div style="display:flex;gap:8px">
-            <label class="file-label" style="flex:1;margin:0"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span id="bs-bg-btn-lbl" data-i18n="bsettings.upload_bg">Upload Background</span><input type="file" accept="image/*" onchange="addBgPhoto(event)" style="display:none"></label>
-            <button id="bs-bg-remove-btn" onclick="removeBgPhoto()" class="btn-danger" style="display:none;flex-shrink:0;padding:8px 14px;font-size:10px" data-i18n="bsettings.remove_bg">Remove</button>
-          </div>
-        </div>
-        <div class="div" style="margin-bottom:22px"></div>
         <p class="label" style="margin-bottom:10px" data-i18n="bsettings.identity">Identity</p>
         <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:22px">
           <div><p class="label" style="margin-bottom:7px" data-i18n="bsettings.shopname">Shop Name</p><input type="text" id="bs-shop" maxlength="50"></div>
@@ -837,13 +850,6 @@ button:hover:not(:disabled) svg,.back:hover svg{transform:scale(1.14)}
           <div><p class="label" style="margin-bottom:7px" data-i18n="bsettings.phone">Phone</p><input type="tel" id="bs-phone" maxlength="20"></div>
           <button onclick="saveBarberIdentity()" class="btn-p" style="width:100%" data-i18n="settings.save">Save</button>
         </div>
-        <div class="div" style="margin-bottom:22px"></div>
-        <p class="label" style="margin-bottom:10px" data-i18n="bsettings.hours">Working Hours</p>
-        <div style="display:flex;gap:10px;margin-bottom:10px">
-          <div style="flex:1"><p class="label" style="margin-bottom:7px" data-i18n="bsettings.open">Opens</p><input type="time" id="bs-open"></div>
-          <div style="flex:1"><p class="label" style="margin-bottom:7px" data-i18n="bsettings.close">Closes</p><input type="time" id="bs-close"></div>
-        </div>
-        <button onclick="saveHours()" class="btn-o" style="width:100%;margin-bottom:22px" data-i18n="bsettings.save_hours">Save Hours</button>
         <div class="div" style="margin-bottom:22px"></div>
         <p class="label" style="margin-bottom:10px" data-i18n="bsettings.session">Session Duration (min)</p>
         <div style="display:flex;gap:6px;margin-bottom:22px" id="dur-btns"></div>
@@ -854,23 +860,11 @@ button:hover:not(:disabled) svg,.back:hover svg{transform:scale(1.14)}
         </div>
         <div id="b-svc-list" style="margin-bottom:22px"></div>
         <div class="div" style="margin-bottom:22px"></div>
-        <p class="label" style="margin-bottom:10px" data-i18n="bsettings.photos">Studio Photos</p>
-        <div id="studio-grid" class="photo-grid" style="padding:0;margin-bottom:8px"></div>
-        <label class="file-label" style="margin-bottom:22px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span data-i18n="bsettings.add_photo">Add Photos</span><input type="file" accept="image/*" multiple onchange="addStudioPhoto(event)" style="display:none"></label>
-        <div class="div" style="margin-bottom:22px"></div>
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
           <p class="label" data-i18n="bsettings.team">My Barbers Team</p>
           <button onclick="openAddTeamModal()" class="btn-ghost btn-sm"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span data-i18n="bsettings.add_member">Add</span></button>
         </div>
         <div id="team-list" style="margin-bottom:22px"></div>
-        <div class="div" style="margin-bottom:22px"></div>
-        <p class="label" style="margin-bottom:10px" data-i18n="bsettings.news">News & Announcements</p>
-        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px">
-          <div><p class="label" style="margin-bottom:7px" data-i18n="news.title_label">Title</p><input type="text" id="news-title-inp" maxlength="80"></div>
-          <div><p class="label" style="margin-bottom:7px" data-i18n="news.body_label">Message</p><textarea id="news-body-inp" maxlength="400" rows="3"></textarea></div>
-          <button onclick="publishNews()" class="btn-p" style="width:100%"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/></svg><span data-i18n="bsettings.publish">Publish</span></button>
-        </div>
-        <div id="b-news-list" style="margin-bottom:22px"></div>
         <div class="div" style="margin-bottom:22px"></div>
         <p class="label" style="margin-bottom:10px" data-i18n="settings.language">Language</p>
         <div style="display:flex;gap:8px;margin-bottom:22px">
@@ -1063,6 +1057,84 @@ button:hover:not(:disabled) svg,.back:hover svg{transform:scale(1.14)}
   </div>
 </div>
 
+<!-- Public Page Settings (moved from the old dashboard "What Clients See" section) -->
+<div id="ov-public-page" class="modal-bg hidden" onclick="if(event.target===this)closeOv('ov-public-page')">
+  <div class="modal" style="border-radius:16px;border-color:rgba(212,175,55,.35)">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+      <p class="title" style="font-size:18px" data-i18n="dash.box_public">Public Page Settings</p>
+      <button onclick="closeOv('ov-public-page')" style="width:30px;height:30px;background:var(--s3);border:none;color:var(--text2);font-size:18px;border-radius:50%">✕</button>
+    </div>
+    <p class="label" style="margin-bottom:10px" data-i18n="bsettings.shop_logo">Shop Logo</p>
+    <div style="display:flex;flex-direction:column;align-items:center;margin-bottom:14px">
+      <div class="logo-preview" id="bs-logo-preview">+</div>
+      <p style="font-size:11px;color:var(--text2);margin-bottom:10px;text-align:center" data-i18n="bsettings.logo_hint">Shown on the client portal &amp; home screen</p>
+      <label class="file-label" style="margin:0;width:100%"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span id="bs-logo-btn-lbl" data-i18n="bsettings.upload_logo">Upload Logo</span><input type="file" accept="image/*" onchange="addShopLogo(event)" style="display:none"></label>
+    </div>
+    <div class="div" style="margin-bottom:22px"></div>
+    <p class="label" style="margin-bottom:10px" data-i18n="bsettings.bg_photo">Background Photo</p>
+    <div style="margin-bottom:22px">
+      <div id="bs-bg-preview" style="width:100%;height:130px;background:var(--s3);border:1px solid var(--border);overflow:hidden;margin-bottom:8px;display:flex;align-items:center;justify-content:center;color:var(--text3);position:relative">
+        <p id="bs-bg-empty-lbl" style="font-size:11px;color:var(--text3)" data-i18n="bsettings.bg_no_photo">No background set</p>
+      </div>
+      <div style="display:flex;gap:8px">
+        <label class="file-label" style="flex:1;margin:0"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span id="bs-bg-btn-lbl" data-i18n="bsettings.upload_bg">Upload Background</span><input type="file" accept="image/*" onchange="addBgPhoto(event)" style="display:none"></label>
+        <button id="bs-bg-remove-btn" onclick="removeBgPhoto()" class="btn-danger" style="display:none;flex-shrink:0;padding:8px 14px;font-size:10px" data-i18n="bsettings.remove_bg">Remove</button>
+      </div>
+    </div>
+    <div class="div" style="margin-bottom:22px"></div>
+    <p class="label" style="margin-bottom:10px" data-i18n="bsettings.hours">Working Hours</p>
+    <div style="display:flex;gap:10px;margin-bottom:10px">
+      <div style="flex:1"><p class="label" style="margin-bottom:7px" data-i18n="bsettings.open">Opens</p><input type="time" id="bs-open"></div>
+      <div style="flex:1"><p class="label" style="margin-bottom:7px" data-i18n="bsettings.close">Closes</p><input type="time" id="bs-close"></div>
+    </div>
+    <button onclick="saveHours()" class="btn-o" style="width:100%;margin-bottom:22px" data-i18n="bsettings.save_hours">Save Hours</button>
+    <div class="div" style="margin-bottom:22px"></div>
+    <p class="label" style="margin-bottom:10px" data-i18n="bsettings.photos">Studio Photos</p>
+    <div id="studio-grid" class="photo-grid" style="padding:0;margin-bottom:8px"></div>
+    <label class="file-label"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span data-i18n="bsettings.add_photo">Add Photos</span><input type="file" accept="image/*" multiple onchange="addStudioPhoto(event)" style="display:none"></label>
+  </div>
+</div>
+
+<!-- Statistics -->
+<div id="ov-stats" class="modal-bg hidden" onclick="if(event.target===this)closeOv('ov-stats')">
+  <div class="modal" style="border-radius:16px;border-color:rgba(212,175,55,.35)">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+      <p class="title" style="font-size:18px" data-i18n="dash.box_stats">Statistics</p>
+      <button onclick="closeOv('ov-stats')" style="width:30px;height:30px;background:var(--s3);border:none;color:var(--text2);font-size:18px;border-radius:50%">✕</button>
+    </div>
+    <div style="display:flex;gap:12px;margin-bottom:20px">
+      <div style="flex:1;padding:12px 14px;background:var(--s3);border:1px solid var(--border)">
+        <p class="label" style="margin-bottom:4px" data-i18n="stats.total_revenue">Revenue (8w)</p>
+        <p id="stats-total-revenue" class="mono" style="font-size:18px;font-weight:700;color:var(--gold)">—</p>
+      </div>
+      <div style="flex:1;padding:12px 14px;background:var(--s3);border:1px solid var(--border)">
+        <p class="label" style="margin-bottom:4px" data-i18n="stats.total_customers">Customers (8w)</p>
+        <p id="stats-total-customers" class="mono" style="font-size:18px;font-weight:700;color:var(--accent)">—</p>
+      </div>
+    </div>
+    <p class="label" style="margin-bottom:8px" data-i18n="stats.revenue_per_week">Revenue per Week</p>
+    <div id="stats-revenue-chart" style="margin-bottom:20px"></div>
+    <p class="label" style="margin-bottom:8px" data-i18n="stats.customers_per_week">Customers per Week</p>
+    <div id="stats-customers-chart"></div>
+  </div>
+</div>
+
+<!-- News & Announcements (moved from the old dashboard "What Clients See" section) -->
+<div id="ov-news" class="modal-bg hidden" onclick="if(event.target===this)closeOv('ov-news')">
+  <div class="modal" style="border-radius:16px;border-color:rgba(212,175,55,.35)">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+      <p class="title" style="font-size:18px" data-i18n="dash.box_news">News</p>
+      <button onclick="closeOv('ov-news')" style="width:30px;height:30px;background:var(--s3);border:none;color:var(--text2);font-size:18px;border-radius:50%">✕</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:10px">
+      <div><p class="label" style="margin-bottom:7px" data-i18n="news.title_label">Title</p><input type="text" id="news-title-inp" maxlength="80"></div>
+      <div><p class="label" style="margin-bottom:7px" data-i18n="news.body_label">Message</p><textarea id="news-body-inp" maxlength="400" rows="3"></textarea></div>
+      <button onclick="publishNews()" class="btn-p" style="width:100%"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/></svg><span data-i18n="bsettings.publish">Publish</span></button>
+    </div>
+    <div id="b-news-list"></div>
+  </div>
+</div>
+
 <div id="toast"></div>
 
 <!-- ════════════════════════════════════════════
@@ -1109,10 +1181,12 @@ const LANG={
     'dash.live':'Live','dash.todays_queue':"Today's Queue",'dash.no_appts':'No appointments today.',
     'dash.clients':'Clients Today','dash.remaining':'Available Slots','dash.next':'Next Client',
     'dash.upcoming':'Upcoming',
-    'dash.preview_title':'What Clients See','dash.preview_bg':'Background Photo',
-    'dash.preview_photos':'Studio Photos','dash.preview_news':'Latest Announcements',
-    'dash.preview_no_bg':'No background photo set.','dash.preview_no_photos':'No studio photos yet.',
-    'dash.preview_no_news':'No announcements published yet.',
+    'dash.preview_bg':'Background Photo','dash.preview_no_bg':'No background photo set.',
+    'dash.box_public':'Public Page Settings','dash.box_public_sub':'Logo, photos & hours clients see',
+    'dash.box_stats':'Statistics','dash.box_stats_sub':'Revenue & customers over time',
+    'dash.box_news':'News','dash.box_news_sub':'Publish announcements to clients',
+    'stats.total_revenue':'Revenue (8w)','stats.total_customers':'Customers (8w)',
+    'stats.revenue_per_week':'Revenue per Week','stats.customers_per_week':'Customers per Week',
     'barber.nav.dash':'Dashboard','barber.nav.cal':'Calendar','barber.nav.settings':'Settings',
     'cal.controls':'Quick Controls','cal.lock_today':'Lock Today','cal.unlock_today':'Unlock Today',
     'cal.lock_period':'Lock a Period…','cal.lock_period_title':'Lock a Period',
@@ -1194,10 +1268,12 @@ const LANG={
     'dash.live':'פעיל','dash.todays_queue':'תורים היום','dash.no_appts':'אין תורים היום.',
     'dash.clients':'לקוחות היום','dash.remaining':'תורים פנויים','dash.next':'הלקוח הבא',
     'dash.upcoming':'בקרוב',
-    'dash.preview_title':'מה רואים הלקוחות','dash.preview_bg':'תמונת רקע',
-    'dash.preview_photos':'תמונות סטודיו','dash.preview_news':'הודעות אחרונות',
-    'dash.preview_no_bg':'לא הוגדרה תמונת רקע.','dash.preview_no_photos':'עדיין לא הועלו תמונות.',
-    'dash.preview_no_news':'עדיין לא פורסמו הודעות.',
+    'dash.preview_bg':'תמונת רקע','dash.preview_no_bg':'לא הוגדרה תמונת רקע.',
+    'dash.box_public':'הגדרות עמוד ציבורי','dash.box_public_sub':'לוגו, תמונות ושעות שהלקוחות רואים',
+    'dash.box_stats':'סטטיסטיקות','dash.box_stats_sub':'הכנסות ולקוחות לאורך זמן',
+    'dash.box_news':'חדשות','dash.box_news_sub':'פרסם הודעות ללקוחות',
+    'stats.total_revenue':'הכנסות (8 שבועות)','stats.total_customers':'לקוחות (8 שבועות)',
+    'stats.revenue_per_week':'הכנסות לפי שבוע','stats.customers_per_week':'לקוחות לפי שבוע',
     'barber.nav.dash':'לוח בקרה','barber.nav.cal':'יומן','barber.nav.settings':'הגדרות',
     'cal.controls':'פקדים מהירים','cal.lock_today':'נעל היום','cal.unlock_today':'שחרר היום',
     'cal.lock_period':'נעל תקופה…','cal.lock_period_title':'נעל תקופה',
@@ -1279,10 +1355,12 @@ const LANG={
     'dash.live':'مباشر','dash.todays_queue':'طابور اليوم','dash.no_appts':'لا توجد مواعيد اليوم.',
     'dash.clients':'عملاء اليوم','dash.remaining':'أوقات متاحة','dash.next':'العميل التالي',
     'dash.upcoming':'قادم',
-    'dash.preview_title':'ما يراه العملاء','dash.preview_bg':'صورة الخلفية',
-    'dash.preview_photos':'صور الاستوديو','dash.preview_news':'آخر الإعلانات',
-    'dash.preview_no_bg':'لا توجد صورة خلفية.','dash.preview_no_photos':'لا توجد صور بعد.',
-    'dash.preview_no_news':'لم يتم نشر أي إعلانات بعد.',
+    'dash.preview_bg':'صورة الخلفية','dash.preview_no_bg':'لا توجد صورة خلفية.',
+    'dash.box_public':'إعدادات الصفحة العامة','dash.box_public_sub':'الشعار والصور وساعات العمل التي يراها العملاء',
+    'dash.box_stats':'الإحصائيات','dash.box_stats_sub':'الإيرادات والعملاء عبر الزمن',
+    'dash.box_news':'الأخبار','dash.box_news_sub':'انشر إعلانات للعملاء',
+    'stats.total_revenue':'الإيرادات (8 أسابيع)','stats.total_customers':'العملاء (8 أسابيع)',
+    'stats.revenue_per_week':'الإيرادات لكل أسبوع','stats.customers_per_week':'العملاء لكل أسبوع',
     'barber.nav.dash':'لوحة التحكم','barber.nav.cal':'البرنامج','barber.nav.settings':'الإعدادات',
     'cal.controls':'تحكم سريع','cal.lock_today':'قفل اليوم','cal.unlock_today':'فتح اليوم',
     'cal.lock_period':'قفل فترة…','cal.lock_period_title':'قفل فترة',
@@ -1407,7 +1485,7 @@ function go(sid){
   const el=document.getElementById(sid);if(!el)return;
   el.classList.remove('hidden');el.classList.remove('anim-in');
   void el.offsetWidth;el.classList.add('anim-in');
-  ['ov-day','ov-booked','ov-cancel','ov-add-svc','ov-lock-period','ov-add-team','ov-edit-bk','ov-client-profile','ov-week-day'].forEach(id=>{
+  ['ov-day','ov-booked','ov-cancel','ov-add-svc','ov-lock-period','ov-add-team','ov-edit-bk','ov-client-profile','ov-week-day','ov-public-page','ov-stats','ov-news'].forEach(id=>{
     const ov=document.getElementById(id);if(ov)ov.classList.add('hidden');
   });
   closeAllMenus();
@@ -1426,7 +1504,7 @@ function applyLang(lang){
   document.querySelectorAll('[data-i18n]').forEach(el=>{el.textContent=T(el.getAttribute('data-i18n'))});
   updateLangCards();
   if(S.role==='client'){renderClientHome();buildBookCal();buildSlotList();buildBarberPicker();}
-  else if(S.role==='barber'){renderBarberDash();buildWeekCal();buildBarberCal();renderSvcList();renderLockedPeriods();renderStudioPhotos();renderTeamMembers();renderNewsBarber();renderShopLogo();renderBgPhoto();renderBarberPreview();}
+  else if(S.role==='barber'){renderBarberDash();buildWeekCal();buildBarberCal();renderSvcList();renderLockedPeriods();renderStudioPhotos();renderTeamMembers();renderNewsBarber();renderShopLogo();renderBgPhoto();}
 }
 function updateLangCards(){
   ['cl-en','cl-he','cl-ar','bl-en','bl-he','bl-ar'].forEach(id=>{
@@ -1668,10 +1746,10 @@ function renderShopLogo(){
 function addBgPhoto(event){
   const file=event.target.files&&event.target.files[0];if(!file)return;
   const reader=new FileReader();
-  reader.onload=e=>{S.bgPhoto=e.target.result;renderBgPhoto();renderBarberPreview();toast('toast.saved');};
+  reader.onload=e=>{S.bgPhoto=e.target.result;renderBgPhoto();toast('toast.saved');};
   reader.readAsDataURL(file);event.target.value='';
 }
-function removeBgPhoto(){S.bgPhoto=null;renderBgPhoto();renderBarberPreview();toast('toast.saved');}
+function removeBgPhoto(){S.bgPhoto=null;renderBgPhoto();toast('toast.saved');}
 function renderBgPhoto(){
   // Barber settings preview
   const preview=document.getElementById('bs-bg-preview');
@@ -1966,40 +2044,59 @@ function saveClientProfile(){
 }
 
 // ─── BARBER DASHBOARD ────────────────────────────────────────
-function renderBarberPreview(){
-  const el=document.getElementById('b-preview');if(!el)return;while(el.firstChild)el.removeChild(el.firstChild);
-  // Studio photos strip
-  const photosWrap=document.createElement('div');photosWrap.style.cssText='margin-bottom:16px';
-  const photosLbl=document.createElement('p');photosLbl.className='label';photosLbl.style.marginBottom='8px';photosLbl.textContent=T('dash.preview_photos');
-  photosWrap.appendChild(photosLbl);
-  if(S.studioPhotos.length){
-    const strip=document.createElement('div');strip.style.cssText='display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px';
-    S.studioPhotos.forEach(photo=>{
-      const thumb=document.createElement('div');thumb.style.cssText='flex-shrink:0;width:68px;height:68px;overflow:hidden;border:1px solid var(--border)';
-      const img=document.createElement('img');img.alt='';img.src=photo.src;img.style.cssText='width:100%;height:100%;object-fit:cover;display:block';
-      thumb.appendChild(img);strip.appendChild(thumb);
-    });
-    photosWrap.appendChild(strip);
-  } else {
-    const p=document.createElement('p');p.style.cssText='font-size:12px;color:var(--text3)';p.textContent=T('dash.preview_no_photos');photosWrap.appendChild(p);
+// ─── DASHBOARD BOXES: Public Page / Statistics / News ────────
+function openPublicPageSettings(){
+  const op=document.getElementById('bs-open'),cl=document.getElementById('bs-close');
+  if(op)op.value=S.workHours.open;if(cl)cl.value=S.workHours.close;
+  renderShopLogo();renderBgPhoto();renderStudioPhotos();
+  document.getElementById('ov-public-page').classList.remove('hidden');
+}
+function openNewsPanel(){
+  renderNewsBarber();
+  document.getElementById('ov-news').classList.remove('hidden');
+}
+function weekStartStr(ds){
+  const d=strToDate(ds);const day=(d.getDay()+6)%7;d.setDate(d.getDate()-day);return dStr(d);
+}
+function openStatsPanel(){
+  const curMonday=strToDate(weekStartStr(TODAY));
+  const weeks=[];
+  for(let i=7;i>=0;i--){
+    const start=new Date(curMonday);start.setDate(start.getDate()-i*7);
+    const end=new Date(start);end.setDate(end.getDate()+6);
+    const startS=dStr(start),endS=dStr(end);
+    const bks=S.allBks.filter(b=>b.date>=startS&&b.date<=endS);
+    const revenue=bks.reduce((sum,b)=>sum+(b.price||0),0);
+    const customers=new Set(bks.map(b=>b.client)).size;
+    weeks.push({label:`${start.getDate()}/${start.getMonth()+1}`,revenue,customers});
   }
-  el.appendChild(photosWrap);
-  // News items
-  const newsWrap=document.createElement('div');
-  const newsLbl=document.createElement('p');newsLbl.className='label';newsLbl.style.marginBottom='8px';newsLbl.textContent=T('dash.preview_news');
-  newsWrap.appendChild(newsLbl);
-  if(S.news.length){
-    S.news.slice(0,3).forEach(n=>{
-      const item=document.createElement('div');item.style.cssText='padding:10px 12px;background:var(--s2);border:1px solid var(--border);margin-bottom:6px;border-left:3px solid var(--accent)';
-      const title=document.createElement('p');title.style.cssText='font-size:12px;font-weight:700;margin-bottom:3px';title.textContent=san(n.title,80);
-      const body=document.createElement('p');body.style.cssText='font-size:11px;color:var(--text2);line-height:1.5;margin-bottom:4px';body.textContent=san(n.body,200);
-      const date=document.createElement('p');date.style.cssText='font-size:10px;color:var(--text3);font-family:\'Space Mono\',monospace';date.textContent=fmtNewsDate(n.ts);
-      item.appendChild(title);item.appendChild(body);item.appendChild(date);newsWrap.appendChild(item);
-    });
-  } else {
-    const p=document.createElement('p');p.style.cssText='font-size:12px;color:var(--text3)';p.textContent=T('dash.preview_no_news');newsWrap.appendChild(p);
-  }
-  el.appendChild(newsWrap);
+  const allStart=weeks.length?dStr((()=>{const d=new Date(curMonday);d.setDate(d.getDate()-7*7);return d;})()):TODAY;
+  const overallBks=S.allBks.filter(b=>b.date>=allStart);
+  const totalRev=document.getElementById('stats-total-revenue');if(totalRev)totalRev.textContent=overallBks.reduce((s,b)=>s+(b.price||0),0)+' ₪';
+  const totalCust=document.getElementById('stats-total-customers');if(totalCust)totalCust.textContent=new Set(overallBks.map(b=>b.client)).size;
+  renderMiniBarChart('stats-revenue-chart',weeks.map(w=>w.revenue),weeks.map(w=>w.label),'var(--gold)');
+  renderMiniBarChart('stats-customers-chart',weeks.map(w=>w.customers),weeks.map(w=>w.label),'var(--accent)');
+  document.getElementById('ov-stats').classList.remove('hidden');
+}
+function renderMiniBarChart(elId,values,labels,color){
+  const el=document.getElementById(elId);if(!el)return;while(el.firstChild)el.removeChild(el.firstChild);
+  const max=Math.max(1,...values);
+  const W=300,H=100,gap=6,barW=(W-gap*(values.length-1))/values.length;
+  const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.setAttribute('viewBox',`0 0 ${W} ${H+18}`);svg.setAttribute('width','100%');svg.style.display='block';
+  values.forEach((v,i)=>{
+    const h=Math.max(3,(v/max)*H);
+    const x=i*(barW+gap);
+    const rect=document.createElementNS('http://www.w3.org/2000/svg','rect');
+    rect.setAttribute('x',x);rect.setAttribute('y',H-h);rect.setAttribute('width',barW);rect.setAttribute('height',h);rect.setAttribute('rx',2);
+    rect.style.fill=color;
+    svg.appendChild(rect);
+    const txt=document.createElementNS('http://www.w3.org/2000/svg','text');
+    txt.setAttribute('x',x+barW/2);txt.setAttribute('y',H+14);txt.setAttribute('text-anchor','middle');txt.setAttribute('font-size','8');
+    txt.style.fill='var(--text3)';txt.textContent=labels[i];
+    svg.appendChild(txt);
+  });
+  el.appendChild(svg);
 }
 
 // ─── WEEKLY CALENDAR ─────────────────────────────────────────
@@ -2103,7 +2200,7 @@ function renderBarberDash(){
   if(sn)sn.textContent=san(S.shopName,50);if(bn)bn.textContent=san(S.barberName,50);
   const dl=document.getElementById('b-date-lbl');
   if(dl){try{dl.textContent=new Date().toLocaleDateString(locale(),{weekday:'long',month:'long',day:'numeric'});}catch{dl.textContent=TODAY;}}
-  buildDashStats();buildQueue();renderBgPhoto();buildWeekCal();renderBarberPreview();
+  buildDashStats();buildQueue();renderBgPhoto();buildWeekCal();
 }
 
 function buildDashStats(){
@@ -2332,7 +2429,7 @@ function loadBarberSettings(){
   const ad=document.getElementById('bs-address'),ph=document.getElementById('bs-phone');
   if(sn)sn.value=S.shopName;if(bn)bn.value=S.barberName;if(op)op.value=S.workHours.open;if(cl)cl.value=S.workHours.close;
   if(ad)ad.value=S.shopAddress;if(ph)ph.value=S.shopPhone;
-  buildDurBtns();renderSvcList();renderStudioPhotos();renderTeamMembers();renderNewsBarber();updateLangCards();renderShopLogo();renderBgPhoto();renderBarberPreview();
+  buildDurBtns();renderSvcList();renderStudioPhotos();renderTeamMembers();renderNewsBarber();updateLangCards();renderShopLogo();renderBgPhoto();
 }
 function saveBarberIdentity(){
   const sn=document.getElementById('bs-shop'),bn=document.getElementById('bs-barber'),ad=document.getElementById('bs-address'),ph=document.getElementById('bs-phone');
@@ -2375,7 +2472,7 @@ function addStudioPhoto(event){
     const reader=new FileReader();
     reader.onload=e=>{
       S.studioPhotos.push({id:Date.now()+Math.random(),src:e.target.result});
-      renderStudioPhotos();renderClientStudioGallery();renderBgPhoto();renderBarberPreview();
+      renderStudioPhotos();renderClientStudioGallery();renderBgPhoto();
       toast('toast.photo_added');
     };
     reader.readAsDataURL(file);
@@ -2384,7 +2481,7 @@ function addStudioPhoto(event){
 }
 function removeStudioPhoto(id){
   S.studioPhotos=S.studioPhotos.filter(p=>p.id!==id);
-  renderStudioPhotos();renderClientStudioGallery();renderBgPhoto();renderBarberPreview();
+  renderStudioPhotos();renderClientStudioGallery();renderBgPhoto();
 }
 function renderStudioPhotos(){
   const el=document.getElementById('studio-grid');if(!el)return;while(el.firstChild)el.removeChild(el.firstChild);
@@ -2433,9 +2530,9 @@ function publishNews(){
   const title=san(ti?ti.value.trim():'',80);if(!title){if(ti){ti.style.borderColor='var(--red)';ti.focus();}return;}
   if(ti)ti.style.borderColor='';
   S.news.unshift({id:Date.now(),title,body:san(bi?bi.value.trim():'',400),ts:Date.now()});
-  if(ti)ti.value='';if(bi)bi.value='';renderNewsBarber();renderBarberPreview();toast('toast.news_published');
+  if(ti)ti.value='';if(bi)bi.value='';renderNewsBarber();toast('toast.news_published');
 }
-function deleteNews(id){S.news=S.news.filter(n=>n.id!==id);renderNewsBarber();renderBarberPreview();toast('toast.news_deleted')}
+function deleteNews(id){S.news=S.news.filter(n=>n.id!==id);renderNewsBarber();toast('toast.news_deleted')}
 function renderNewsBarber(){
   const el=document.getElementById('b-news-list');if(!el)return;while(el.firstChild)el.removeChild(el.firstChild);
   if(!S.news.length){const p=document.createElement('p');p.style.cssText='font-size:12px;color:var(--text3);margin-bottom:8px';p.textContent=T('bsettings.no_news');el.appendChild(p);return;}
