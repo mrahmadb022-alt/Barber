@@ -9,6 +9,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
+/* ═══════════════════════════════════════════════════
+   RESET & BASE — palette, global reset, screen shell
+   ═══════════════════════════════════════════════════ */
 /* ── PALETTE: Rich Gold · Deep Black · Luxury ── */
 :root{
   --bg:#0a0a0a;--s1:#111111;--s2:#1a1a1a;--s3:#222222;--s4:#2a2a2a;
@@ -31,6 +34,9 @@ html,body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',san
 .scroll::-webkit-scrollbar{width:3px}
 .scroll::-webkit-scrollbar-thumb{background:var(--s4)}
 
+/* ═══════════════════════════════════════════════════
+   TYPOGRAPHY & LAYOUT HELPERS
+   ═══════════════════════════════════════════════════ */
 .hero{font-family:'Syne',sans-serif;font-weight:800;letter-spacing:-.03em;line-height:.9}
 .title{font-family:'Syne',sans-serif;font-weight:700;font-size:22px;letter-spacing:-.02em}
 .label{font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--text2)}
@@ -45,6 +51,9 @@ html,body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',san
 @keyframes pop{from{opacity:0;transform:scale(.88)}to{opacity:1;transform:none}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
+/* ═══════════════════════════════════════════════════
+   FORMS & BUTTONS
+   ═══════════════════════════════════════════════════ */
 input,select,textarea{
   background:var(--s2);border:1px solid var(--border);color:var(--text);
   font-family:'Space Grotesk',sans-serif;font-size:14px;padding:13px 14px;
@@ -77,6 +86,9 @@ button:disabled{opacity:.25;cursor:not-allowed}
 .btn-icon{width:38px;height:38px;background:var(--s2);border:1px solid var(--border);padding:0}
 .btn-icon:hover{border-color:var(--border2)}
 
+/* ═══════════════════════════════════════════════════
+   CARDS, BADGES & OVERLAYS
+   ═══════════════════════════════════════════════════ */
 .card{background:var(--s2);border:1px solid var(--border);transition:border-color .2s,transform .25s cubic-bezier(.16,1,.3,1),box-shadow .25s}
 .card-lift:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:0 14px 44px rgba(0,0,0,.7)}
 .dash-box-icon{width:42px;height:42px;flex-shrink:0;border-radius:50%;background:var(--aD);border:1px solid rgba(212,175,55,.3);display:flex;align-items:center;justify-content:center;color:var(--accent)}
@@ -107,6 +119,9 @@ button:disabled{opacity:.25;cursor:not-allowed}
 .bb{background:var(--bD);color:var(--blue)}
 .bg_{background:var(--gD);color:var(--gold)}
 
+/* ═══════════════════════════════════════════════════
+   CALENDAR & BOOKING COMPONENTS
+   ═══════════════════════════════════════════════════ */
 /* calendar */
 .cal-hdr-cell{display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);padding:8px 0}
 .cal-cell{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;position:relative;font-size:13px;font-weight:500;transition:background .12s;user-select:none;background:var(--bg)}
@@ -180,6 +195,10 @@ button:disabled{opacity:.25;cursor:not-allowed}
 .sum-row:last-child{border-bottom:none}
 .tiltable{transform-style:preserve-3d;transition:transform .4s cubic-bezier(.16,1,.3,1)}
 
+/* ═══════════════════════════════════════════════════
+   SCREEN-SPECIFIC COMPONENTS — menus, carousels, photos,
+   team cards, news, locked periods, weekly calendar
+   ═══════════════════════════════════════════════════ */
 /* ── Three-dot booking menu ── */
 .bk-menu-wrap{position:relative;flex-shrink:0}
 .bk-menu{position:absolute;top:calc(100% + 4px);right:0;background:var(--s3);border:1px solid var(--border2);min-width:170px;z-index:300;animation:pop .15s ease;box-shadow:0 8px 24px rgba(0,0,0,.5)}
@@ -745,12 +764,12 @@ button:hover:not(:disabled) svg,.back:hover svg{transform:scale(1.14)}
         <div id="b-hero-overlay" style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45) 0%,rgba(0,0,0,.78) 100%);display:none"></div>
         <div class="phero" style="position:relative;z-index:2;padding:62px 16px 90px">
           <p class="label" style="margin-bottom:4px;color:var(--text3)" id="b-date-lbl"></p>
-          <div style="display:flex;align-items:flex-end;justify-content:space-between">
-            <div>
-              <p class="hero" style="font-size:34px" id="b-shopname-lbl">SOVEREIGN</p>
-              <p style="font-size:13px;color:var(--text2);margin-top:3px" id="b-barber-lbl">Barber</p>
+          <div style="display:flex;align-items:flex-end;flex-wrap:wrap;justify-content:space-between;gap:4px 10px">
+            <div style="min-width:0;max-width:100%">
+              <p class="hero" style="font-size:34px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%" id="b-shopname-lbl">SOVEREIGN</p>
+              <p style="font-size:13px;color:var(--text2);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%" id="b-barber-lbl">Barber</p>
             </div>
-            <div style="display:flex;align-items:center;gap:6px">
+            <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
               <div class="blink" style="width:6px;height:6px;border-radius:50%;background:var(--accent)"></div>
               <span class="label" style="color:var(--accent)" data-i18n="dash.live">Live</span>
             </div>
@@ -1142,6 +1161,21 @@ button:hover:not(:disabled) svg,.back:hover svg{transform:scale(1.14)}
 ════════════════════════════════════════════ -->
 <script>
 'use strict';
+
+// ════════════════════════════════════════════════════════════
+// TABLE OF CONTENTS — search for the "─── NAME ───" header to jump in
+//   TRANSLATIONS · STATE · UTILITIES · NAV · LANGUAGE · ROLE
+//   CLIENT HOME · CONTACT (client) · NEWS FEED (client)
+//   CLIENT STUDIO GALLERY · OPEN/CLOSED STATUS · SHOP LOGO
+//   BACKGROUND PHOTO · CANCEL · EDIT BOOKING · BOOKING FLOW
+//   BARBER PICKER (step 0) · BOOKING CALENDAR · TIME SLOTS
+//   SERVICE PICKER · CLIENT SETTINGS
+//   BARBER DASHBOARD · DASHBOARD BOXES · STATISTICS
+//   WEEKLY CALENDAR · BARBER CALENDAR · LOCK PERIOD · DAY PANEL
+//   CLIENT PROFILE POPUP · WEEK-DAY PANEL · SYNC LOCK TODAY BUTTON
+//   BARBER TABS · BARBER SETTINGS · STUDIO PHOTOS · MY TEAM · NEWS
+//   3D TILT · INIT
+// ════════════════════════════════════════════════════════════
 
 // ─── TRANSLATIONS ─────────────────────────────────────────────
 const LANG={
@@ -2044,17 +2078,15 @@ function saveClientProfile(){
 }
 
 // ─── BARBER DASHBOARD ────────────────────────────────────────
-// ─── DASHBOARD BOXES: Public Page / Statistics / News ────────
+// ─── DASHBOARD BOXES: entry points for Public Page / Statistics / News ─
 function openPublicPageSettings(){
   const op=document.getElementById('bs-open'),cl=document.getElementById('bs-close');
   if(op)op.value=S.workHours.open;if(cl)cl.value=S.workHours.close;
   renderShopLogo();renderBgPhoto();renderStudioPhotos();
   document.getElementById('ov-public-page').classList.remove('hidden');
 }
-function openNewsPanel(){
-  renderNewsBarber();
-  document.getElementById('ov-news').classList.remove('hidden');
-}
+
+// ─── STATISTICS ──────────────────────────────────────────────
 function weekStartStr(ds){
   const d=strToDate(ds);const day=(d.getDay()+6)%7;d.setDate(d.getDate()-day);return dStr(d);
 }
@@ -2525,6 +2557,10 @@ function renderTeamMembers(){
 }
 
 // ─── NEWS ────────────────────────────────────────────────────
+function openNewsPanel(){
+  renderNewsBarber();
+  document.getElementById('ov-news').classList.remove('hidden');
+}
 function publishNews(){
   const ti=document.getElementById('news-title-inp'),bi=document.getElementById('news-body-inp');
   const title=san(ti?ti.value.trim():'',80);if(!title){if(ti){ti.style.borderColor='var(--red)';ti.focus();}return;}
